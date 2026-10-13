@@ -1,213 +1,264 @@
 % ============================================================
-%  references.bib -- Part 4 Project Literature Review
-%  Entries marked TODO carry over from the earlier draft
-%  without authors, volume numbers, DOIs or URLs.
+%  RefDatabase.bib -- Part 4 Project Literature Review
+%  Formatted for APA 7th edition via biblatex-apa
+%  (\usepackage[backend=biber,style=apa]{biblatex}).
+%
+%  Conventions used so biblatex-apa produces APA 7 output:
+%  - Titles of articles, chapters, books and webpages are written in
+%    sentence case; proper nouns and acronyms are protected with {}.
+%    Journal titles are in title case.
+%  - Every source with a DOI carries it; otherwise a URL.
+%  - Group authors are double-braced, e.g. {{Auckland Council}}.
+%  - urldate (printed as "Retrieved <date>, from") is kept only for
+%    pages whose content is designed to change over time (APA 9.16).
+%  - Publisher locations are omitted, as APA 7 no longer uses them.
+%  Entries still marked TODO could not be matched to a published
+%  source and need checking against the original reading.
 % ============================================================
 
 % ---------- Caulerpa background ----------
 
-@misc{auckland_caulerpa,
-  author = {{Auckland Council}},
-  title  = {Protecting Auckland coastlines from the exotic caulerpa threat},
-  year   = {2024},
-  url    = {https://ourauckland.aucklandcouncil.govt.nz/protecting-auckland-coastlines-from-the-exotic-caulerpa-threat/},
-  note   = {Accessed: 2026-03-24}
+@online{auckland_caulerpa,
+  author  = {{Auckland Council}},
+  title   = {Protecting {Auckland} coastlines from the exotic caulerpa threat},
+  date    = {2024},
+  organization = {OurAuckland},
+  url     = {https://ourauckland.aucklandcouncil.govt.nz/protecting-auckland-coastlines-from-the-exotic-caulerpa-threat/},
+  urldate = {2026-03-24}
 }
 
-@misc{mpi_caulerpa,
-  author = {{Ministry for Primary Industries}},
-  title  = {Exotic caulerpa in {New Zealand} -- where it is and the work underway},
-  year   = {2024},
-  url    = {https://www.mpi.govt.nz/biosecurity/exotic-pests-and-diseases-in-new-zealand/long-term-biosecurity-management-programmes/exotic-caulerpa-seaweeds/exotic-caulerpa-in-new-zealand-where-it-is-and-the-work-underway},
-  note   = {Published 31 July 2024, last reviewed 22 July 2026. Accessed: 2026-10-12}
+@online{mpi_caulerpa,
+  author  = {{Ministry for Primary Industries}},
+  title   = {Exotic caulerpa in {New Zealand}: {Where} it is and the work underway},
+  date    = {2024-07-31},
+  url     = {https://www.mpi.govt.nz/biosecurity/exotic-pests-and-diseases-in-new-zealand/long-term-biosecurity-management-programmes/exotic-caulerpa-seaweeds/exotic-caulerpa-in-new-zealand-where-it-is-and-the-work-underway},
+  urldate = {2026-10-12}
 }
 
-@misc{9.4RNZ,
-  author = {{Susan Botting}},
-  title  = {NZ faces $9.4b hit from invasive caulerpa, analysis shows},
-  year   = {2025},
-  url    = {https://www.rnz.co.nz/news/regions_local-democracy-reporting/560306/nz-faces-9-point-4b-hit-from-invasive-caulerpa-analysis-shows},
-  note   = {Accessed: 2026-10-11}
+@online{9.4RNZ,
+  author  = {Botting, Susan},
+  title   = {{NZ} faces \$9.4b hit from invasive caulerpa, analysis shows},
+  date    = {2025-05-08},
+  organization = {RNZ},
+  url     = {https://www.rnz.co.nz/news/regions_local-democracy-reporting/560306/nz-faces-9-point-4b-hit-from-invasive-caulerpa-analysis-shows}
 }
 
-@misc{niwa_caulerpa,
-  author = {{NIWA}},
-  title  = {Marine invader caulerpa triggers biosecurity response},
-  year   = {2024},
-  note   = {Accessed: 2026-03-24}
+@online{niwa_caulerpa,
+  author  = {{NIWA}},
+  title   = {Marine invader caulerpa triggers biosecurity response},
+  date    = {2022-09-29},
+  url     = {https://niwa.co.nz/news/marine-invader-caulerpa-triggers-biosecurity-response}
 }
-% TODO: url
 
 % ---------- Towed camera systems ----------
 
 @article{lembke_cbass,
   author  = {Lembke, Chad and Grasty, Sarah and Silverman, Alex and Broadbent, Heather and Butcher, Steven and Murawski, Steven},
-  title   = {The camera-based assessment survey system ({C-BASS}): a towed camera platform for reef fish abundance surveys and benthic habitat characterization in the {Gulf} of {Mexico}},
-  journal = {Continental Shelf Research},
+  title   = {The camera-based assessment survey system ({C-BASS}): {A} towed camera platform for reef fish abundance surveys and benthic habitat characterization in the {Gulf of Mexico}},
+  journaltitle = {Continental Shelf Research},
   volume  = {151},
   pages   = {62--71},
-  year    = {2017},
-  url     = {https://www.sciencedirect.com/science/article/pii/S0278434317305253}
+  date    = {2017},
+  doi     = {10.1016/j.csr.2017.10.010}
 }
 
 @article{raoult,
-  author  = {Raoult, Vincent and McSpadden, Kye and Gaston, Troy and Li, Jane and Williamson, Jane},
+  author  = {Raoult, Vincent and McSpadden, Kye and Gaston, Troy F. and Li, J. Y. Q. and Williamson, Jane E.},
   title   = {Rapid surveying of benthopelagic ecosystems with a towed mini-{ROV}},
-  journal = {Marine Environmental Research},
+  journaltitle = {Marine Environmental Research},
   volume  = {208},
   pages   = {107122},
-  year    = {2025},
-  url     = {https://www.sciencedirect.com/science/article/pii/S0141113625001795}
+  date    = {2025},
+  doi     = {10.1016/j.marenvres.2025.107122}
 }
 
-@techreport{sheehan,
-  author      = {Sheehan, Emma and Rodriguez-Rodriguez, Diego and Foster, Nicola and Nancollas, Sarah and Cousens, Sophie and Holmes, Luke and Attrill, Martin and Pettifer, Emma and Jones, Isabel and Vaz, Sandrine},
+@report{sheehan,
+  author      = {Sheehan, Emma and Rodriguez-Rodriguez, Diego and Foster, Nicola and Nancollas, Sarah and Cousens, Sophie and Holmes, Luke and Attrill, Martin and Pettifer, Emma and Jones, Isabel and Vaz, Sandrine and Facq, Jean-Valery and Germain, Gr{\'e}gory},
   title       = {A comparative study of towed underwater video methodology to monitor benthic habitats in marine protected areas},
-  institution = {Ifremer, Sussex IFCA and Marine Institute},
-  note        = {PANACHE project, INTERREG programme},
-  year        = {2014}
+  type        = {PANACHE project report},
+  institution = {{Ifremer, Sussex IFCA and Marine Institute}},
+  date        = {2014},
+  url         = {https://www.panache.eu.com/upload/iedit/10/pj/2145_5698_WP2ENcomparative_study_of_towed_underwater_video.pdf}
 }
 
-@misc{pepe,
-  title = {Pepe: a novel low-cost drifting video system for underwater survey},
-  year  = {2017}
+@inproceedings{pepe,
+  author    = {Trobbiani, Gast{\'o}n A. and Irigoyen, Alejo J.},
+  title     = {\enquote{{Pepe}}: {A} novel low cost drifting video system for underwater survey},
+  booktitle = {2016 {IEEE/OES} {South American International Symposium on Oceanic Engineering} ({SAISOE})},
+  pages     = {1--4},
+  publisher = {IEEE},
+  date      = {2016},
+  doi       = {10.1109/SAISOE.2016.7922472}
 }
-% TODO: author, venue, doi, url
 
-@misc{seavu,
-  author = {{SeaVu}},
-  title  = {Seeker deepscope rig},
-  year   = {2024},
-  note   = {Accessed: 2026-03-24}
+@online{seavu,
+  author  = {{SeaVu}},
+  title   = {Seeker {DeepScope} rig},
+  date    = {2024},
+  url     = {https://seavu.com/product/seeker-deepscope-rig/},
+  urldate = {2026-03-24}
 }
-% TODO: url
 
 @article{cresswell,
   author  = {Cresswell, Anna K. and Ryan, Nicole M. and Heyward, Andrew J. and Smith, Adam N. and Colquhoun, Jamie and Case, Matthew and Birt, Matthew J. and Chinkin, Marcus and Wyatt, Mathew and Radford, Ben},
   title   = {A quantitative comparison of towed-camera and diver-camera transects for monitoring coral reefs},
-  journal = {PeerJ},
+  journaltitle = {PeerJ},
   volume  = {9},
   pages   = {e11090},
-  year    = {2021}
+  date    = {2021},
+  doi     = {10.7717/peerj.11090}
 }
 
 % ---------- Towfish and cable dynamics ----------
 
+% Matched by journal, volume, issue and article number (JMSE 13(5), 834);
+% the earlier draft carried the placeholder title "Forces acting on
+% towed marine systems".
 @article{forces,
-  title   = {Forces acting on towed marine systems},
-  journal = {Journal of Marine Science and Engineering},
+  author  = {Lee, Jihyeong and Kim, Min-Kyu},
+  title   = {Derivation of the controllable region for attitude control of towfish and verification through water tank test},
+  journaltitle = {Journal of Marine Science and Engineering},
   volume  = {13},
   number  = {5},
   pages   = {834},
-  year    = {2024}
+  date    = {2025},
+  doi     = {10.3390/jmse13050834}
 }
-% TODO: authors; JMSE vol. 13 corresponds to 2025, not 2024 -- check the year
 
 @book{abbott1959,
   author    = {Abbott, Ira H. and von Doenhoff, Albert E.},
-  title     = {Theory of Wing Sections},
+  title     = {Theory of wing sections},
   publisher = {Dover},
-  address   = {New York},
-  year      = {1959}
+  date      = {1959}
 }
 
-@techreport{gertler,
+@report{gertler,
   author      = {Gertler, Morton and Hagen, Grant R.},
   title       = {Standard equations of motion for submarine simulation},
-  institution = {Naval Ship Research and Development Center},
+  type        = {Report},
   number      = {2510},
-  year        = {1967}
+  institution = {Naval Ship Research and Development Center},
+  date        = {1967}
 }
-% TODO: verify title -- the earlier draft cited it as "6 degrees of freedom of submarine vessels"
 
+% Matched by journal, year and title; the earlier draft carried the
+% placeholder title "Controllable underwater towed systems".
 @article{controllable2005,
-  title   = {Controllable underwater towed systems},
-  journal = {Ocean Engineering},
-  year    = {2005}
+  author  = {Wu, Jiaming and Ye, Jiawei and Yang, Cheng and Chen, Yuanming and Tian, Huiping and Xiong, Xiaohui},
+  title   = {Experimental study on a controllable underwater towed system},
+  journaltitle = {Ocean Engineering},
+  volume  = {32},
+  number  = {14--15},
+  pages   = {1803--1817},
+  date    = {2005},
+  doi     = {10.1016/j.oceaneng.2004.12.014}
 }
-% TODO: authors, volume, pages, doi
 
+% TODO: authors, real title, volume, pages and DOI. "Dynamics of towed
+% underwater systems" is a placeholder title from the earlier draft and
+% no Ocean Engineering (2000) paper with this title was found.
 @article{dynamics2000,
   title   = {Dynamics of towed underwater systems},
-  journal = {Ocean Engineering},
-  year    = {2000}
+  journaltitle = {Ocean Engineering},
+  date    = {2000}
 }
-% TODO: authors, volume, pages, doi
 
-@misc{depressor,
-  author = {{Marine Sonic}},
-  title  = {Depressor fins for towed systems},
-  year   = {2024},
-  note   = {Accessed: 2026-03-24}
+@online{depressor,
+  author  = {{Marine Sonic}},
+  title   = {Depressor fins for towed systems},
+  date    = {2024},
+  url     = {https://marinesonic.com/?p=1303},
+  urldate = {2026-03-24}
 }
-% TODO: url
 
 @article{hydrofoil,
-  title   = {Hydrodynamic performance optimization of a towed body with adjustable hydrofoils},
-  journal = {Ocean Engineering},
-  year    = {2024}
+  author  = {Li, Zhitong and Chen, Yunsai and Chen, Hongzhou and Sun, Zhilei and Ye, Xiufen and Xue, Gang},
+  title   = {Hydrodynamic performance optimization and adjustment prediction of a novel deep-sea towed body with adjustable hydrofoils},
+  journaltitle = {Ocean Engineering},
+  volume  = {296},
+  pages   = {116937},
+  date    = {2024},
+  doi     = {10.1016/j.oceaneng.2024.116937}
 }
-% TODO: authors, volume, pages, doi -- cited four times, needs a full entry
 
 % ---------- Sensing and navigation ----------
 
+% Matched by journal and year (Environmental Monitoring and Assessment,
+% 2018); the earlier draft carried the placeholder title "Low-cost
+% underwater video systems with obstacle avoidance". Confirm this is
+% the paper that was read.
 @article{lowcostvideo,
-  title   = {Low-cost underwater video systems with obstacle avoidance},
-  journal = {Environmental Monitoring and Assessment},
-  year    = {2018}
+  author  = {Trobbiani, Gast{\'o}n A. and Irigoyen, Alejo J. and Venerus, Leonardo A. and Fiorda Giordanino, Pedro M. and Parma, Ana M.},
+  title   = {A low-cost towed video camera system for underwater surveys: {Comparative} performance with standard methodology},
+  journaltitle = {Environmental Monitoring and Assessment},
+  volume  = {190},
+  pages   = {683},
+  date    = {2018},
+  doi     = {10.1007/s10661-018-7070-z}
 }
-% TODO: authors, volume, pages
 
+% TODO: authors, real title and venue. "Ultrasonic sensing in underwater
+% environments" (IEEE, 2022) is a placeholder from the earlier draft and
+% no matching paper was found.
 @misc{ultrasonic,
-  title  = {Ultrasonic sensing in underwater environments},
-  year   = {2022},
-  note   = {IEEE}
+  title   = {Ultrasonic sensing in underwater environments},
+  date    = {2022},
+  publisher = {IEEE}
 }
-% TODO: authors and an actual venue -- "IEEE" is not a journal
 
+% Matched by journal, volume and first page (JSSS 14, 285); the earlier
+% draft carried the placeholder title "Acoustic sensing while underwater".
 @article{acoustic,
-  title   = {Acoustic sensing while underwater},
-  journal = {Journal of Sensors and Sensor Systems},
+  author  = {Vishwanatha, M. and Selvam, K. and Saeidi, N. and Wiemer, M. and Kuhn, H.},
+  title   = {Underwater object detection using capacitive micromachined ultrasonic transducers ({CMUTs})},
+  journaltitle = {Journal of Sensors and Sensor Systems},
   volume  = {14},
-  pages   = {285--295},
-  year    = {2025}
+  number  = {2},
+  pages   = {285--296},
+  date    = {2025},
+  doi     = {10.5194/jsss-14-285-2025}
 }
-% TODO: authors
 
 @article{sunreview,
   author  = {Sun, Kai and Cui, Weicheng and Chen, Chi},
   title   = {Review of underwater sensing technologies and applications},
-  journal = {Sensors},
+  journaltitle = {Sensors},
   volume  = {21},
   number  = {23},
   pages   = {7849},
-  year    = {2021}
+  date    = {2021},
+  doi     = {10.3390/s21237849}
 }
 
 @inproceedings{ornhag,
-  author    = {{\"O}rnhag, Marcus Valtonen and Persson, Patrik and Waden{\"b}{\"a}ck, M{\aa}rten and {\AA}str{\"o}m, Kalle and Heyden, Anders},
-  title     = {Trust your {IMU}: consequences of ignoring the {IMU} drift},
-  booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops},
+  author    = {{Valtonen {\"O}rnhag}, Marcus and Persson, Patrik and Wadenb{\"a}ck, M{\aa}rten and {\AA}str{\"o}m, Kalle and Heyden, Anders},
+  title     = {Trust your {IMU}: {Consequences} of ignoring the {IMU} drift},
+  booktitle = {Proceedings of the {IEEE/CVF} {Conference on Computer Vision and Pattern Recognition Workshops} ({CVPRW})},
   pages     = {4468--4477},
-  year      = {2022}
+  publisher = {IEEE},
+  date      = {2022},
+  doi       = {10.1109/CVPRW56347.2022.00493}
 }
 
 @article{neira,
   author  = {Neira, Jorge and Sequeiros, Carlos and Huamani, Ricardo and Machaca, Erasmo and Fonseca, Pablo and Nina, Wilfredo},
   title   = {Review on unmanned underwater robotics, structure designs, materials, sensors, actuators, and navigation control},
-  journal = {Journal of Robotics},
+  journaltitle = {Journal of Robotics},
   volume  = {2021},
   number  = {1},
   pages   = {5542920},
-  year    = {2021}
+  date    = {2021},
+  doi     = {10.1155/2021/5542920}
 }
 
 @inproceedings{snyder,
   author    = {Snyder, Jeff},
   title     = {Doppler velocity log ({DVL}) navigation for observation-class {ROVs}},
-  booktitle = {OCEANS 2010 MTS/IEEE Seattle},
+  booktitle = {{OCEANS} 2010 {MTS/IEEE} {Seattle}},
   pages     = {1--9},
-  year      = {2010}
+  publisher = {IEEE},
+  date      = {2010},
+  doi       = {10.1109/OCEANS.2010.5664561}
 }
 
 % ---------- Obstacle detection and avoidance ----------
@@ -215,180 +266,184 @@
 @article{kot2022,
   author  = {Kot, Rafa{\l}},
   title   = {Review of obstacle detection systems for collision avoidance of autonomous underwater vehicles tested in a real environment},
-  journal = {Electronics},
+  journaltitle = {Electronics},
   volume  = {11},
   number  = {21},
   pages   = {3615},
-  year    = {2022}
+  date    = {2022},
+  doi     = {10.3390/electronics11213615}
 }
 
 @article{kot2024,
   author  = {Kot, Rafa{\l} and Szymak, Piotr and Piskur, Pawe{\l} and Naus, Krzysztof},
   title   = {A comparative study of different collision avoidance systems with local path planning for autonomous underwater vehicles},
-  journal = {IEEE Access},
+  journaltitle = {IEEE Access},
   volume  = {12},
   pages   = {61443--61466},
-  year    = {2024}
+  date    = {2024},
+  doi     = {10.1109/ACCESS.2024.3394569}
 }
 
 @article{cao,
-  author  = {Cao, Xiang and Ren, Ling and Sun, Changyin},
+  author  = {Cao, Xiang and Ren, Lu and Sun, Changyin},
   title   = {Research on obstacle detection and avoidance of autonomous underwater vehicle based on forward-looking sonar},
-  journal = {IEEE Transactions on Neural Networks and Learning Systems},
+  journaltitle = {IEEE Transactions on Neural Networks and Learning Systems},
   volume  = {34},
   number  = {11},
   pages   = {9198--9208},
-  year    = {2022}
+  date    = {2023},
+  doi     = {10.1109/TNNLS.2022.3156907}
 }
 
 @article{antonelli,
   author  = {Antonelli, Gianluca and Chiaverini, Stefano and Finotello, Roberto and Schiavon, Riccardo},
-  title   = {Real-time path planning and obstacle avoidance for {RAIS}: an autonomous underwater vehicle},
-  journal = {IEEE Journal of Oceanic Engineering},
+  title   = {Real-time path planning and obstacle avoidance for {RAIS}: {An} autonomous underwater vehicle},
+  journaltitle = {IEEE Journal of Oceanic Engineering},
   volume  = {26},
   number  = {2},
   pages   = {216--227},
-  year    = {2001}
+  date    = {2001},
+  doi     = {10.1109/48.922788}
 }
-% TODO: listed elsewhere as 2002; vol. 26 no. 2 is 2001 -- confirm
 
 @article{maki,
-  author  = {Maki, Toshihiro and Noguchi, Yuki and Kuranaga, Yuji and Masuda, Kotohiro and Sakamaki, Takashi and Humblet, Marc and Furushima, Yasuo},
+  author  = {Maki, Toshihiro and Noguchi, Yukiyasu and Kuranaga, Yoshinori and Masuda, Kotohiro and Sakamaki, Takashi and Humblet, Marc and Furushima, Yasuo},
   title   = {Low-altitude and high-speed terrain tracking method for lightweight {AUVs}},
-  journal = {Journal of Robotics and Mechatronics},
+  journaltitle = {Journal of Robotics and Mechatronics},
   volume  = {30},
   number  = {6},
   pages   = {971--979},
-  year    = {2018}
+  date    = {2018},
+  doi     = {10.20965/jrm.2018.p0971}
 }
 
 @inproceedings{godzila,
   author    = {Khorrami, Farshad and Krishnamurthy, Prashanth},
   title     = {A hierarchical path planning and obstacle avoidance system for an autonomous underwater vehicle},
-  booktitle = {2009 American Control Conference},
-  publisher = {IEEE},
+  booktitle = {2009 {American Control Conference}},
   pages     = {3579--3584},
-  year      = {2009}
+  publisher = {IEEE},
+  date      = {2009},
+  doi       = {10.1109/ACC.2009.5160300}
 }
 
 % ---------- Materials, enclosures and electronics ----------
 
-@misc{asa,
-  author = {{Prusament}},
-  title  = {Components for underwater research drones using {ASA}},
-  year   = {2023},
-  note   = {Accessed: 2026-03-24}
+@online{asa,
+  author  = {{Prusament}},
+  title   = {Case study: {Components} for underwater research drones made of {Prusament ASA}},
+  date    = {2023},
+  url     = {https://prusament.com/case-study-komponenty-pro-podmorske-vyzkumne-drony-z-prusament-asa/}
 }
-% TODO: url
 
-@misc{orings,
-  author       = {Heesbeen, Mike},
-  title        = {Underwater housing maintenance guide: {O}-rings, service and care},
-  howpublished = {UWCameraStore},
-  year         = {2026},
-  note         = {Accessed: 2026-03-24}
+@online{orings,
+  author  = {Heesbeen, M.},
+  title   = {Underwater housing maintenance guide: {O}-rings, service and care},
+  date    = {2026-03-17},
+  organization = {UW Camera Store},
+  url     = {https://www.uwcamerastore.com/blog/the-ultimate-guide-to-maintenance-for-your-underwater-camera-gear}
 }
-% TODO: url
 
-@misc{esp32,
-  title        = {{ESP32} {I2C} master and slave: {I2C} communication between two {ESP32} boards},
-  howpublished = {Arduino IDE tutorial}
+@online{esp32,
+  author  = {{Random Nerd Tutorials}},
+  title   = {{ESP32} {I2C} master and slave ({I2C} communication between two {ESP32}) -- {Arduino IDE}},
+  url     = {https://randomnerdtutorials.com/esp32-i2c-master-slave-arduino/}
 }
-% TODO: author, site, year, url, access date
 
-@misc{connectors,
-  title = {Electrical connectors for underwater applications},
-  year  = {2017},
-  note  = {IEEE}
+@article{connectors,
+  author  = {R{\'e}mouit, Flore and Ruiz-Minguela, Pablo and Engstr{\"o}m, Jens},
+  title   = {Review of electrical connectors for underwater applications},
+  journaltitle = {IEEE Journal of Oceanic Engineering},
+  volume  = {43},
+  number  = {4},
+  pages   = {1037--1047},
+  date    = {2018},
+  doi     = {10.1109/JOE.2017.2745598}
 }
-% TODO: authors and an actual venue
 
 @article{sensors_omnivision,
+  author  = {Ochoa, Eduardo and Gracias, Nuno and Isteni{\v{c}}, Klemen and Bosch, Josep and Cie{\'s}lak, Patryk and Garc{\'i}a, Rafael},
   title   = {Collision detection and avoidance for underwater vehicles using omnidirectional vision},
-  journal = {Sensors},
-  year    = {2022}
+  journaltitle = {Sensors},
+  volume  = {22},
+  number  = {14},
+  pages   = {5354},
+  date    = {2022},
+  doi     = {10.3390/s22145354}
 }
 
-@misc{droppers_towbody,
-  author       = {Droppers, Jasmine and Fisher, Wesley and Predmyrskyy, Andriy},
-  title        = {Tow-Body Control System Modeling and Tuning on a Real-World Vehicle},
-  howpublished = {Kraken Robotic Systems, Dartmouth, NS, Canada},
-  year         = {2023},
-  url          = {https://www.krakenrobotics.com/wp-content/uploads/2023/06/TowBodyControlSystemModelingAndTuningOnARealWOrldVehicle_submission.pdf},
-  note         = {Accessed: 10 Oct. 2026}
+% ---------- Control, estimation and hydrodynamics ----------
+
+@online{droppers_towbody,
+  author  = {Droppers, Jasmine and Fisher, Wesley and Predmyrskyy, Andriy},
+  title   = {Tow-body control system modeling and tuning on a real-world vehicle},
+  date    = {2023},
+  organization = {Kraken Robotic Systems},
+  url     = {https://www.krakenrobotics.com/wp-content/uploads/2023/06/TowBodyControlSystemModelingAndTuningOnARealWOrldVehicle_submission.pdf}
 }
- 
+
 @article{kim2021towfish,
-  author  = {Kim, Min-Kyu and Park, Dong-Jin and Oh, Yong-Seok and Kim, Jong-Hwan and Choi, Jae-Kyu},
-  title   = {Towfish Attitude Control: A Consideration of Towing Point, Center of Gravity, and Towing Speed},
-  journal = {Journal of Marine Science and Engineering},
+  author  = {Kim, Min-Kyu and Park, Dong-Jin and Oh, Yeong-Seok and Kim, Jong-Hwa and Choi, Jin-Kyu},
+  title   = {Towfish attitude control: {A} consideration of towing point, center of gravity, and towing speed},
+  journaltitle = {Journal of Marine Science and Engineering},
   volume  = {9},
   number  = {6},
   pages   = {641},
-  year    = {2021},
+  date    = {2021},
   doi     = {10.3390/jmse9060641}
 }
- 
+
 @article{kalman1960,
   author  = {Kalman, Rudolph E.},
-  title   = {A New Approach to Linear Filtering and Prediction Problems},
-  journal = {Journal of Basic Engineering},
+  title   = {A new approach to linear filtering and prediction problems},
+  journaltitle = {Journal of Basic Engineering},
   volume  = {82},
   number  = {1},
   pages   = {35--45},
-  year    = {1960},
+  date    = {1960},
   doi     = {10.1115/1.3662552}
 }
- 
+
 @book{barshalom2001,
   author    = {Bar-Shalom, Yaakov and Li, X. Rong and Kirubarajan, Thiagalingam},
-  title     = {Estimation with Applications to Tracking and Navigation},
+  title     = {Estimation with applications to tracking and navigation},
   publisher = {Wiley},
-  address   = {New York},
-  year      = {2001},
-  isbn      = {978-0-471-41655-5}
+  date      = {2001}
 }
- 
+
 @book{fossen2021,
   author    = {Fossen, Thor I.},
-  title     = {Handbook of Marine Craft Hydrodynamics and Motion Control},
-  edition   = {2nd},
+  title     = {Handbook of marine craft hydrodynamics and motion control},
+  edition   = {2},
   publisher = {Wiley},
-  address   = {Chichester, UK},
-  year      = {2021},
-  isbn      = {978-1-119-57505-4}
+  date      = {2021}
 }
- 
+
 @book{astrom_hagglund2006,
   author    = {{\AA}str{\"o}m, Karl J. and H{\"a}gglund, Tore},
-  title     = {Advanced {PID} Control},
-  publisher = {ISA -- The Instrumentation, Systems, and Automation Society},
-  address   = {Research Triangle Park, NC},
-  year      = {2006}
+  title     = {Advanced {PID} control},
+  publisher = {{ISA -- The Instrumentation, Systems, and Automation Society}},
+  date      = {2006}
 }
- 
+
 @book{astrom_murray2021,
   author    = {{\AA}str{\"o}m, Karl J. and Murray, Richard M.},
-  title     = {Feedback Systems: An Introduction for Scientists and Engineers},
-  edition   = {2nd},
+  title     = {Feedback systems: {An} introduction for scientists and engineers},
+  edition   = {2},
   publisher = {Princeton University Press},
-  address   = {Princeton, NJ},
-  year      = {2021}
+  date      = {2021}
 }
- 
+
 @book{newman1977,
   author    = {Newman, John Nicholas},
-  title     = {Marine Hydrodynamics},
+  title     = {Marine hydrodynamics},
   publisher = {MIT Press},
-  address   = {Cambridge, MA},
-  year      = {1977}
+  date      = {1977}
 }
- 
+
 @book{efron1993,
   author    = {Efron, Bradley and Tibshirani, Robert J.},
-  title     = {An Introduction to the Bootstrap},
+  title     = {An introduction to the bootstrap},
   publisher = {Chapman \& Hall},
-  address   = {New York},
-  year      = {1993}
+  date      = {1993}
 }
- 
