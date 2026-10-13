@@ -1,0 +1,136 @@
+% -------------------------- Hyperlinks Settings --------------------------
+\usepackage{xcolor} % Colours for hyperref package
+% Define links colour
+\newcommand{\linksColour}{black} 
+% hyperref package
+\usepackage[colorlinks = true,linkcolor = \linksColour, citecolor = \linksColour, urlcolor = blue ,bookmarksnumbered=true,bookmarksopen = true,bookmarksopenlevel = 1]{hyperref}
+% ------------------------------------------------------------------------------
+
+% -------------------- Header and Footer Settings --------------------
+% Header and footer
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{} 	             % clear the default header
+\fancyfoot{}                % clear the default footer
+\fancyfoot[C]{\footnotesize\thepage}     % page number in the middle
+\renewcommand{\headrulewidth}{0.0pt}  % remove the default header line
+
+% Header and footer of automatically generated pages (e.g. TOC)
+% Change to match main document
+\fancypagestyle{plain}{
+\fancyhead{}
+\fancyfoot{}
+\fancyfoot[C]{\footnotesize\thepage}
+\renewcommand{\headrulewidth}{0pt}}
+
+% ------------------------------------------------------------------------------
+
+% ------------------------ Title Page Box Settings -------------------------
+% settings for the text box on the front page
+\newcommand\HRule{\noindent\rule{\linewidth}{2pt}}
+% ------------------------------------------------------------------------------
+
+
+% -------------------------- Figures Settings -----------------------------
+% Redefine how latex deals with figure placement
+\renewcommand{\topfraction}{.85}
+\renewcommand{\bottomfraction}{.7}
+\renewcommand{\textfraction}{.15}
+\renewcommand{\floatpagefraction}{.66}
+\renewcommand{\dbltopfraction}{.66}
+\renewcommand{\dblfloatpagefraction}{.66}
+% ------------------------------------------------------------------------------
+
+
+% ------------------------------ TOC Settings --------------------------------
+
+% Adding dots to sections in table of contents
+\usepackage{tocloft}
+\renewcommand{\cftloftitlefont}{\large\bfseries}
+\renewcommand{\cftlottitlefont}{\large\bfseries}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}}
+% Adding the word Figure in list of figures
+\renewcommand*\cftfigpresnum{Figure~}
+\settowidth{\cftfignumwidth}{\cftfigpresnum}
+\renewcommand{\cftfigaftersnumb}{\qquad}
+% Adding the word Table in list of figures
+\renewcommand*\cfttabpresnum{Table~}
+\settowidth{\cfttabnumwidth}{\cfttabpresnum}
+\renewcommand{\cfttabaftersnumb}{\qquad}
+% ------------------------------------------------------------------------------
+
+% Changing the rules for hyphenation (DON"T CHANGE THIS)
+\usepackage{everysel}
+\EverySelectfont{%
+\fontdimen2\font=0.4em% interword space
+\fontdimen3\font=0.2em% interword stretch
+\fontdimen4\font=0.1em% interword shrink
+\fontdimen7\font=0.1em% extra space
+\hyphenchar\font=`\-% to allow hyphenation
+}
+
+% -------------------- Formatting Section Titles ------------------------
+% Shrinking the space after headers
+\usepackage[clearempty]{titlesec} % loaded with a setting for automatically generated empty pages to be completely blank
+\beforetitleunit = 1pt
+\aftertitleunit = 1pt
+% specifying the spacing before and after the titles (note \parskip = 9pts)
+\titlespacing{\section}{0pt}{*9}{*9}	% for 18 pt space
+\titlespacing{\subsection}{0pt}{*3}{*3}	% for 12 pt space
+\titlespacing{\subsubsection}{0pt}{*3}{*3}	% for 12 pt space
+% specifying the title fomatting
+\titleformat{\section} {\normalfont\fontsize{14}{14}\bfseries}{\thesection.}{1em}{}
+\titleformat{\subsection} {\normalfont\fontsize{12}{12}\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection} {\normalfont\fontsize{12}{12}\it}{\thesubsubsection}{1em}{}
+
+% Modifyong how appendices look (title and toc)
+\usepackage[titletoc,title]{appendix}
+% ------------------------------------------------------------------------------
+
+% ------------------------- Nomenclature Settings ------------------------
+
+\def\nompreamble{\addcontentsline{toc}{section}{\nomname}\markboth{\nomname}{\nomname}}
+% cutomising nomenclature groups
+\usepackage{ifthen}
+\renewcommand{\nomgroup}[1]{ 
+\ifthenelse{\equal{#1}{A}}{\item[\textbf{Symbols}]}{%
+\ifthenelse{\equal{#1}{G}}{\item[\textbf{Greek Symbols}]}{}
+}% matches Greek Symbols
+}% matches Roman Symbols
+
+% unit column in nomenclature
+\newcommand{\nomunit}[1]{\renewcommand{\nomentryend}{\hspace*{\fill}#1}}
+
+% ------------------------------------------------------------------------------
+
+% -------------------------- Miscellaneous Settings ----------------------------
+
+% disable automatic date printing (otherwise will mess with the title page)
+\date{} 
+\usepackage{babel}% http://ctan.org/pkg/babel
+\usepackage{isodate}% http://ctan.org/pkg/isodate
+
+\usepackage{cite}     % Group sequential citations
+
+%\usepackage{keystroke} % Keyboard symbols 
+\usepackage{breakurl}    % break long urls (not sure if it works by default)
+\urlstyle{rm}	                  % Change url fonts to match report font
+
+% to allow page breaks within equations
+\allowdisplaybreaks
+
+% force footnotes to be always at the bottom of the page
+\usepackage[bottom]{footmisc} 
+
+% For tables with merged rows
+\usepackage{multirow}
+
+\usepackage[labelfont={bf,footnotesize},textfont={footnotesize}, labelsep = quad]{caption}
+
+\usepackage{units}
+
+% load listings package for code envirnments
+\usepackage{listings}
+% ------------------------------------------------------------------------------
+
+\usepackage{menukeys} % for menu instructions

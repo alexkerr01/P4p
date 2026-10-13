@@ -1,0 +1,274 @@
+%% LyX 2.3.2-2 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,british,UKenglish]{article}
+\renewcommand{\rmdefault}{ptm}
+\usepackage[T1]{fontenc}
+\usepackage[latin9]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2.5cm,rmargin=2.5cm}
+\setlength{\parskip}{\medskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage{pdfpages}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{nomencl}
+% the following is useful when we have the old nomencl.sty package
+\providecommand{\printnomenclature}{\printglossary}
+\providecommand{\makenomenclature}{\makeglossary}
+\makenomenclature
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+%% A simple dot to overcome graphicx limitations
+\newcommand{\lyxdot}{.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+\input{LyXPreamble} % import additional settings from this file
+
+\makeatother
+
+\usepackage{babel}
+\usepackage{listings}
+\lstset{basicstyle={\ttfamily\footnotesize},
+belowcaptionskip=3mm,
+breaklines=true,
+commentstyle={\color[rgb]{0,0.5,0}},
+frameshape={{NYN}{nnn}{nnn}{NYN}},
+keywordstyle={\color{blue}},
+language=Matlab,
+numbers=left,
+numberstyle={\scriptsize},
+showstringspaces=false,
+stringstyle={\color{purple}}}
+\def\eqdeclaration#1{, see equation\nobreakspace(#1)}
+\def\pagedeclaration#1{, page\nobreakspace#1}
+\def\nomname{Nomenclature}
+\renewcommand{\lstlistingname}{Listing}
+
+\begin{document}
+% Define your name and report number here. It will update on all pages where they are needed.
+\def \name{[Add Your Name]}
+\def \reportNumber{ME000-\the\year}
+
+%% -------------------------------------------------------------------------------------------
+%% ---------------------------- Title page of the report -------------------------------------
+%% -------------------------------------------------------------------------------------------
+\thispagestyle{empty}
+\pagenumbering{roman}
+% Change default name for code environments
+\renewcommand\lstlistingname{Program}  
+
+\vspace*{10mm}
+
+\begin{center}
+\textbf{\large{}Research Project in Mechanical <or Mechatronics> Engineering}{\large\par} % UPDATE this to match your specialisation
+\par\end{center}
+
+\vspace*{10mm}
+
+\HRule
+\begin{center}
+Type of Report
+\par\end{center}
+
+\begin{center}
+\textbf{\Large{}Project Title Goes Here}{\Large\par}
+\par\end{center}
+
+\begin{center}
+{\large{}\name}{\large\par}
+\par\end{center}
+
+\begin{center}
+Project Report \reportNumber
+\par\end{center}
+
+\HRule
+
+\vspace*{\fill}
+
+\begin{center}
+\begin{tabular}{rl}
+Co-worker: & {[}Add Partner{]}\tabularnewline   % ADD your partner's name here
+\noalign{\vskip1.5em}
+Supervisor: & Dr {[}Add Supervisor{]}\tabularnewline    % ADD your supervisor's name here
+\noalign{\vskip1.5em}
+\end{tabular}
+\par\end{center}
+
+\vspace*{\fill}
+
+\begin{center}
+\cleanlookdateon \today
+\par\end{center}
+
+\vspace*{\fill}
+
+\begin{center}
+\includegraphics[width=0.7\linewidth]{Figures/mech-horizontal-hc}
+\par\end{center}
+
+\newpage{}
+%% -------------------------------------------------------------------------------------------
+%% ---------------------------- Frontmatter of the report ------------------------------------
+%% -------------------------------------------------------------------------------------------
+
+%% ----------------------------------- ABSTRACT ----------------------------------------------
+\begin{flushleft}
+\reportNumber
+\par\end{flushleft}
+
+\vspace{1em}
+
+\begin{center}
+\textbf{\textsc{\large{}PROJECT TITLE GOES HERE}}{\large\par}
+\par\end{center}
+
+\vspace{2em}
+
+\begin{center}
+\textbf{\large{}\name}{\large\par}
+\par\end{center}
+
+\vspace{2em}
+
+\begin{center}
+\textbf{\textsc{\large{}ABSTRACT}}{\large\par}
+\par\end{center}
+% Write your abstract here
+Abstract goes here.
+% end of Abstract
+
+%% ------------------------------- DECLARATION -------------------------------------------
+\includepdf[pagecommand=\thispagestyle{fancy}]{Declaration} % Overwrite the PDF in the root folder to update with the signed document.
+    
+
+\newpage{}
+%% ------------------------------ TABLE OF CONTENTS ---------------------------------------
+\setlength{\parskip}{6pt}
+\renewcommand{\contentsname}{\large{Table of Contents}}
+
+\tableofcontents{}
+
+\newpage{}
+
+\setlength{\parskip}{9pt}
+%% ------------------------------- ACKNOWLEDGMENTS -------------------------------------------
+\section*{Acknowledgements \addcontentsline{toc}{section}{Acknowledgements}\label{sec:Acknowledgements1}}
+
+Thank important people here.
+
+\newpage{}
+%% ------------------------------- GLOSSARY -------------------------------------------
+\section*{Glossary of Terms \addcontentsline{toc}{section}{Glossary of Terms}}
+
+\begin{longtable}[l]{>{\raggedright}p{0.25\textwidth}>{\raggedright}p{0.7\textwidth}}
+Term & Definition\tabularnewline
+\addlinespace
+\end{longtable}
+
+\addtocounter{table}{-1}
+%% ------------------------------- ABBREVIATIONS -------------------------------------------
+\section*{Abbreviations\addcontentsline{toc}{section}{Abbreviations}}
+
+\begin{longtable}[l]{>{\raggedright}p{0.25\textwidth}>{\raggedright}p{0.7\textwidth}}
+AOA & Angle of attack\tabularnewline
+\addlinespace
+\end{longtable}
+
+\addtocounter{table}{-1}
+%% ------------------------------- NOMENCLATURE -------------------------------------------
+\printnomenclature{}\label{nomenclature}
+
+\clearpage{}
+
+\setlength{\parskip}{9pt}
+
+\pagenumbering{arabic}
+
+%% -------------------------------------------------------------------------------------------
+%% ---------------------------- Main Body of the report --------------------------------------
+%% -------------------------------------------------------------------------------------------
+
+\section{Introduction}
+
+Some text \cite{Balas1998}.
+
+\subsection{Subsection}
+
+Some text.
+
+
+%% ------------------------------- REFERENCES -------------------------------------------
+\bibliographystyle{IEEEtran}
+\addcontentsline{toc}{section}{\refname}\bibliography{RefDatabase}
+
+\newpage{}
+
+%% -------------------------------------------------------------------------------------------
+%% ----------------------------------- APPENDICES---------------------------------------------
+%% -------------------------------------------------------------------------------------------
+\begin{appendices}
+\titleformat{\section} {\normalfont\fontsize{14}{14}\bfseries}{Appendix~\thesection}{1em}{}
+
+% Renaming the captions to include the appendix name
+\renewcommand{\theequation}{\thesection \arabic{equation}}
+\renewcommand{\thefigure}{\thesection \arabic{figure}}
+\renewcommand{\thetable}{\thesection \arabic{table}}
+\renewcommand{\thelstlisting}{\thesection \arabic{lstlisting}}
+
+\section{The First Appendix}
+
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{lstlisting}{0}
+
+\begin{lstlisting}[caption={Some MATLAB script},label={lis:Same-MATLAB-script}]
+% SaveExperiment.m: This file prompts the user to save the data
+% and plots the results.
+% 
+% This file is meant to be run autoamtically after lab experiment is
+% finished. 
+% 
+% Hazim Namik                           Date created: 14/4/2019
+
+clc;
+
+% prompting the user to specify a file name and a location
+[fileName,filePath] = uiputfile('*.mat','Save file name');
+% Checking if the user clicked cancel
+if(~(ischar(fileName)&& ischar(filePath)))
+    disp('Canceled. No data was saved.');
+    return
+end
+% Saving the file at the specified location
+save ([filePath,fileName],'ActualPumpUsage', 'ActualError', 'TankHeightAll', 'SimPumpUsage', 'SimError');
+\end{lstlisting}
+
+\clearpage{}
+
+\section{Second Appendix}
+
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{lstlisting}{0}
+
+\end{appendices}
+% -------------------------- End of Appendices --------------------------------
+
+\end{document}
+%% -----------------------------  END OF DOCUMENT --------------------------------
