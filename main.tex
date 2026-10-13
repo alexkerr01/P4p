@@ -21,13 +21,22 @@
 \usetikzlibrary{positioning, arrows.meta}
 \usepackage{amssymb}
 \usepackage{nomencl}
+% APA 7th referencing; loaded before LyXPreamble so it can skip the cite package
+\usepackage[style=american]{csquotes} % APA uses double quotation marks
 \usepackage[backend=biber,style=apa]{biblatex}
 \DeclareLanguageMapping{british}{british-apa}
 \DeclareLanguageMapping{UKenglish}{british-apa}
+\addbibresource{RefDatabase.bib}
+% allow long URLs in the reference list to break at any character
+\setcounter{biburlnumpenalty}{100}
+\setcounter{biburlucpenalty}{100}
+\setcounter{biburllcpenalty}{100}
 % the following is useful if no old nomencl.sty package
 \providecommand{\printnomenclature}{\printglossary}
 \providecommand{\makenomenclature}{\makeglossary}
 \makenomenclature
+
+\newcommand{\fillin}[1]{\textcolor{red}{[#1]}}
 
 %% ---- Nomenclature entries ----
 \nomenclature{$\rho$}{Water density (kg/m$^3$)}
@@ -441,8 +450,10 @@ The low-altitude terrain tracking method of \textcite{maki} is the most directly
   \draw[->] (c) -- (d);
   \draw[->] (d) -- (e);
 \end{tikzpicture}
-\caption{Terrain-tracking pipeline: raw returns become a single pitch command. Adapted from \textcite{maki}.}
+\caption{Terrain-tracking pipeline: raw returns become a single pitch command.}
 \label{fig:pipeline}
+
+{\raggedright\footnotesize\textit{Note.} Adapted from \textcite{maki}.\par}
 \end{figure}
  
 The GODZILA-based system of \textcite{godzila} reaches a comparable outcome by a different route. It solves an optimisation cost function per measurement, penalising deviation from the target direction, motion toward detected obstacles, and backtracking into visited coordinates. For near-seafloor operation it applies depth-modulated directional weighting, tighter vertically than horizontally, so the vehicle reacts aggressively to seabed rises while still hugging the bottom. Acting only on current measurements makes it robust to the navigation drift that characterises towed systems. Both methods therefore produce a vertical command from immediate sensor data without an accurate global position estimate, which is the sensing regime a towed rig operates in.
@@ -545,17 +556,11 @@ To meet the design specification of a low towing speed, the system uses a NACA 5
 
 Evaluated for the NACA 5518 camber line, thin-aerofoil theory places $\alpha_{L0}$ in the region of $-5^\circ$ to $-6^\circ$, consistent with published data for comparable 4-digit sections. 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/CFD_Result}
-    \caption{CFD Result}
-    \label{fig:CfdResults}
-\end{figure}
 The resulting downward force is:
 \begin{equation}
 L = \tfrac{1}{2}\rho V^2 S \, C_L
 \end{equation}
-where $\rho = 1025\ \text{kg/m}^3$ (seawater), $V$ is towing speed, and $S$ is planform area. At the design towing speed of 0.5 to 1.0 m/s, dynamic pressure $\tfrac{1}{2}\rho V^2$ ranges from 128 to 513 Pa. 
+where $\rho = 1025\ \text{kg/m}^3$ (seawater), $V$ is towing speed, and $S$ is planform area. At the design towing speed of 0.5 to 1.0 m/s, dynamic pressure $\tfrac{1}{2}\rho V^2$ ranges from 128 to 513 Pa. More information is cited in Rhys's paper.
 
 Taking moments about the CoM, with nose-up positive, steady trim requires
 \begin{equation}
@@ -710,7 +715,7 @@ The procedure of Section~\ref{sec:procedure} was used, at an estimated 1\,m/s. N
 \centering
 \begin{minipage}{0.44\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Figures/P4p Prototype full size.png}
+\includegraphics[width=\textwidth]{Figures/P4p Prototype full size.jpg}
 \caption{Prototype with dual end-cap attachment points visible.}
 \label{fig:proto}
 \end{minipage}
@@ -825,12 +830,12 @@ The logs demonstrate acquisition of ultrasonic and IMU data during towing. Quali
 \section{Experiment Five: Single-Loop PID Control}
 \label{sec:Exp5}
 
-Experiment Five was the first closed-loop altitude test. Ranges were corrected for mounting angle and measured pitch using Equation~\eqref{eq:beamheight}, and the single-loop PID of Section~\ref{sec:activeStab} set the fin angle from altitude error. When above the target, it commanded the fins to pitch the rig down, and below the target to pitch it up. The free rope was lengthened to 3\,m, compared with 1.5\,m in Experiment Four, to test whether the controller could hold altitude without a short, steep rope constraining the rig.
+Experiment Five was the first closed-loop altitude test. Ranges were corrected for mounting angle and measured pitch, and the single-loop PID of Section~\ref{sec:activeStab} set the fin angle from altitude error. When above the target, it commanded the fins to pitch the rig down, and below the target to pitch it up. The free rope was lengthened to 3\,m, compared with 1.5\,m in Experiment Four, to test whether the controller could hold altitude without a short, steep rope constraining the rig.
 
 Two implementation faults were found during testing. First, the firmware discarded the previous range before a new one was available, which made the fins jitter; it was changed to retain the most recent valid reading. Second, when the rig pitched steeply, the downward beams lost the floor because the reflected signal no longer returned to the transducer.
 
 \subsection{Results}
-The rig dived, detected the pool floor and pitched up in response, but it did not settle. As the rig reached the target the fins returned to trim while the body kept its pitch, so it passed through the target and the cycle repeated in the opposite direction. The result was a sustained oscillation of 300\,mm amplitude and 4\,s period about the target (Figure~\ref{fig:exp5}). When the beams lost the floor, the controller kept acting on the last valid reading, which increased the overshoot. Section~\ref{sec:cascade} examines the dynamics underlying the observed oscillation and explains the motivation for the cascaded redesign.
+The rig dived, detected the pool floor and pitched up in response, but it did not settle. As the rig reached the target the fins returned to trim while the body kept its pitch, so it passed through the target and the cycle repeated in the opposite direction. The result was a sustained oscillation of 300\,mm amplitude and 4\,s period about the target. When the beams lost the floor, the controller kept acting on the last valid reading, which increased the overshoot. Section~\ref{sec:cascade} examines the dynamics underlying the observed oscillation and explains the motivation for the cascaded redesign.
 
 \begin{figure}
     \centering
@@ -872,7 +877,7 @@ The fit rests on 18 intervals totalling 6.3\,s, and the weighted RMS residual is
  
 \subsection{Altitude Estimation}
 \label{sec:kalman}
-On each side, the downward beam closest to vertical after pitch compensation is selected, its range is converted using Equation~\eqref{eq:beamheight}, and the lower of the two end-cap values is used as the measurement. Across the stated $\pm30^\circ$ pitch range, at least one of the mounting angles places a beam within $20^\circ$ of vertical in the pitch plane. This improves angular coverage but does not guarantee a valid floor return. Roll, seabed slope, beam width and acoustic reflection conditions also affect whether an echo is received, so measurement validity and dropout behaviour must be assessed from the logs.
+On each side, the downward beam closest to vertical after pitch compensation is selected, and the lower of the two end-cap values is used as the measurement. Across the stated $\pm30^\circ$ pitch range, at least one of the mounting angles places a beam within $20^\circ$ of vertical in the pitch plane. This improves angular coverage but does not guarantee a valid floor return. Roll, seabed slope, beam width and acoustic reflection conditions also affect whether an echo is received, so measurement validity and dropout behaviour must be assessed from the logs.
  
 A two-state Kalman filter \parencite{kalman1960} estimates altitude and vertical velocity. Between echoes it predicts using the IMU's world-frame vertical acceleration, and each echo is used once. Echoes more than $4\sigma$ from the prediction are rejected \parencite{barshalom2001}, and if no echo is accepted for 1\,s the altitude is declared invalid and the fins command a gentle climb. In simulation the filter reduced the altitude error from 18\,mm RMS for raw sonar to 12\,mm.
  
@@ -970,7 +975,7 @@ PI, $K_p = 0.045$, $K_i = 0.020$ & $+6$  & $-28$ & $-15$ & $-49$ \\
 \label{sec:sim_results}
 With $K_p = 0.045$, $K_i = 0.013$ and $K_\theta = 0.8$, the towed-foil model was simulated at 1\,m/s from an initial altitude of 2\,m to a 1\,m target for 60\,s. Settling time was defined as the first time after which altitude remained within $\pm50$\,mm of the target for the remainder of the run, and was 30.68\,s. Over the final 10\,s, the RMS altitude error was 11.11\,mm; over the final 5\,s, the mean signed error was +13.44\,mm, with positive values indicating altitude above target. The corresponding mean fin angle was -21.92$^\circ$, using 87.68\% of the one-sided $25^\circ$ deflection limit. These statistics were calculated from the same configuration and output used for the selected towed-foil case in Table~\ref{tab:gains}. Three further cases examine the limitations of this result:
 \begin{itemize}[itemsep=1pt]
-  \item \textbf{Fin authority.} Below $k_\delta = 0.46$ the fins cannot cancel $c_\theta$ (Equation~\eqref{eq:trim}). At $k_\delta = 0.07$, the low end of the bootstrap range, the fins saturate at $-25^\circ$ and the rig never reaches the target: over 120\,s it climbs to 2.15\,m, which in the 2\,m pool means it rises to the surface. Reaching the target therefore depends on the true fin authority.
+  \item \textbf{Fin authority.} Below $k_\delta = 0.46$ the fins cannot cancel $c_\theta$. At $k_\delta = 0.07$, the low end of the bootstrap range, the fins saturate at $-25^\circ$ and the rig never reaches the target: over 120\,s it climbs to 2.15\,m, which in the 2\,m pool means it rises to the surface. Reaching the target therefore depends on the true fin authority.
   \item \textbf{Look-ahead.} At 1\,m altitude the $+35^\circ$ beams meet the floor $1.0\tan35^\circ = 0.70$\,m ahead, while the rig travels 0.48\,m during one 0.48\,s sonar sweep. A 300\,mm rise over a 600\,mm run was placed 12\,m along the tow. On the generic plant, settled at 1\,m, the ramp reached the rig at 12.0\,s and the avoidance logic never triggered: the altitude loop alone followed the rise, and clearance fell to 675\,mm before recovering. On the towed foil the rig was still descending when the ramp arrived and clearance stayed above 999\,mm, so that case does not test avoidance.
   \item \textbf{False echoes.} With false near-field echoes on 3\% of readings, the ungated Kalman filter and the raw-range avoidance logic both respond to them. On the generic plant, avoidance was active for 15\% of the run (reflex climbs for 7\%), the rig never settled, and it ended 133\,mm above the target with a tail RMS of 112\,mm, against 1\,mm and 18\,mm for the same run without false echoes. On the towed foil it ended 214\,mm high with a tail RMS of 205\,mm. An innovation gate in the filter, with avoidance acting only on gated measurements, is therefore required.
 \end{itemize}
@@ -995,7 +1000,7 @@ Research Q's - Passive vs Active. Camera quality when avoiding, quickly avoiding
 
 This project investigated whether a low-cost, predominantly 3D-printed tow camera could hold a stable, low altitude above the seabed using ultrasonic sensing and active fin control, as a platform for automated Caulerpa survey. The findings below are organised by research question. 
 
-The simulation and Experiment Six \ref{sec:sim, sec:Exp6} showed that the current design can be optimised further through in-depth fluid analysis. At high speeds, it gets close to the maximum control fin limit, meaning it struggles to dive down, whereas at lower speeds it struggles to surface. 
+The simulation and Experiment Six \ref{sec:sim}, \ref{sec:Exp6} showed that the current design can be optimised further through in-depth fluid analysis. At high speeds, it gets close to the maximum control fin limit, meaning it struggles to dive down, whereas at lower speeds it struggles to surface. 
 
 \subsection{Research Question 1: Active Depth Control Against a Passive Baseline}
 \label{sec:conc_rq1}
@@ -1080,6 +1085,7 @@ CAD files & \fillin{location} \\
 \clearpage{}
 
 \section{CVS Logging Appendix}
+\label{sec:AppCSV}
 
 \setcounter{equation}{0}
 \setcounter{figure}{0}
@@ -1131,14 +1137,6 @@ CAD files & \fillin{location} \\
 \end{lstlisting}
 
 \clearpage{}
-
-\section{Second Appendix}
-\label{sec:AppSim}
-
-\setcounter{equation}{0}
-\setcounter{figure}{0}
-\setcounter{table}{0}
-\setcounter{lstlisting}{0}
 
 \section{Simulation Appendix}
 \label{sec:AppSim}
