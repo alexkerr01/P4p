@@ -21,6 +21,16 @@
 \usetikzlibrary{positioning, arrows.meta}
 \usepackage{amssymb}
 \usepackage{nomencl}
+% APA 7th referencing; loaded before LyXPreamble so it can skip the cite package
+\usepackage{csquotes}
+\usepackage[backend=biber,style=apa]{biblatex}
+\DeclareLanguageMapping{british}{british-apa}
+\DeclareLanguageMapping{UKenglish}{british-apa}
+\addbibresource{RefDatabase.bib}
+% allow long URLs in the reference list to break at any character
+\setcounter{biburlnumpenalty}{100}
+\setcounter{biburlucpenalty}{100}
+\setcounter{biburllcpenalty}{100}
 % the following is useful if no old nomencl.sty package
 \providecommand{\printnomenclature}{\printglossary}
 \providecommand{\makenomenclature}{\makeglossary}
@@ -73,15 +83,6 @@
 \makeatother
 
 \usepackage{babel}
-\usepackage{csquotes}
-\usepackage[backend=biber,style=apa]{biblatex}
-\DeclareLanguageMapping{british}{british-apa}
-\DeclareLanguageMapping{UKenglish}{british-apa}
-\addbibresource{RefDatabase.bib}
-% allow long URLs in the reference list to break at any character
-\setcounter{biburlnumpenalty}{100}
-\setcounter{biburlucpenalty}{100}
-\setcounter{biburllcpenalty}{100}
 \usepackage{listings}
 \lstset{basicstyle={\ttfamily\footnotesize},
 belowcaptionskip=3mm,

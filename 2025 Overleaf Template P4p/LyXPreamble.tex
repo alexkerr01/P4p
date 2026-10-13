@@ -110,7 +110,9 @@
 \usepackage{babel}% http://ctan.org/pkg/babel
 \usepackage{isodate}% http://ctan.org/pkg/isodate
 
-\usepackage{cite}     % Group sequential citations
+% Group sequential citations (cite is incompatible with biblatex, which
+% sorts and groups citations itself, so only load it without biblatex)
+\csname @ifpackageloaded\endcsname{biblatex}{}{\usepackage{cite}}
 
 %\usepackage{keystroke} % Keyboard symbols 
 \usepackage{breakurl}    % break long urls (not sure if it works by default)
