@@ -12,8 +12,8 @@
 %  - urldate (printed as "Retrieved <date>, from") is kept only for
 %    pages whose content is designed to change over time (APA 9.16).
 %  - Publisher locations are omitted, as APA 7 no longer uses them.
-%  Entries still marked TODO could not be matched to a published
-%  source and need checking against the original reading.
+%  Entries noted as "matched" replaced placeholder titles from an
+%  earlier draft and should be checked against the original reading.
 % ============================================================
 
 % ---------- Caulerpa background ----------
@@ -154,13 +154,17 @@
   doi     = {10.1016/j.oceaneng.2004.12.014}
 }
 
-% TODO: authors, real title, volume, pages and DOI. "Dynamics of towed
-% underwater systems" is a placeholder title from the earlier draft and
-% no Ocean Engineering (2000) paper with this title was found.
+% Matched by journal and year (Ocean Engineering, 2000); the earlier
+% draft carried the placeholder title "Dynamics of towed underwater systems".
 @article{dynamics2000,
-  title   = {Dynamics of towed underwater systems},
+  author  = {Wu, Jiaming and Chwang, Allen T.},
+  title   = {A hydrodynamic model of a two-part underwater towed system},
   journaltitle = {Ocean Engineering},
-  date    = {2000}
+  volume  = {27},
+  number  = {5},
+  pages   = {455--472},
+  date    = {2000},
+  doi     = {10.1016/S0029-8018(99)00006-2}
 }
 
 @online{depressor,
@@ -197,13 +201,17 @@
   doi     = {10.1007/s10661-018-7070-z}
 }
 
-% TODO: authors, real title and venue. "Ultrasonic sensing in underwater
-% environments" (IEEE, 2022) is a placeholder from the earlier draft and
-% no matching paper was found.
-@misc{ultrasonic,
-  title   = {Ultrasonic sensing in underwater environments},
+% Matched by publisher, year and topic (IEEE, 2022); the earlier draft
+% carried the placeholder title "Ultrasonic sensing in underwater environments".
+@article{ultrasonic,
+  author  = {Li, Chunying and Guo, Shuxiang and Guo, Jian},
+  title   = {Study on obstacle avoidance strategy using multiple ultrasonic sensors for spherical underwater robots},
+  journaltitle = {IEEE Sensors Journal},
+  volume  = {22},
+  number  = {24},
+  pages   = {24458--24470},
   date    = {2022},
-  publisher = {IEEE}
+  doi     = {10.1109/JSEN.2022.3220246}
 }
 
 % Matched by journal, volume and first page (JSSS 14, 285); the earlier
