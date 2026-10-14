@@ -1,7 +1,7 @@
 %% LyX 2.3.2-2 created this file.  For more info, see http://www.lyx.org/.
 %% Do not edit unless you really know what you are doing.
 \documentclass[12pt,british,UKenglish]{article}
-\renewcommand{\rmdefault}{ptm}
+\usepackage{newtxtext} % Times New Roman text font (required by the report guidelines)
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage[a4paper]{geometry}
@@ -19,7 +19,7 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta}
-\usepackage{amssymb}
+\usepackage{newtxmath} % matching Times math; provides the amssymb symbols
 \usepackage{nomencl}
 % APA 7th referencing; loaded before LyXPreamble so it can skip the cite package
 \usepackage[style=american]{csquotes} % APA uses double quotation marks
@@ -197,19 +197,11 @@ Invasive \textit{Caulerpa} species are spreading along the New Zealand coastline
 A 1/7th-scale Froude-matched model confirmed the passive diving response. Full-scale pool trials showed that trim is highly sensitive to the chordwise position of the tow point relative to the centre of mass, and that a single-loop PID controller from altitude error to fin angle drives the rig into sustained oscillation, because fin angle sets pitch rate and the plant behaves as a double integrator. A software-in-the-loop simulation that runs the unchanged firmware against a towed-foil model was used to redesign the controller as a cascaded PI altitude loop around a proportional pitch loop, with a Kalman altitude estimate. The simulation also showed that holding trim against the rope consumes most of the $\pm25^\circ$ fin range, and that the $35^\circ$ beams look 0.70\,m ahead at the 1\,m target, under 1.5 sonar sweeps at 1\,m/s. In pool trials at 1\,m/s the cascaded controller held the rig within the 0.5-1.5\,m band for \fillin{X}\% of the run and to \fillin{Y}\,mm RMS about the 1\,m target, against \fillin{Z}\% and \fillin{W}\,mm with the fins fixed. These results show how well hobby-grade actuation and ultrasonic sensing hold survey altitude in calm water, and identify fin authority and forward sensing range as the limits to resolve before open-water trials.
 % end of Abstract
 
-%% - DECLARATION -
-\includepdf[pagecommand=\thispagestyle{fancy}]{Declaration} % Overwrite the PDF in the root folder to update with the signed document.
+%% - SIGNED STATEMENT OF CONTRIBUTION -
+\includepdf[pagecommand=\thispagestyle{fancy}]{Declaration_2026_signed} % signed declaration; must be uploaded to the Overleaf root folder
     
 
 \newpage{}
-%%  TABLE OF CONTENTS -
-\setlength{\parskip}{6pt}
-\renewcommand{\contentsname}{\large{Table of Contents}}
-
-\tableofcontents{}
-
-\newpage{}
-
 \setlength{\parskip}{9pt}
 %% - ACKNOWLEDGMENTS -
 \section*{Acknowledgements}
@@ -226,6 +218,14 @@ I would finally like to thank Isaac and Corban. Their sibling project based on t
 
 
 \newpage{}
+%%  TABLE OF CONTENTS -
+\setlength{\parskip}{6pt}
+\renewcommand{\contentsname}{\large{Table of Contents}}
+
+\tableofcontents{}
+
+\newpage{}
+\setlength{\parskip}{9pt}
 %% - GLOSSARY -
 \section*{Glossary of Terms \addcontentsline{toc}{section}{Glossary of Terms}}
 
@@ -1137,10 +1137,10 @@ For the passive baseline the servos were locked at trim. The rig dived to the se
 
 Experiment Six showed that the cascaded controller removes the sustained oscillation of Experiment Five and holds a set altitude at 1.5\,knots, and that the same rig with locked fins does not stay clear of the seabed. It also showed that control authority depends strongly on tow speed and that the climb rate at low speed falls well short of the avoidance specification.
 
-\section{Conclusion}
-\label{sec:conclusion}
+\section{Discussion}
+\label{sec:discussion}
 
-This project investigated whether a low-cost, predominantly 3D-printed tow camera could hold a stable, low altitude above the seabed using ultrasonic sensing and active fin control, as a platform for automated Caulerpa survey. The rig was developed over six experiments and a software-in-the-loop simulation. The scale model confirmed the diving mechanism, the full-scale trials fixed the tow point and sensing, and the simulation replaced a single-loop PID controller that oscillated with a cascaded PI--P controller that converged on a set altitude in the pool.
+This section interprets the experimental and simulation results against the research questions of Table~\ref{tab:research_questions}.
 
 The main limit on the current design is control authority. The simulation found that holding trim used 88\% of the nose-down fin range (Section~\ref{sec:sim_results}), and Experiment Six showed the same narrow margin as a dependence on tow speed: above about 2\,knots the rig struggled to dive, and below about 1\,knot it struggled to climb. Only a narrow speed band around 1.5\,knots gave reliable control. Widening that band requires a more detailed hydrodynamic analysis of the foil, fins and tow geometry than the simplified force model of Section~\ref{sec:sim_model}. The findings below are organised by research question.
 
@@ -1170,7 +1170,14 @@ The specification calls for a $20^\circ$ climb within about 1\,s, a pitch rate o
     \item \textbf{Simulation.} The plant gain $k_\delta$ was not fitted to the final rig, and the model omits the free surface, currents, cable catenary and roll and yaw dynamics (Section~\ref{sec:sim_results}).
 \end{itemize}
 
-\subsection{Future Work}
+\section{Conclusions}
+\label{sec:conclusion}
+
+This project investigated whether a low-cost, predominantly 3D-printed tow camera could hold a stable, low altitude above the seabed using ultrasonic sensing and active fin control, as a platform for automated Caulerpa survey. The rig was developed over six experiments and a software-in-the-loop simulation. The scale model confirmed the diving mechanism, the full-scale trials fixed the tow point and sensing, and the simulation replaced a single-loop PID controller that oscillated with a cascaded PI--P controller that converged on a set altitude in the pool.
+
+Active fin control held a set altitude in the pool, while the same rig with its fins locked at trim dived to the seabed and dragged along it in the ocean, so the first research question is answered in favour of active control \fillin{(state ocean time-in-band once analysed)}. Obstacle detection, the second research question, remains untested on the rig, and the simulation showed that the current beam geometry looks only 0.70\,m ahead against the 2.5\,m required. The rig did not meet the climb-rate specification of the third research question, because holding trim consumes most of the fin range. Hobby-grade servos, ultrasonic ranging and a microcontroller are therefore sufficient to hold survey altitude in calm water within a narrow band of tow speed, while obstacle avoidance requires greater fin authority and a longer forward sensing horizon.
+
+\section{Future Work}
 \label{sec:conc_future}
 \begin{itemize}[itemsep=2pt]
     \item \textbf{Control authority and sensing.} Implement the three changes of Section~\ref{sec:sim_implications}: restore fin margin, extend the forward sensing horizon, and add echo validation with an upper range limit set by the water depth.
@@ -1223,7 +1230,7 @@ Experiment Six video & \fillin{URL} \\
 
 \clearpage{}
 
-\section{CVS Logging Appendix}
+\section{CSV Logging Appendix}
 \label{sec:AppCSV}
 
 \setcounter{equation}{0}
