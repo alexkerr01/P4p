@@ -3,7 +3,7 @@
 \documentclass[12pt,british,UKenglish]{article}
 \renewcommand{\rmdefault}{ptm}
 \usepackage[T1]{fontenc}
-\usepackage[latin9]{inputenc}
+\usepackage[utf8]{inputenc}
 \usepackage[a4paper]{geometry}
 \geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2.5cm,rmargin=2.5cm}
 \setlength{\parskip}{\medskipamount}
@@ -16,18 +16,31 @@
 \usepackage{enumitem}
 \usepackage{calc}
 \usepackage{pdfpages}
+\usepackage{float} % Keep figures and tables at paragraph boundaries
+\usepackage{needspace}
+\setlength{\emergencystretch}{2em}
+\raggedbottom
 \usepackage{amsmath}
 \usepackage{tikz}
 \usetikzlibrary{positioning, arrows.meta}
 \usepackage{amssymb}
 \usepackage{nomencl}
+% APA 7th referencing; loaded before LyXPreamble so it can skip the cite package
+\usepackage[style=american]{csquotes} % APA uses double quotation marks
 \usepackage[backend=biber,style=apa]{biblatex}
+\addbibresource{RefDatabase.bib}
 \DeclareLanguageMapping{british}{british-apa}
 \DeclareLanguageMapping{UKenglish}{british-apa}
+% allow long URLs in the reference list to break at any character
+\setcounter{biburlnumpenalty}{100}
+\setcounter{biburlucpenalty}{100}
+\setcounter{biburllcpenalty}{100}
 % the following is useful if no old nomencl.sty package
 \providecommand{\printnomenclature}{\printglossary}
 \providecommand{\makenomenclature}{\makeglossary}
 \makenomenclature
+
+\newcommand{\fillin}[1]{\textcolor{red}{[#1]}}
 
 %% ---- Nomenclature entries ----
 \nomenclature{$\rho$}{Water density (kg/m$^3$)}
@@ -41,7 +54,7 @@
 \nomenclature{$T$}{Tow rope tension (N)}
 \nomenclature{$\gamma$}{Rope angle below horizontal at the rig ($^\circ$)}
 \nomenclature{$d_L$, $d_T$, $d_D$, $d_B$}{Moment arms of lift, tension, drag and buoyancy about the CoM (m)}
-\nomenclature{$\alpha_{L0}$}{Zero-lift angle of attack ($^\circ$)}
+\nomenclature{$\alpha_{z}$}{Zero-lift angle of attack ($^\circ$)}
 \nomenclature{$\theta$}{Pitch angle, positive nose-up ($^\circ$)}
 \nomenclature{$\theta_r$}{Rope angle toward which the rope pulls the body ($^\circ$)}
 \nomenclature{$\theta_{\mathrm{ref}}$}{Pitch reference from the outer loop ($^\circ$)}
@@ -120,7 +133,7 @@ Design Research Report
 \par\end{center}
 
 \begin{center}
-\textbf{\Large{Automated Detection and Geolocation of Caulerpa Using an Embedded Vision System}}{\Large\par}
+\textbf{\Large{Automated Detection and Geolocation of \textit{Caulerpa} Using an Embedded Vision System}}{\Large\par}
 \par\end{center}
 
 \begin{center}
@@ -169,7 +182,7 @@ Supervisor: & Dr {Henry Williams}\tabularnewline    % ADD your supervisor's name
 \vspace{1em}
 
 \begin{center}
-\textbf{\textsc{\large{Automated Detection and Geolocation of Caulerpa Using an Embedded Vision System}}}{\large\par}
+\textbf{\textsc{\large{Automated Detection and Geolocation of \textit{Caulerpa} Using an Embedded Vision System}}}{\large\par}
 \par\end{center}
 
 \vspace{2em}
@@ -183,11 +196,11 @@ Supervisor: & Dr {Henry Williams}\tabularnewline    % ADD your supervisor's name
 \begin{center}
 \textbf{\textsc{\large{}ABSTRACT}}{\large\par}
 \par\end{center}
-% Write your abstract here
+Invasive \textit{Caulerpa} species are spreading along the New Zealand coastline, and monitoring currently relies on diver surveys that are slow, costly and expose divers to risk. Within a wider project on automated detection and geolocation of \textit{Caulerpa}, this report describes the design and testing of a low-cost, predominantly 3D-printed carrier platform intended to hold a set altitude above the seabed. The rig uses an inverted NACA 5518 hydrofoil for downforce, servo-driven fins for altitude control, eight ultrasonic transducers for altitude and forward ranging, and an IMU for attitude.
 
-Invasive \textit{Caulerpa} species are spreading along the New Zealand coastline, and monitoring currently relies on diver surveys that are slow, costly and expose divers to risk. This report describes the design and testing of a low-cost, predominantly 3D-printed towed camera platform that holds a set altitude above the seabed as the carrier for Caulerpa imaging. The rig uses an inverted NACA 5518 hydrofoil for downforce, servo-driven fins for altitude control, eight ultrasonic transducers for altitude and forward ranging, and an IMU for attitude.
+A 1/7th-scale model, towed at a speed equivalent under Froude scaling to about 0.53\,m/s at full scale, qualitatively confirmed the passive diving response. Full-scale pool trials showed that trim is highly sensitive to the chordwise position of the tow point relative to the centre of mass. A single-loop PID controller from altitude error to fin angle produced violent oscillation where the fins returned to trim before the body's pitch and vertical motion had flattened out. Stale sonar updates limited dampening through altitude feedback. A software-in-the-loop simulation, using a simplified towed-foil model with an empirical pitch response, a force-based heave balance and assumed parameters, was used to redesign the controller as a cascaded PI altitude loop around a proportional pitch loop, with a Kalman altitude estimate. In simulation, holding trim used approximately 84\% of the nose-down fin range, and the $35^\circ $ beams met the seabed 0.70\,m ahead at the 1\,m target, less than 1.5 sonar cycles of travel at 1\,m/s.
 
-A 1/7th-scale Froude-matched model confirmed the passive diving response. Full-scale pool trials showed that trim is highly sensitive to the chordwise position of the tow point relative to the centre of mass, and that a single-loop PID controller from altitude error to fin angle drives the rig into sustained oscillation, because fin angle sets pitch rate and the plant behaves as a double integrator. A software-in-the-loop simulation identified from logged tow data was used to redesign the controller as a cascaded PI altitude loop around a proportional pitch loop, with a Kalman altitude estimate. The simulation also showed that holding trim against the rope consumes most of the $\pm25^\circ$ fin range, and that the $35^\circ$ beams look 0.70\,m ahead at the 1\,m target, under 1.5 sonar sweeps at 1\,m/s. In pool trials at 1\,m/s the cascaded controller held the rig within the 0.5-1.5\,m band for \fillin{X}\% of the run and to \fillin{Y}\,mm RMS about the 1\,m target, against \fillin{Z}\% and \fillin{W}\,mm with the fins fixed. These results show that hobby-grade actuation and ultrasonic sensing can hold survey altitude in calm water, and identify fin authority and forward sensing range as the limits to resolve before open-water trials.
+In a residential pool, the cascaded controller brought the rig to a 400\,mm target without the oscillation of the single-loop controller, although the pool length ended each run shortly after the target was first reached. Reliable control was limited to a narrow band of tow speed around 1.5\,knots (0.77\,m/s), and a 600\,mm set-point step at 1\,knot took about 10\,s with the fins saturated nose-up. In a single calm-water ocean session at 1.5\,knots, the ultrasonic transducers returned valid echoes only within about 2\,m of range. Active control placed 92.9\% of valid altitude samples within $\pm500$\,mm of the 1\,m target, compared with 80.7\% for the passive configuration after its rope was shortened by about 2\,m to prevent seabed contact. RMS error across all valid samples was 288.9\,mm active and 363.2\,mm passive; altitude was valid in 85.7\% and 62.4\% of samples, respectively. These single-run comparisons provide preliminary evidence of improved regulation of estimated altitude, but different towing geometry, unequal run durations and the absence of an independent altitude reference limit attribution to the controller. Simulated obstacle tests did not establish reliable avoidance. Fin authority, sensing range and forward look-ahead remain limitations to resolve before operational deployment.
 % end of Abstract
 
 %% - DECLARATION -
@@ -227,11 +240,11 @@ Altitude & Height of the rig above the seabed or pool floor. This is the control
 Depth & Distance of the rig below the water surface. Used only where the surface is the reference.\tabularnewline
 Bridle & The V-shaped pair of rope legs joining the two end-cap attachment points to the single tow rope.\tabularnewline
 Downforce & Hydrodynamic force from the inverted foil acting toward the seabed.\tabularnewline
-Fragmentation & Reproduction of Caulerpa from broken pieces of the plant.\tabularnewline
+Fragmentation & Reproduction of \textit{Caulerpa} from broken pieces of the plant.\tabularnewline
 Look-ahead distance & Horizontal distance ahead of the rig at which a beam meets the seabed.\tabularnewline
 Planform area & Area of the foil projected onto the plane of the span and chord.\tabularnewline
 Time-in-band & Fraction of a run during which altitude stays within a stated band.\tabularnewline
-Trim & Steady pitch attitude, and the fin angle needed to hold it.\tabularnewline
+Trim & The fin angle needed to hold steady-state pitch.\tabularnewline
 \addlinespace
 \end{longtable}
 
@@ -257,7 +270,6 @@ ROV & Remotely operated vehicle\tabularnewline
 SPI & Serial peripheral interface\tabularnewline
 UART & Universal asynchronous receiver--transmitter\tabularnewline
 USBL & Ultra-short baseline (acoustic positioning)\tabularnewline
-VFF & Virtual force field\tabularnewline
 \addlinespace
 \end{longtable}
 
@@ -278,63 +290,78 @@ VFF & Virtual force field\tabularnewline
 \section{Introduction}
 
 \subsection{Problem}
-Caulerpa is a type of algae found underwater, with many species classed as a highly invasive pest in coastal ecosystems.In New Zealand, \textit{Caulerpa brachypus} and \textit{Caulerpa parvifolia} were first detected at Aotea Great Barrier Island in 2021 and have since spread to further sites along the north-eastern coast \cite{mpi_caulerpa, auckland_caulerpa}. Once established, these algae form dense layers across the seafloor, out-competing previous species and disrupting the ecological balance. This leads to a range of negative effects, including reduced diversity, altered habitats, and depletion of food sources for native marine organisms. This is estimated to cause 9.4 billion dollars of damages over the next 30 years \cite{9.4RNZ}. 
+\textit{Caulerpa} is a type of algae found underwater, with many species classed as a highly invasive pest in coastal ecosystems. In New Zealand, \textit{Caulerpa brachypus} and \textit{Caulerpa parvifolia} were first detected at Aotea Great Barrier Island in 2021 and have since spread to further sites along the north-eastern coast \parencite{mpi_caulerpa,auckland_caulerpa}. Once established, these algae form dense layers across the seafloor, out-competing previous species and disrupting the ecological balance. This leads to a range of negative effects, including reduced diversity, altered habitats, and depletion of food sources for native marine organisms. This is estimated to cause 9.4 billion dollars of damages over the next 30 years \parencite{9.4RNZ}. 
 
-\begin{figure}[ht]
+\begin{figure}[H]
+
     \centering
     \includegraphics[width=0.5\linewidth]{Figures/Caulerpa_over_coral.jpg}
-    \caption{Caulerpa Covering Coral}
+    % AUTHOR CHECK: the draft PDF printed "(caulerpa_photo)", so this key is missing from RefDatabase.bib. Add the photo's source entry, and confirm the substrate shown is coral.
+    \caption{\textit{Caulerpa} covering coral \parencite{caulerpa_photo}.}
     \label{fig:Caulerpa}
 \end{figure}
 
 \noindent
-The rapid spread of Caulerpa is especially problematic due to its ability to reproduce through fragmentation, allowing even small pieces to establish new colonies. Natural control mechanisms are limited, and human intervention is currently the primary method of containment and removal. Efforts to mitigate the spread typically involve hand removal by divers, targeted salt attacks, suction dredging, or benthic mats, \cite{niwa_caulerpa}.
+The rapid spread of \textit{Caulerpa} is especially problematic due to its ability to reproduce through fragmentation, allowing even small pieces to establish new colonies. Natural control mechanisms are limited, and human intervention is currently the primary method of containment and removal. Efforts to mitigate the spread typically involve hand removal by divers, targeted salt attacks, suction dredging, or benthic mats \parencite{niwa_caulerpa}. Commercial Dive Specialists have an effective method through their "Rehabitat" product, using targeted chlorine dosages. However, this is a treatment, and requires knowledge of the location. 
 
-While effective on a small scale, relying on divers to monitor and remove the weed is both inefficient for time and resources. It also presents safety risks and introduces a factor of human error into the success rate, and due to fragmentation, if some Caulerpa is not mapped and identified, it could grow and disrupt local ecosystems. As the infestation expands, there is a growing need for scalable, efficient, and cost-effective methods to detect and track Caulerpa locations. This challenge has motivated industry stakeholders, including Commercial Dive Specialists, to seek technological innovations that can enhance current monitoring practices.
+While effective on a small scale, relying on divers to monitor and remove the weed is both inefficient for time and resources. It also presents safety risks and introduces a factor of human error into the success rate, and due to fragmentation, if some \textit{Caulerpa} is not mapped and identified, it could grow and disrupt local ecosystems. As the infestation expands, there is a growing need for scalable, efficient, and cost-effective methods to detect and track \textit{Caulerpa} locations. This challenge has motivated industry stakeholders, including Commercial Dive Specialists, to seek technological innovations that can enhance current monitoring practices.
 
 \subsection{Project Topic}
-This project investigates the feasibility of developing an autonomous or semi-autonomous tow camera system for marine surveying applications. The primary objective is to design a system capable of maintaining a consistent distance from the seafloor while preserving a parallel orientation to ensure high-quality image capture. Achieving this requires robust sensing and control strategies to account for environmental disturbances such as currents, variable seabed topology, and towing dynamics.
+This project investigates the feasibility of developing a semi-autonomous tow camera system for marine surveying applications. The primary objective is to design a system capable of maintaining a consistent distance from the seafloor while preserving the option for parallel orientation to ensure high-quality image capture. Achieving this requires robust sensing and control strategies to account for environmental disturbances such as currents, variable seabed topology, and towing dynamics.
 
 In addition to maintaining stable positioning, the system must incorporate obstacle detection and avoidance capabilities to prevent collisions with underwater structures or terrain. The integration of sensors, control algorithms, and mechanical design is therefore critical to the success of the system.
 
-By enabling continuous, large-area surveying without the need for constant diver intervention, such a system has the potential to significantly improve the efficiency and safety of Caulerpa monitoring. Furthermore, it provides a platform for scalable data collection, which could support more advanced analysis techniques such as automated image classification and long-term ecological monitoring.
+By enabling continuous, large-area surveying without the need for constant diver intervention, such a system has the potential to significantly improve the efficiency and safety of \textit{Caulerpa} monitoring. Furthermore, it provides a platform for scalable data collection, which could support more advanced analysis techniques such as automated image classification and long-term ecological monitoring.
 
 \subsection{Aims and Objectives}
-The aim is to determine whether a low-cost, 3D-printed towed rig with hobby-grade actuation and ultrasonic sensing can hold the altitude and attitude needed for Caulerpa imaging. The objectives are to:
+The aim is to determine whether a low-cost, 3D-printed towed rig with hobby-grade actuation and ultrasonic sensing can hold the altitude and attitude needed for \textit{Caulerpa} imaging. The objectives are to:
 \begin{enumerate}[itemsep=1pt]
-    \item Derive quantitative design specifications from the survey task and the literature.
-    \item Design and fabricate a towed body that dives passively and is stable in yaw and roll.
-    \item Integrate ultrasonic altitude and forward ranging, an IMU, and fin actuation on a tethered power and data system.
+    \item Derive design specifications from the survey task and relevant literature.
+    \item Design and fabricate a towed body that can hold a steady state position.
+    \item Integrate altitude and forward ranging  ultrasonic sensors, an IMU, and fin actuation on a power and data system.
     \item Develop and tune an altitude controller using pool trials and a simulation identified from logged data.
     \item Measure altitude-holding, obstacle clearance and control authority against a fins-fixed baseline.
 \end{enumerate}
 
 \section{Literature Review}
-Towed cameras are the established tool for large-area benthic surveys because they trade the manoeuvrability of an ROV for coverage, power efficiency and cost. Lembke et al. report that ROVs scale poorly. They are limited by battery life, optimised for exploration rather than cruising, they require skilled pilots, hold lines badly, and are expensive \cite{lembke_cbass}. Drop and stationary cameras are cheap but give point samples only. Towed platforms have simple orientation, shallow-water capability, low power draw and high area coverage, which makes them the practical choice when large areas are under constant monitoring \cite{raoult, lembke_cbass}. Within towed systems, the distinguishing variable is how altitude above the seabed is held.
+Towed cameras are the established tool for large-area benthic surveys because they trade the manoeuvrability of an ROV for coverage, power efficiency and cost. \textcite{lembke_cbass} report that ROVs scale poorly. They are limited by battery life, optimised for exploration rather than cruising, they require skilled pilots, hold lines badly, and are expensive. Drop and stationary cameras are cheap but give point samples only. Towed platforms have simple orientation, shallow-water capability, low power draw and high area coverage, which makes them the practical choice when large areas are under constant monitoring \parencite{raoult,lembke_cbass}. Within towed systems, the distinguishing variable is how altitude above the seabed is held.
  
-\begin{table}[htbp]
+\begin{table}[H]
 \centering
 \footnotesize
-\caption{Towed platform classes and how each holds altitude.}
-\begin{tabular}{@{}>{\raggedright\arraybackslash}p{22mm}>{\raggedright\arraybackslash}p{28mm}>{\raggedright\arraybackslash}p{45mm}>{\raggedright\arraybackslash}p{45mm}@{}}
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.05}
+\caption{Towed platform classes and how each holds altitude, with example photographs. Images are not to a common scale.}
+\label{tab:towed_platform_classes}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}m{20mm}>{\centering\arraybackslash}m{29mm}>{\raggedright\arraybackslash}m{30mm}>{\raggedright\arraybackslash}m{36mm}>{\raggedright\arraybackslash}m{36mm}@{}}
 \toprule
-\textbf{Class} & \textbf{Altitude mechanism} & \textbf{Strengths} & \textbf{Limitations} \\
+\textbf{Class} & \textbf{Example} & \textbf{Altitude mechanism} & \textbf{Strengths} & \textbf{Limitations} \\
 \midrule
-Skid or sled & Direct contact with the seabed & Simple, passive, altitude fixed by geometry & Disturbs the habitat being surveyed; fails on soft or rough ground \\
-\addlinespace
-Bottom-tending sled & Buoyancy or counterweight suspension with a trailing chain & Stable standoff with a light contact footprint & Still contacts the seabed; chain disturbs sediment and biota \\
-\addlinespace
-Flying (non-contact) & Distance sensor plus active control through fins, foils or thrusters & No seabed contact, consistent over varied terrain, better current tolerance & Harder to set up and operate; requires sensing and control \\
+Skid or sled & \includegraphics[width=28mm,height=19mm,keepaspectratio]{Figures/PlatformExamples/bottom-contacting.jpg}\par {\scriptsize Bottom-contacting sled (a)} & Direct contact with the seabed & Simple and passive; altitude fixed by geometry & Disturbs the seabed; unsuitable for soft or rough ground \\
+\addlinespace[3pt]
+Bottom-tending sled & \includegraphics[width=28mm,height=19mm,keepaspectratio]{Figures/PlatformExamples/bottom-tending.jpg}\par {\scriptsize TACOS (b)} & Buoyancy or counterweight suspension with a trailing chain & Stable standoff with a light contact footprint & Chain still contacts the seabed and disturbs sediment or biota \\
+\addlinespace[3pt]
+Flying (non-contact) & \includegraphics[width=28mm,height=19mm,keepaspectratio]{Figures/PlatformExamples/minibat.jpg}\par {\scriptsize MiniBAT 8820 (c)} & Range feedback with fins, foils or thrusters; MiniBAT uses operator-controlled wings & No seabed contact; adjustable altitude over varied terrain & Requires sensing and control; more demanding setup and operation \\
+\addlinespace[3pt]
+Winch-controlled & \includegraphics[width=28mm,height=19mm,keepaspectratio]{Figures/PlatformExamples/towcam.jpg}\par {\scriptsize WHOI TowCam (d)} & Vessel winch adjusts cable length using real-time altitude telemetry & No body-mounted control surfaces needed; operator can respond to terrain & Slow response through a long cable; needs winch, conducting cable and operator \\
+\addlinespace[3pt]
+ROTV (undulating) & \includegraphics[width=28mm,height=19mm,keepaspectratio]{Figures/PlatformExamples/scanfish.jpg}\par {\scriptsize EIVA ScanFish (e)} & Onboard altimeter and actuated wings; automatic height or seabed following & Mature commercial closed-loop altitude and profiling modes & Large, costly vehicles generally designed for faster, deeper surveys \\
 \bottomrule
 \end{tabular}
+\par\smallskip
+\begin{minipage}{\linewidth}\scriptsize\raggedright
+Photo credits: (a) Mara Spencer and Al Stoner; (b) Harold Zenger, both reproduced in \textcite[Figures~1 and~3]{rooper2008}; (c) \textcite{minibat_photo}; (d) Evan Lubofsky/WHOI \parencite{towcam_photo}; (e) \textcite{scanfish_photo}. Categories describe altitude-control approaches and can overlap.
+\end{minipage}
 \end{table}
  
-Sheehan et al. compared these classes directly and found that bottom-sliding systems produced shakier imagery and greater seabed impact, while flying vehicles performed more consistently across varied terrain.  Flying vehicles had significantly lower seabed impact, and tolerated tidal currents better, at the cost of harder setup \cite{sheehan}. Sheehan et al used a flying platform with a bottom-contacting drag chain, so a fully non-contact system would have lower impact. This is necessary for Caulerpa, a contacting sled drags through the exact fragmenting algae being mapped, which disturbs the data and risks spreading the weed, and rules out pole-dragging designs such as the Pepe drifting video system \cite{pepe}. Commercial non-contact rigs such as the SeaVu Seeker Deepscope capture stable imagery on a towed rope, but carry no forward sensing and remain exposed to collision \cite{seavu}.
- 
+\textcite{sheehan} compared these classes directly and found that bottom-sliding systems produced shakier imagery and greater seabed impact, while flying vehicles performed more consistently across varied terrain.  Flying vehicles had significantly lower seabed impact, and tolerated tidal currents better, at the cost of harder setup. Sheehan et al.\ used a flying platform with a bottom-contacting drag chain, so a fully non-contact system would have lower impact. This is necessary for \textit{Caulerpa}, a contacting sled drags through the exact fragmenting algae being mapped, which disturbs the data and risks spreading the weed, and rules out pole-dragging designs such as the Pepe drifting video system \parencite{pepe}. Commercial non-contact rigs such as the SeaVu Seeker Deepscope capture stable imagery on a towed rope, but carry no forward sensing and remain exposed to collision \parencite{seavu}.
+
+Two further ways of holding altitude sit outside the low-cost flying class. Deep-tow camera sleds such as TowCam hold roughly 5--7\,m above the seafloor at up to half a knot by raising and lowering the conducting cable from the ship using real-time altimeter data, with a separate forward-looking altimeter for obstacle avoidance \parencite{whoi_towcam}. Remotely operated towed vehicles (ROTVs) such as ScanFish close the loop on the body itself, using actuated wings and an altimeter to provide automatic height control and seabed following \parencite{eiva_scanfish}. Both confirm that closed-loop altitude holding on a towed body is established practice. However, winch control depends on a long cable and an operator, and ROTVs are built for tow speeds of 3--10\,knots and depths of hundreds of metres. Neither addresses a hand-portable, low-cost rig at the 1\,m altitude and sub-1\,m/s speed that \textit{Caulerpa} imaging requires.
+
 \subsection{Reported Operating Envelopes}
 \label{tow_class}
  
-Lembke et al. report tow speeds of 1 - 2\,m/s at 1 - 5\,m altitude, with accurate results at 2 - 3.5\,m and 1.5 - 2\,m/s, holding ideal altitude 60 - 80\% of the time and an acceptable 1 - 4\,m band 88 - 94\% of the time \cite{lembke_cbass}. That creates a performance baseline, as a controller that cannot beat roughly 60 - 80\% time-in-band offers nothing over an existing passive platform. Cresswell et al. benchmark an unassisted tow camera against diver-held transects \cite{cresswell}. Tracking distance varied more than diver-held cameras, both vertically and laterally, and camera angle changed what was detected, with vertical orientation favouring turf algae and forward-facing video favouring erect organisms. That is directly relevant, since Caulerpa forms low continuous mats and therefore needs a near-vertical angle and a tightly held altitude. They also note that holding a vessel below 2 knots is difficult in rough conditions, and that transects were repeated two to four times for adequate coverage, which erodes the cost advantage over diver survey. The coverage advantage of towed survey is proven; what limits data quality is altitude and attitude variance, and what limits operational cost is repeated transects and equipment loss.
+\textcite{lembke_cbass} report tow speeds of 1--2\,m/s at 1--5\,m altitude, with accurate results at 2--3.5\,m and 1.5--2\,m/s, holding ideal altitude 60--80\% of the time and an acceptable 1--4\,m band 88--94\% of the time. These figures provide context for performance targets, but are not a directly equivalent baseline because survey altitude, acceptance band and operating conditions differ. A matched comparison with the same rig and towing geometry is needed to isolate the benefit of active control. \textcite{cresswell} benchmark an unassisted tow camera against diver-held transects. Tracking distance varied more than diver-held cameras, both vertically and laterally, and camera angle changed what was detected, with vertical orientation favouring turf algae and forward-facing video favouring erect organisms. That is directly relevant, since \textit{Caulerpa} forms low continuous mats and therefore needs a near-vertical angle and a tightly held altitude. They also note that holding a vessel below 2 knots is difficult in rough conditions, and that transects were repeated two to four times for adequate coverage, which erodes the cost advantage over diver survey. The coverage advantage of towed survey is proven; what limits data quality is altitude and attitude variance, and what limits operational cost is repeated transects and equipment loss.
  
 % ============================================================
 \subsection{Towfish and Tow Cable Dynamics}
@@ -342,11 +369,11 @@ Lembke et al. report tow speeds of 1 - 2\,m/s at 1 - 5\,m altitude, with accurat
 \label{tow_force}
 A towed body differs from a self-propelled vehicle in one respect that governs the whole design: the cable supplies the forward force, so the vehicle shapes its trajectory only through hydrodynamic reaction.
  
-The standard simplified force set comprises cable tension acting along the cable and creating a moment about the attachment point, drag opposing motion, buoyancy set by displaced volume and material density, and reaction forces from control surfaces and body geometry \cite{forces}. These act at different centres, so the separations between centre of gravity, centre of buoyancy, centre of pressure and attachment point produce the moments that set trim. The full description requires the six-degree-of-freedom formulation for submerged vessels established by Gertler and Hagen \cite{gertler}. For a passively stabilised body the practical simplification is to make yaw and roll self-correcting and treat depth control as a planar pitch problem.
+The standard simplified force set comprises cable tension acting along the cable and creating a moment about the attachment point, drag opposing motion, buoyancy set by displaced volume and material density, and reaction forces from control surfaces and body geometry \parencite{forces}. These act at different centres, so the separations between centre of gravity, centre of buoyancy, centre of pressure and attachment point produce the moments that set trim. The full description requires the six-degree-of-freedom formulation for submerged vessels established by \textcite{gertler}. For a passively stabilised body the practical simplification is to make yaw and roll self-correcting and treat depth control as a planar pitch problem.
  
-The cable is not a passive tether. Studies of controllable towed systems show that cable length, diameter and scope dominate the achievable depth envelope, and that cable drag and catenary shape alter the effective tow angle at the body \cite{controllable2005, dynamics2000}. They confirm that actuated towed systems reach substantially better depth control than passive equivalents across a range of body sizes and cable configurations. The consequence for a shallow-water rig is that tow force must be treated as an estimated, varying disturbance rather than a known input.
+The cable is not a passive tether. Studies of controllable towed systems show that cable length, diameter and scope dominate the achievable depth envelope, and that cable drag and catenary shape alter the effective tow angle at the body \parencite{controllable2005,dynamics2000}. They confirm that actuated towed systems reach substantially better depth control than passive equivalents across a range of body sizes and cable configurations. The consequence for a shallow-water rig is that tow force must be treated as an estimated, varying disturbance rather than a known input.
  
-Control authority comes from generating downwards lift against that tension. A depressor is an aerofoil section set at negative incidence for this purpose and is standard equipment for holding towfish depth \cite{depressor}. Work on adjustable hydrofoils shows that active fin control maintains stable operation across a wider range of conditions than fixed geometry, while identifying the central trade-off: shapes optimised purely for low drag lose control authority \cite{hydrofoil}. That points away from the submarine-like hulls common in deeper-water towfish \cite{controllable2005, dynamics2000, hydrofoil}. A Caulerpa rig runs at the slow end of the speed range, because imaging and downstream detection favour low ground speed, and control authority scales with the square of flow velocity, so it needs planform area and responsive surfaces rather than a low-drag body.
+Control authority comes from generating downwards lift against that tension. A depressor is an aerofoil section set at negative incidence for this purpose and is standard equipment for holding towfish depth \parencite{depressor}. Work on adjustable hydrofoils shows that active fin control maintains stable operation across a wider range of conditions than fixed geometry, while identifying the central trade-off: shapes optimised purely for low drag lose control authority \parencite{hydrofoil}. That points away from the submarine-like hulls common in deeper-water towfish \parencite{controllable2005,dynamics2000,hydrofoil}. A \textit{Caulerpa} rig runs at the slow end of the speed range, because imaging and downstream detection favour low ground speed, and control authority scales with the square of flow velocity, so it needs planform area and responsive surfaces rather than a low-drag body.
  
 % ============================================================
 \subsection{Depth and Roll Control}
@@ -354,47 +381,49 @@ Control authority comes from generating downwards lift against that tension. A d
  \label{depth_lit}
 The literature converges on fin actuation regulated by feedback on measured altitude. 
  
-Actuator choice follows from the force balance above. A propeller or reaction wheel works against a cable tension it cannot change, and cannot remove slack from the cable. Control surfaces instead redirect the flow the tow already supplies, converting forward velocity into vertical force at negligible power cost, which is the configuration used across the controllable-towed-system literature \cite{controllable2005, dynamics2000, hydrofoil} and suits a rig drawing from a surface supply.
+Actuator choice follows from the force balance above. A propeller or reaction wheel works against a cable tension it cannot change, and cannot remove slack from the cable. Control surfaces instead redirect the flow the tow already supplies, converting forward velocity into vertical force at negligible power cost, which is the configuration used across the controllable-towed-system literature \parencite{controllable2005,dynamics2000,hydrofoil} and suits a rig drawing from a surface supply.
  
 Several design choices shrink the problem before any controller is written: symmetry about the vertical plane to suppress yaw and roll coupling, a streamlined profile to limit drag-induced oscillation, and a centre of mass well below the centre of buoyancy for a strong righting moment. With yaw and roll handled passively, active control reduces to a single axis in which fin pitch modulates lift and drag to set depth, which is what makes a low-cost implementation feasible.
  
-PID dominates towed-body depth regulation on grounds of simplicity, robustness and low computational cost, and is adequate near a linear operating point. Its weakness here is the disturbance profile: tow force varies with vessel speed and sea state, seabed altitude changes as terrain passes beneath, and plant gain varies with the square of flow velocity. The adjustable-hydrofoil work addresses part of this by scheduling fin geometry rather than only the commanded angle \cite{hydrofoil}. A PID inner loop with gain scheduling on measured tow speed retains the implementation simplicity while covering the dominant nonlinearity. What the control literature does not settle is the interaction between altitude tracking and avoidance: terrain following commands descent toward the seabed, avoidance commands ascent.
+PID dominates towed-body depth regulation on grounds of simplicity, robustness and low computational cost, and is adequate near a linear operating point. Its weakness here is the disturbance profile: tow force varies with vessel speed and sea state, seabed altitude changes as terrain passes beneath, and plant gain varies with the square of flow velocity. The adjustable-hydrofoil work addresses part of this by scheduling fin geometry rather than only the commanded angle \parencite{hydrofoil}. A PID inner loop with gain scheduling on measured tow speed retains the implementation simplicity while covering the dominant nonlinearity. What the control literature does not settle is the interaction between altitude tracking and avoidance: terrain following commands descent toward the seabed, avoidance commands ascent.
  
 % ============================================================
 \subsection{Underwater Sensing and Navigation}
 % ============================================================
 \label{sensor_lit}
-Acoustic sensing is the only modality in the reviewed literature that gives reliable range data in the turbid, low-light conditions where Caulerpa survey takes place.
+Acoustic sensing is the only modality in the reviewed literature that gives reliable range data in the turbid, low-light conditions where \textit{Caulerpa} survey takes place.
  
-\begin{table}[htbp]
+\begin{table}[H]
+
 \centering
 \footnotesize
 \caption{Candidate ranging modalities for obstacle detection.}
+\label{tab:modalities}
 \begin{tabular}{@{}>{\raggedright\arraybackslash}p{20mm}>{\raggedright\arraybackslash}p{26mm}>{\raggedright\arraybackslash}p{46mm}>{\raggedright\arraybackslash}p{48mm}@{}}
 \toprule
 \textbf{Modality} & \textbf{Effective range} & \textbf{Strengths} & \textbf{Limitations for this application} \\
 \midrule
-Optical & Metres, visibility-dependent & High resolution; supports classification of obstacle type and shape \cite{lowcostvideo} & Fails in turbid or low-light water; processing latency unacceptable for a reactive control loop \\
+Optical & Metres, visibility-dependent & High resolution; supports classification of obstacle type and shape \parencite{lowcostvideo} & Fails in turbid or low-light water; processing latency unacceptable for a reactive control loop \\
 \addlinespace
 LiDAR & Short underwater & High-resolution mapping & Strong attenuation in water; high cost, high current draw, large physical envelope \\
 \addlinespace
 Sonar & Hundreds of metres & Long range, robust to turbidity, mature for obstacle detection & Range far exceeds requirement; cost and size scale with capability \\
 \addlinespace
-Ultrasonic & Tens of metres & Cheap, small, low power, adequate range & Wider beam, lower angular resolution, susceptible to backscatter \\
+Ultrasonic & Up to tens of metres; sensor- and seabed-dependent & Cheap, small, low power, adequate range & Wider beam, lower angular resolution, susceptible to backscatter \\
 \bottomrule
 \end{tabular}
 \end{table}
  
-Sonar and ultrasonic sensors share a principle, using the time of flight of reflections to derive range, and differ mainly in frequency, beam pattern and range \cite{ultrasonic, acoustic}. The range a towed rig needs can be estimated from its reaction chain. The rig must detect an obstacle at a distance
+Sonar and ultrasonic sensors share a principle, using the time of flight of reflections to derive range, and differ mainly in frequency, beam pattern and range \parencite{ultrasonic,acoustic}. The range a towed rig needs can be estimated from its reaction chain. The rig must detect an obstacle at a distance
 \begin{equation}
 d_{\mathrm{req}} = U\left(t_s + t_c + t_\theta + \frac{\Delta h}{U\sin\theta_c}\right) + d_m,
 \label{eq:horizon}
 \end{equation}
 where $t_s$ is the time for the sensor to refresh, $t_c$ the control period, $t_\theta$ the time to pitch up to the climb angle $\theta_c$, $\Delta h$ the obstacle height and $d_m$ a margin. For $U = 1$\,m/s, a sensor refresh of 0.5\,s, a 0.05\,s control period, about 1\,s to pitch up, and a 0.3\,m climb at $\theta_c = 20^\circ$ (0.9\,s), the requirement is roughly 2.5\,m before margin. Ultrasonic ranging meets this at a fraction of the cost and size of a scanning or multibeam sonar, provided its beams point far enough forward to see that distance. The trade-off is angular resolution, which limits how finely terrain can be resolved and therefore constrains the avoidance logic below.
 
-Inertial measurement units are compact, low-power and well suited to submersible platforms \cite{sunreview}, but their error is asymmetric. \"{O}rnhag et al. show that drift from bias, noise and integration error accumulates in yaw, velocity and position, while pitch and roll stay largely bounded because orientation filters use gravity as an absolute reference \cite{Ornhag}. Neira et al. add that error grows without an external reference, particularly under sharp motion, vibration or electromagnetic interference from nearby motors and sensors \cite{neira}. This asymmetry suits a towed platform: the control loop needs pitch and roll, which stay bounded, while the drifting quantities are needed only for georeferencing imagery, which the surface vessel's GPS supplies along the tow path. The design implication is to separate the IMU physically and electrically from servo drives and power cabling.
+Inertial measurement units are compact, low-power and well suited to submersible platforms \parencite{sunreview}, but their error is asymmetric. \textcite{ornhag} show that drift from bias, noise and integration error accumulates in yaw, velocity and position, while pitch and roll stay largely bounded because orientation filters use gravity as an absolute reference. \textcite{neira} add that error grows without an external reference, particularly under sharp motion, vibration or electromagnetic interference from nearby motors and sensors. This asymmetry suits a towed platform: the control loop needs pitch and roll, which stay bounded, while the drifting quantities are needed only for georeferencing imagery, which the surface vessel's GPS supplies along the tow path. The design implication is to separate the IMU physically and electrically from servo drives and power cabling.
  
-The wider navigation literature bounds the design space without being required here: Doppler velocity logs give dead reckoning at 0.8-5\% of distance travelled \cite{snyder}, USBL needs only a hull-mounted unit where metre-level positioning suffices, and geophysical navigation depends heavily on imaging quality and sonar count \cite{sunreview}. Behind a GPS-equipped vessel none is warranted, since the sensing problem is altitude and terrain, not global position.
+The wider navigation literature bounds the design space without being required here: Doppler velocity logs give dead reckoning at 0.8--5\% of distance travelled \parencite{snyder}, USBL needs only a hull-mounted unit where metre-level positioning suffices, and geophysical navigation depends heavily on imaging quality and sonar count \parencite{sunreview}. Behind a GPS-equipped vessel none is warranted, since the sensing problem is altitude and terrain, not global position.
  
 % ============================================================
 \subsection{Obstacle Detection and Avoidance}
@@ -402,9 +431,10 @@ The wider navigation literature bounds the design space without being required h
 \label{obstacle_lit}
 The avoidance literature is developed for self-propelled vehicles. What transfers to a cable-constrained platform are the reactive methods that generate a pitch reference directly from current sonar readings.
  
-Underwater avoidance systems combine perception, signal processing and path planning \cite{kot2022}, relying primarily on multi-beam or scanning sonar because light attenuates strongly and visibility is often poor \cite{kot2024}. Backscatter from the seabed masks genuine obstacles, Cao et al. apply YOLOv3 to forward-looking sonar imagery to reject it, improving accuracy without increasing reaction time but requiring large training datasets and significant onboard computation \cite{cao}.
+Underwater avoidance systems combine perception, signal processing and path planning \parencite{kot2022}, relying primarily on multi-beam or scanning sonar because light attenuates strongly and visibility is often poor \parencite{kot2024}. Backscatter from the seabed masks genuine obstacles, \textcite{cao} apply YOLOv3 to forward-looking sonar imagery to reject it, improving accuracy without increasing reaction time but requiring large training datasets and significant onboard computation.
  
-\begin{table}[htbp]
+\begin{table}[H]
+
 \centering
 \footnotesize
 \caption{Path-planning families for underwater obstacle avoidance.}
@@ -421,11 +451,12 @@ Heuristic & Genetic algorithms, PSO & Finds solutions in highly cluttered space 
 \end{tabular}
 \end{table}
  
-Kot et al.\ identify search-based planners as suitable for local planning where safety is a priority, while earlier potential-field work documents the risk of local minima \cite{kot2024,antonelli}. For this rig, commanded avoidance is restricted to vertical motion along the vessel's tow path. This reduces the planning problem but does not eliminate local minima or guarantee that a feasible avoidance trajectory exists. A reactive method was selected because it can produce a pitch command from current range measurements with low computational cost. Its suitability must nevertheless be evaluated against sensing coverage, available warning time, fin authority and the possibility that an obstacle cannot be cleared within the permitted motion.
+\textcite{kot2024} identify search-based planners as suitable for local planning where safety is a priority, while earlier potential-field work documents the risk of local minima \parencite{antonelli}. For this rig, commanded avoidance is restricted to vertical motion along the vessel's tow path. This reduces the planning problem but does not eliminate local minima or guarantee that a feasible avoidance trajectory exists. A reactive method was selected because it can produce a pitch command from current range measurements with low computational cost. Its suitability must nevertheless be evaluated against sensing coverage, available warning time, fin authority and the possibility that an obstacle cannot be cleared within the permitted motion.
  
-Maki et al.'s low-altitude terrain tracking method is the most directly applicable work \cite{maki}. Instead of thresholding sonar returns into binary obstacle or free space, it maps raw acoustic intensities onto a vertical-plane grid, preserving weak returns that thresholding would discard. The grid is then modified so that no cell holds a lower intensity than the cell directly above it, filling the volume beneath any detected obstacle so the planner treats the whole column below an overhang as solid. The output is a reference pitch angle holding a stable 1-2\,m altitude over coral or rocky terrain, which is what lets terrain following and avoidance share one control output rather than compete for it.
+The low-altitude terrain tracking method of \textcite{maki} is the most directly applicable work. Instead of thresholding sonar returns into binary obstacle or free space, it maps raw acoustic intensities onto a vertical-plane grid, preserving weak returns that thresholding would discard. The grid is then modified so that no cell holds a lower intensity than the cell directly above it, filling the volume beneath any detected obstacle so the planner treats the whole column below an overhang as solid. The output is a reference pitch angle holding a stable 1--2\,m altitude over coral or rocky terrain, which is what lets terrain following and avoidance share one control output rather than compete for it.
  
-\begin{figure}[htbp]
+\begin{figure}[H]
+
 \centering
 \begin{tikzpicture}[
   >={Stealth[length=2mm]},
@@ -441,25 +472,25 @@ Maki et al.'s low-altitude terrain tracking method is the most directly applicab
   \draw[->] (c) -- (d);
   \draw[->] (d) -- (e);
 \end{tikzpicture}
-\caption{Terrain-tracking pipeline, after Maki et al. \cite{maki}: raw returns become a single pitch command.}
+\caption{Terrain-tracking pipeline: raw returns become a single pitch command. Adapted from \textcite{maki}.}
 \label{fig:pipeline}
 \end{figure}
  
-Khorrami and Krishnamurthy's GODZILA algorithm reaches a comparable outcome by a different route \cite{godzila}. It solves an optimisation cost function per measurement, penalising deviation from the target direction, motion toward detected obstacles, and backtracking into visited coordinates. For near-seafloor operation it applies depth-modulated directional weighting, tighter vertically than horizontally, so the vehicle reacts aggressively to seabed rises while still hugging the bottom. Acting only on current measurements makes it robust to the navigation drift that characterises towed systems. Both methods therefore produce a vertical command from immediate sensor data without an accurate global position estimate, which is the sensing regime a towed rig operates in.
+The GODZILA-based system of \textcite{godzila} reaches a comparable outcome by a different route. It solves an optimisation cost function per measurement, penalising deviation from the target direction, motion toward detected obstacles, and backtracking into visited coordinates. For near-seafloor operation it applies depth-modulated directional weighting, tighter vertically than horizontally, so the vehicle reacts aggressively to seabed rises while still hugging the bottom. Acting only on current measurements makes it robust to the navigation drift that characterises towed systems. Both methods therefore produce a vertical command from immediate sensor data without an accurate global position estimate, which is the sensing regime a towed rig operates in.
  
-Both sources also identify a persistent trade-off between computing power and endurance, where the processing needed for complex sonar interpretation adds mass and volume that degrade stability \cite{kot2024, godzila}. Almost all of this work assumes omnidirectional propulsion, and the shortage of high-quality underwater datasets remains a bottleneck for applying learned methods to tasks such as coastal pest detection \cite{kot2022, cao}.
+Both sources also identify a persistent trade-off between computing power and endurance, where the processing needed for complex sonar interpretation adds mass and volume that degrade stability \parencite{kot2024,godzila}. Almost all of this work assumes omnidirectional propulsion, and the shortage of high-quality underwater datasets remains a bottleneck for applying learned methods to tasks such as coastal pest detection \parencite{kot2022,cao}.
  
 % ============================================================
 \subsection{Modular Design, Materials and Enclosures}
 % ============================================================
 \label{modular_lit}
-Modularity is the least-studied part of this design space: the towed-camera literature treats platforms as single units, so guidance comes from marine materials practice and distributed embedded systems rather than from comparable vehicles.
- 
-Non-critical structure such as wings and fairings can be printed in ASA, PETG, or ABS, which offers better UV resistance, strength and water resilience than PLA \cite{asa}. Electronics housings need a different standard: sealed enclosures with greased O-rings, whose service life is governed by seal maintenance rather than by housing material \cite{orings}, with marine-grade plastics and aluminium. Treating the printed shell itself as the pressure boundary would remove the need for internal. Still, fused-deposition parts are porous along layer boundaries and a resin coating creates a single failure surface whose breach floods the system. In contrast, several small sealed enclosures cost one module per seal failure. A sealed strong material tube near the leading edge can both house critical components and carry load between modules.
- 
-Coordinating fin actuators across units needs a defined masterslave relationship, because a module outboard of the master must drive both of its surfaces in the same sense so the array behaves as one continuous foil. The ESP32 supports I\textsuperscript{2}C masterslave operation between units \cite{esp32} and combines adequate processing for a PID loop with small size and low power draw, suiting an architecture where each slave reads its own sensors and reports to a master that returns actuator commands. Inter-module connections require purpose-built watertight connectors \cite{connectors}, and potting resists water, pressure and corrosion at the cost of maintenance access and heat dissipation.
- 
-No reviewed towed-camera study addresses multi-unit coordination. Synchronising control surfaces across physically coupled bodies sharing a single tow point, where one module's lift alters its neighbours' trim, has no direct precedent in the marine survey literature.
+Modularity is less developed in the reviewed towed-camera literature, which generally treats platforms as single units. Two arrangements warrant comparison: physically connected modules operating as an array, and individually controlled bodies towed close together. Both could increase coverage, but their structural, control and deployment requirements differ.
+
+Non-critical structure such as wings and fairings can be printed in ASA, PETG or ABS, with selection guided by strength, water exposure and UV resistance \parencite{asa}. Electronics require sealed housings with maintained O-ring seals \parencite{orings}. Using the printed shell as the pressure boundary could reduce part count, but layer porosity and reliance on a waterproof coating introduce leakage risks. Separate enclosures could contain a local failure and simplify servicing. A sealed structural tube could also carry loads between connected modules, whereas independent bodies would need separate structural and buoyancy arrangements.
+
+Connected modules could share a controller or use communicating local controllers to account for their coupled motion. Individually controlled bodies could instead estimate altitude and attitude locally and command their own fins, allowing different responses to nearby seabed features. Close spacing would still require assessment of relative motion, hydrodynamic interaction, imaging overlap and tether interference. The ESP32 offers a compact, low-power platform for feedback control and communication \parencite{esp32}, supporting either approach without requiring a predetermined master--slave arrangement. Underwater electrical links would need suitable watertight connectors \parencite{connectors}; potting provides protection at the cost of maintenance access and heat dissipation.
+
+The reviewed evidence leaves the preferred arrangement unresolved. Comparing altitude regulation, usable imaging coverage, deployment effort and response to a single-unit failure would help determine whether physical coupling and coordinated control offer sufficient benefit over closely spaced, individually controlled tow bodies.
  
 % ============================================================
 \subsection{Evaluation Approaches}
@@ -467,7 +498,7 @@ No reviewed towed-camera study addresses multi-unit coordination. Synchronising 
 \label{lit_eval}
 Published work evaluates towed camera systems against two standards: controlled-environment repeatability and field comparison against an existing method.
  
-Tank or pool testing removes current, waves, and visibility as testing variables so repeated runs can be attributed to the control system. Although pool depth and length limit the available tow speed and duration, results characterise controller behaviour rather than survey performance. Field comparison is how the published work establishes value: Cresswell et al. benchmark against diver transects on the same reef \cite{cresswell}, Sheehan et al. compare platform classes across the same habitats on imagery quality, seabed impact and current tolerance \cite{sheehan}, and Lembke et al. report time-in-band altitude statistics, the most transferable metric because it is directly comparable across platforms \cite{lembke_cbass}. The metrics that follow are altitude error distribution and time-in-band, pitch and roll stability, drag coefficient at survey speed, and obstacle clearance success rate, measured against the same rig with fins fixed so that active control is isolated from hull geometry.
+Tank or pool testing removes current, waves, and visibility as testing variables so repeated runs can be attributed to the control system. Although pool depth and length limit the available tow speed and duration, results characterise controller behaviour rather than survey performance. Field comparison is how the published work establishes value: \textcite{cresswell} benchmark against diver transects on the same reef, \textcite{sheehan} compare platform classes across the same habitats on imagery quality, seabed impact and current tolerance, and \textcite{lembke_cbass} report time-in-band altitude statistics, a useful comparison metric when acceptance bands, sample validity and operating conditions are reported consistently. The intended evaluation metrics were altitude error distribution and time-in-band, pitch and roll stability, drag coefficient at survey speed, and obstacle clearance success rate. The completed trials quantified estimated altitude regulation and sensor validity, with qualitative attitude observations and simulated obstacle checks. Drag coefficient and physical obstacle clearance success rate were not measured. A fins-fixed configuration provided a preliminary comparison, although changed towing geometry prevented isolation of the controller effect.
  
 % ============================================================
 \section{Research Gaps}
@@ -476,16 +507,18 @@ Tank or pool testing removes current, waves, and visibility as testing variables
 The literature gives a strong foundation in towed platform dynamics, acoustic sensing and avoidance planning, but still, gaps sit across this project's path.
  
 \begin{enumerate}[leftmargin=*, itemsep=2pt]
-  \item Obstacle avoidance has not been adapted to cable-constrained platforms. Methods such as those of Maki et al. \cite{maki} and Khorrami and Krishnamurthy \cite{godzila} assume a self-propelled vessel with omnidirectional authority. A towed body cannot command lateral motion, cannot stop, and has vertical authority bounded by control-surface lift and cable tension. Whether these methods still perform when the command space is reduced to one rate-limited axis is untested.
-  \item The low-cost end of the flying tow platform class is underrepresented. Non-contact systems are either commercial products with undisclosed internals \cite{seavu} or research platforms built to research budgets \cite{controllable2005, dynamics2000, hydrofoil}. Whether adequate altitude holding is achievable with hobby-grade servos, ultrasonic ranging and a microcontroller determines whether the approach is deployable by a small dive operator.
+  \item The reviewed literature does not establish obstacle-avoidance performance for the cable-constrained configuration investigated here. Methods such as those of \textcite{maki} and \textcite{godzila} assume a self-propelled vessel with omnidirectional authority. A towed body cannot command lateral motion, cannot stop, and has vertical authority bounded by control-surface lift and cable tension. Their performance when the command space is reduced to one rate-limited axis therefore requires evaluation for this rig.
+  \item The low-cost end of the flying tow platform class is underrepresented. Non-contact systems are either commercial products with undisclosed internals \parencite{seavu}, commercial ROTVs built for faster and deeper survey \parencite{eiva_scanfish}, or research platforms built to research budgets \parencite{controllable2005,dynamics2000,hydrofoil}. Whether adequate altitude holding is achievable with hobby-grade servos, ultrasonic ranging and a microcontroller determines whether the approach is deployable by a small dive operator.
 \end{enumerate}
  
 % ============================================================
+\Needspace{130mm}
 \section{Research Questions}
 % ============================================================
 \label{research_questions}
 Each question below maps to a gap above and to a measurable outcome.
- \begin{table}[htbp]
+ \begin{table}[H]
+
 \centering
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -502,18 +535,18 @@ Each question below maps to a gap above and to a measurable outcome.
 \midrule
 1 & Can active fin control improve altitude stability over a passive tow baseline at survey speed?
   & 2
-  & Altitude error distribution and time within a 1\,m band, against the same rig with fins fixed
-  & Yes: active fin control will be significantly more accurate, and changing depth will require active fin control. \\
+  & Altitude error distribution and time within the 0.5--1.5\,m band about the 1\,m target, against the same rig with fins fixed
+  & Yes: active fin control will have less rolling and stay in the 0.5--1.5\,m band for longer than passive. Active control is expected to reduce the need for manual rope adjustment as seabed depth changes. \\
 \addlinespace
-2 & Can forward-facing acoustic sensing keep a towed rig clear of obstacles while holding an altitude low enough for Caulerpa imaging?
+2 & Can forward-facing acoustic sensing keep a towed rig clear of obstacles while holding an altitude low enough for \textit{Caulerpa} imaging?
   & 1
   & Clearance success rate over a terrain course, and altitude held during and after each avoidance event
-  & Yes: previous literature has shown that sensors can detect obstacles with significant room for avoidance. \\
+  & Yes: Equation~\eqref{eq:horizon} gives a look-ahead requirement of about 2.5\,m at 1\,m/s, within the stated range of ultrasonic ranging (Table~\ref{tab:modalities}), and reactive methods can turn current returns directly into a pitch command (Section~\ref{obstacle_lit}). \\
 \addlinespace
 3 & Can a foil design perform the required manoeuvres by harnessing tension from an angled tow rope?
-  & 2
+  & 1, 2
   & Required pitch rate versus achievable pitch rate across obstacle profiles
-  & Yes: previous literature states "redirect the flow... at a negligible power cost " \ref{depth_lit}. This design should act similarly \\
+  & Yes: control authority scales with the square of flow velocity (Section~\ref{tow_force}), so at the 1\,m/s design speed the fins should generate the $20^\circ$/s pitch rate required by Equation~\eqref{eq:horizon} without additional propulsion. \\
 \bottomrule
 \end{tabularx}
 \end{table}
@@ -521,15 +554,16 @@ Each question below maps to a gap above and to a measurable outcome.
 Question 1 is the primary one. If active control does not beat a passive baseline, the added complexity is unjustified.
  
 \section{Methods}
-This will start with evaluating the design requirements and constraints given the problem specifications. Then will explain how the tow camera design was validated and tested.
-% Intro between each section and subsection
+This section first sets out the design requirements and constraints from the problem specification, then describes the design and how it was validated and tested.
 \subsection{Design Breakdown}
 \label{design_specs}
 The design specifications for the tow camera were:
 \begin{itemize}
-    \item Low towing speed: operate at a steady towing speed of approximately $1\,\mathrm{m/s}$, which keeps camera footage sharp and gives the detection system enough time to identify Caulerpa.
-    \item Obstacle avoidance: detect obstacles on or near the seabed and change altitude quickly enough to avoid collisions while being towed.
-    \item Camera payload: carry an underwater camera that provides images suitable for automated Caulerpa detection.
+    \item Low towing speed: operate at a steady towing speed of 0.5-1.0\,m/s, nominally 1\,m/s, which keeps camera footage sharp and gives the detection system enough time to identify \textit{Caulerpa}.
+    \item Survey altitude: hold a 1\,m target altitude within the 0.5-1.5\,m band, aiming to exceed 80\% time-in-band. This engineering target was informed by the 60-80\% reported for a passive platform \parencite{lembke_cbass}, whose operating conditions and altitude bands differ (Section~\ref{tow_class}). The 1\,m altitude was set from the imaging requirement stated in Isaac's and Corban's paper .
+    \item Attitude: hold pitch and roll within $10^\circ$ of level during steady survey, so that the camera stays close to the near-vertical view that suits mat-forming algae \parencite{cresswell}.
+    \item Obstacle avoidance: detect a 0.3\,m seabed rise at least 2.5\,m ahead and pitch up to a $20^\circ$ climb within about 1\,s, a pitch rate of at least $20^\circ$/s, so the rig clears it at 1\,m/s (Equation~\eqref{eq:horizon}).
+    \item Camera payload: carry an underwater camera that provides images suitable for automated \textit{Caulerpa} detection.
     \item Parallel operation: allow several units to be towed, so a larger area of seabed can be surveyed in a single pass.
 \end{itemize}
 
@@ -541,120 +575,106 @@ The design constraints were:
  
 \subsection{Foil Selection and Force Balance}
 \label{force_balance}
-To meet the design specification of a low towing speed, the system uses a NACA 5518 foil section (5\% maximum camber at 50\% chord, 18\% thickness-to-chord ratio) mounted in an inverted configuration, so that the section generates down force directly and can keep the tension from the tow cable. A symmetric foil produces zero lift at zero angle of attack and must be run at a comparatively large negative control effort to generate the required down force, creating additional drag. A cambered section produces a non-zero force at zero geometric incidence, $\alpha_{L0}$.
+To meet the design specification of a low towing speed, the system uses a NACA 5518 foil section (5\% maximum camber at 50\% chord, 18\% thickness-to-chord ratio) mounted in an inverted configuration, so that the section generates down force directly and can keep the tension from the tow cable. A symmetric foil produces zero lift at zero angle of attack and must be run at a comparatively large negative control effort to generate the required down force, creating additional drag. A cambered section produces a non-zero force at zero geometric incidence. The zero-lift angle of attack, $\alpha_z$, is the incidence at which its lift becomes zero.
 
-Evaluated for the NACA 5518 camber line, thin-aerofoil theory places $\alpha_{L0}$ in the region of $-5^\circ$ to $-6^\circ$, consistent with published data for comparable 4-digit sections. 
+Evaluated for the NACA 5518 camber line, thin-aerofoil theory places $\alpha_{z}$ in the region of $-5^\circ$ to $-6^\circ$, consistent with published data for comparable 4-digit sections \parencite{abbott1959}.  For the inverted design, the signs will flip to be $5^\circ$ to $6^\circ$. This means there is 0 forces generated by the foil when the tow camera is tilted $5^\circ$ to $6^\circ$ upwards.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/CFD_Result}
-    \caption{CFD Result}
-    \label{fig:CfdResults}
-\end{figure}
 The resulting downward force is:
 \begin{equation}
 L = \tfrac{1}{2}\rho V^2 S \, C_L
 \end{equation}
-where $\rho = 1025\ \text{kg/m}^3$ (seawater), $V$ is towing speed, and $S$ is planform area. At the design towing speed of 0.5 to 1.0 m/s, dynamic pressure $\tfrac{1}{2}\rho V^2$ ranges from 128 to 513 Pa. 
+where $\rho = 1025\ \text{kg/m}^3$ (seawater), $V$ is towing speed, and $S$ is planform area. At the design towing speed of 0.5 to 1.0 m/s, dynamic pressure $\tfrac{1}{2}\rho V^2$ ranges from 128 to 513 Pa. Foil sizing and CFD analysis are detailed in the co-worker's companion report \parencite{chittenden2026}.
 
 Taking moments about the CoM, with nose-up positive, steady trim requires
 \begin{equation}
 L\,d_L + T\,d_T + D\,d_D + B\,d_B = 0,
 \label{eq:moment}
 \end{equation}
-where each $d$ is a signed perpendicular moment arm, defined so that a positive force-arm product produces a nose-up moment. Weight acts through the CoM and therefore contributes no moment about it. Buoyancy acts through the centre of buoyancy and can contribute a restoring moment when the rig pitches. Its contribution can be neglected only where its line of action passes through the CoM or its moment is demonstrably small. Fin deflection changes the hydrodynamic forces and their moments, allowing the controller to adjust pitch and hence the rig's vertical trajectory (\ref{sec:activeStab}).
+where each $d$ is a signed perpendicular moment arm, defined so that a positive force-arm product produces a nose-up moment. Weight acts through the CoM and therefore contributes no moment about it. Buoyancy acts through the centre of buoyancy and can contribute a restoring moment when the rig pitches. Its contribution can be neglected only where its line of action passes through the CoM or its moment is demonstrably small. Fin deflection changes the hydrodynamic forces and their moments, allowing the controller to adjust pitch and hence the rig's vertical trajectory (Section~\ref{sec:activeStab}).
  
 \subsection{Tow Attachment Point Geometry}
 \label{tow_attach}
-The tow attachment is located on the upper surface of the body. Its pitching effect depends on both its horizontal and vertical position relative to the CoM and on the rope angle. In side-view coordinates, with $x_T$ measured horizontally forward and $z_T$ vertically upward from the CoM, the nose-up moment from tension is $M_T = T(x_T\sin\gamma - z_T\cos\gamma)$, where $\gamma$ is the rope's elevation above horizontal. The upward tension component can produce a nose-up moment at a forward attachment, while the forward component produces a nose-down moment at an elevated attachment.
+The tow attachment is located on the upper surface of the body. Its pitching effect depends on both its horizontal and vertical position relative to the CoM and on the rope angle. In side-view coordinates, with $x_T$ measured horizontally forward and $z_T$ vertically upward from the CoM, the nose-up moment from tension is $M_T = T(x_T\sin\Omega - z_T\cos\Omega)$, where $\Omega$ is the rope's elevation above horizontal. The upward tension component can produce a nose-up moment at a forward attachment, while the forward component produces a nose-down moment at an elevated attachment.
 
 An attachment directly above the CoM therefore does not generally eliminate the rope moment. Zero moment occurs when the line of action of tension passes through the CoM. Because the rope angle changes with towing geometry and rig position, an attachment that gives little moment under one condition may require substantial fin correction under another. The design objective is to reduce the steady pitching bias at the intended operating condition while retaining enough control authority for climbing and descending.
 
 During water entry, the forward component of tension acting above the CoM can encourage a nose-down response. The submerged trim must then be assessed using the complete force and moment balance. The spar substitution described in Section~\ref{construct} moved the CoM forward, changing the attachment offsets. The end-cap redesign in Experiment Four moved the attachment forward to reduce the nose-down bias observed in Experiment Three; the remaining trim requirement was subsequently assessed from the logged fin response.
  
-\begin{figure}[ht]
+\begin{figure}[H]
+
 \centering
-\includegraphics[width=0.34\textwidth]{Figures/Tow Camera CoM Report.png}
+\includegraphics[width=0.34\textwidth]{Figures/P4p_CoM}
 \caption{Internal CAD layout showing structural openings and CoM-relevant component placement.}
 \end{figure}
  
 \subsection{Construction}
 \label{construct}
-With the constraints of scalability and manufacturing, the body is predominantly 3D printed for the ease of location and repeatability. The material used is PETG for its UV resistance and water resistance relative to PLA. The leading-edge spar, originally a hollow aluminium tube providing both the primary load path and the mechanical interface between printed sections, was replaced late in fabrication with a solid stainless steel threaded rod for the full-scale prototype. This substitution materially altered the mass distribution and is the direct cause of the attachment-point result reported in Section \ref{sec:Exp2}.
- 
+With the constraints of scalability and manufacturing, the body is predominantly 3D printed, so that parts can be reproduced and replaced consistently. The material used is PETG for its UV resistance and water resistance relative to PLA. The leading-edge spar, originally a hollow aluminium tube providing both the primary load path and the mechanical interface between printed sections, was replaced late in fabrication with a solid stainless steel threaded rod for the full-scale prototype. This substitution materially altered the mass distribution and is the direct cause of the attachment-point result reported in Section~\ref{sec:Exp3}. The ends of the steel rod were tightened with nuts during the experiment, however, in the commercial model, these rods will be cut short so they do not protrude from the sides as they did in the experiments (Appendix~\ref{sec:AppCompendium}).
+
+Figure~\ref{fig:CadExploded} shows the full exploded view of the final model. Each section is individually 3D-printed and can be replaced for repairs. This was decided for the design constraint of low cost and ease of manufacturing. The figure shows the control fins and the gears used for active control (Section~\ref{sec:activeStab}), and the final connection point chosen (the foremost hole on the end cap). The hole in the main body is where the camera is held. 
+
+\begin{figure}[H]
+
+    \centering
+    \includegraphics[width=0.5\linewidth]{Figures/Exploded View P4p.png}
+    \caption{Exploded view of the design.}
+    \label{fig:CadExploded}
+\end{figure}
+
+From end cap to end cap, the rig is 800\,mm, and 300\,mm from the leading edge to the end of the tail. This satisfies the specification of being small enough for transport, as well as all pieces being small enough for commercially available 3D printers. The total component cost of the prototype was approximately NZ\$500 total, with the main items being sensors, filament, PoE.
+
 \subsection{Sensor}
 \label{tow_sensors}
-The sensor suite comprises eight ultrasonic transducers (four pairs), an IMU (BNO085, 9-DOF with onboard sensor fusion), and an optical camera, mounted directly to the 3D printed end caps. Altitude from time-of-flight is $h = ct/2$, with $c \approx 1500\ \text{m/s}$ in seawater; at the 0.5 - 1.0 m target altitude, expected round-trip time is 0.67 - 1.33 ms.
+The sensor suite comprises eight ultrasonic transducers (four pairs; DYP-L08 RS485 UART), an IMU (BNO085, 9-DOF with onboard sensor fusion), and an optical camera, mounted directly to the 3D printed end caps. Altitude from time-of-flight is $h = vt/2$, with $v \approx 1500\ \text{m/s}$ in seawater; at the 0.5-1.0 m target altitude, expected round-trip time is 0.67-1.33 ms.
 
-Overhang detection uses the conservative highest-point rule. For a forward sensor at a given range and elevation, the minimum across all forward sensors is taken as the binding constraint, detects the highest point, and plus the threshold altitude. Sensors can detect points at their different angles using the cosine of the IMU and the mounting angle, in combination with the distance value. 
+Overhang detection uses a conservative highest-point rule. Each forward-facing range is converted to a seabed point using the beam's mounting angle and the IMU pitch. The highest of these points across all forward sensors is taken as the binding constraint, and the threshold clearance is added to it to give the minimum safe altitude.
 
-Depth of the system is treated as the angle-adjusted distance of the different ultrasonic sensors (adjusted to the cos of the mounting angles). Due to the uneven terrain of the seafloor, the altitude sensors will read different values, so the measured altitude will be the minimum value. This is a safety feature so it is always far away from the seabed to avoid scrapes, the alternative of using the mean of the two values could cause sharp cliffs between the sensors to be treated as flat terrain at the mid-height. 
+Altitude is taken from the downward beams, with each range corrected for mounting angle, pitch and roll (Equation~\eqref{beamheight}). Over uneven seabed the beams read different values, so the lowest corrected value is used. This is conservative: it keeps the rig clear of the highest nearby terrain, whereas the mean of the beams could treat a sharp step between them as flat terrain at mid-height.
 
 The optical sensor sits in a sealed length of plastic pipe, closed by a custom threaded end cap carrying a flush optical window sealed with O-rings under compression, a standard face-seal arrangement. The cap is printed in PETG, but PETG's inter-layer micro-porosity is a leak risk, mitigated by a reduced print speed (letting each layer consolidate) and an exterior waterproofing spray coat that bridges surface pores without touching the seal faces or window.
  
-\subsection{Stability and Power System}
-\label{power_system}
-As this requires active control, a power system is required. This needs to be safely designed to meet waterproofing restrictions, as well as meet the design constraints of size and cost, while also being powerful enough to meet the specifications of avoidance. 
 \subsection{Passive and Active Stability}
 \label{sec:activeStab}
 Bilateral symmetry removes steady-state yaw bias, and a CoM held below the centre of buoyancy gives a passive righting moment in roll, reducing active control to the single pitch/depth axis.
 
-The first controller was a closed discrete PID loop on the master ESP32 (20 Hz) with anti-windup clamping the control when $\delta_f$ saturates at its $\pm25^\circ$ mechanical limit. It commanded pitch based on the altitude error, however, this controller failed in experiment five \ref{sec:Exp5}. It was then switched for a cascaded PI controller relating altitude to pitch, then a P controller commanding the fins from pitch error. A Kalman filter was also used to estimate altitude by combining the noisy measurements from the IMU and ultrasonic sensors. 
+The first controller was a closed discrete PID loop on the master ESP32 (20\,Hz) with anti-windup clamping the control when fin deflection $\delta$ saturated at its $\pm25^\circ$ mechanical limit. It commanded fin deflection directly from altitude error; however, it did not achieve stable regulation in Experiment Five (Section~\ref{sec:Exp5}). It was then switched for a cascaded PI controller relating altitude to pitch, then a P controller commanding the fins from pitch error. The redesign added a Kalman filter to estimate altitude from IMU and ultrasonic measurements; its software-in-the-loop evaluation used a 50\,Hz control step (Section~\ref{sec:sim}). 
  
-\subsection{Power Architecture}
- 
-\begin{figure}[ht]
-\centering
-\begin{minipage}{0.44\textwidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/P4p_Power_Diagram.png}
-\caption{System power and data architecture.}
-\end{minipage}
-\hfill
-\begin{minipage}{0.5\textwidth}
-\centering
-\includegraphics[width=\linewidth]{Figures/P4p_Elec_Schem.png}
-\caption{Schematic of wiring}
-\label{fig:ElectScheme}
-\end{minipage}
-\end{figure}
-
-
- 
-Power and data share a single PoE tether down the tow cable rather than separate cores, consistent with the modular, low-drag cabling goal. On the camera side, a PoE splitter separates the 12 V rail, feeding a battery management system (BMS) that charges a 4S LiPo pack (14.8 V nominal), from the Ethernet data path, which feeds the switch, camera, and (via an Ethernet-to-SPI module) the master ESP32. This is deliberate: PoE alone cannot supply the system's peak load. Each servo is rated up to 9 A at 8.4 V (75.6 W) under stall, though sustained draw is under 20 W per servo; two servos can therefore demand well over 100 W momentarily against a continuous budget of roughly 50 W (Table 1). Local battery buffering decouples this peak from the tether, which need only sustain the pack's average charge balance. Note also that the 12 V PoE rail sits below the pack's 14.8 V nominal terminal voltage, so the BMS must boost-convert during charging, worth confirming against the chosen IC.
-
-Two buck converters step the 14.8 V bus down to a 5 V logic rail (90\% efficiency) and a 7.4 V/8.4 V servo rail (capacitor-smoothed). The master ESP32 bridges an Ethernet module by SPI, a UART/RS-485 expander to the sensor array and IMU, and PWM to both servos; since the array runs 5 V logic against the ESP32's 3.3 V GPIOs, level-shifting on the RS-485 lines is required and flagged as an open risk item.
- 
-\begin{table}[ht]
-\centering
-\small
-\begin{tabular}{lll}
-\toprule
-\textbf{Component} & \textbf{Rail} & \textbf{Draw} \\
-\midrule
-Camera & 5 V (Ethernet-side) & $\leq$1.5 W \\
-ESP32 logic & 3.3 V (reg.\ from 5 V) & $\sim$1 W cont., 2.5 W peak \\
-Ultrasonic array ($\times$8) & 5 V & 0.8 W (0.16 A) \\
-Filtering capacitors & 5 V rail & $\leq$0.3 W quiescent \\
-Servo (each) & 7.4-8.4 V & $<$20 W cont.; 51.8 - 75.6 W stall \\
-\midrule
-System continuous total & --- & $\approx$50 W (incl.\ 90\% buck eff.) \\
-\bottomrule
-\end{tabular}
-\caption{Power budget by component, from the system power diagram.}
-\end{table}
+\subsection{Power Architecture}\label{sec:power_architecture}
+\label{power_system}
+The intended architecture combines power and Ethernet over a PoE tether, with a locally buffered battery supply for servo peaks. The nominal continuous budget is approximately 50\,W, whereas two servos can together demand over 100\,W momentarily. Separate converters supply the logic and servo rails. The detailed architecture and budget are given in Appendix~\ref{sec:AppPower}. This is a proposed configuration: the charging stage and peripheral voltage compatibility require verification, and a converter failure caused a battery substitution before the ocean trial. The appendix records that departure; the nominal budget is not a measured ocean-trial load.
 
 \section{Test Programme}
 \label{sec:planner}
 
 \subsection{Common Procedure}
 \label{sec:procedure}
-All full-scale trials were run in the University of Auckland pool, which is 2\,m deep. The rig was attached by carabiners at both end caps to a braided rope forming a symmetric V-bridle, and was pulled by hand from the far end of the pool. The rope was 20\,m long, but the effective rope was 1.5\, m, as it was held at the surface $\approx$ 1\, m ahead of the rig to avoid scraping along the pool floor. Tow speed was estimated from each video by timing the rig between pool lane markings of known spacing. Each configuration was run 3 times. From Experiment Four onward, the firmware logged all eight ultrasonic ranges with validity flags, roll, pitch and yaw, current and target altitude, and both fin angles to CSV at 10\,Hz (Appendix~\ref{sec:AppCSV}). Videos and logs are listed in the research compendium (Appendix~\ref{sec:AppCompendium}).
+Experiments 2 to 5 were run in the University of Auckland pool, which is 2\,m deep. Experiment One and the pool component of Experiment Six used residential pools because the University pool was unavailable. Experiment Six also included an ocean trial. In all full-scale model trials, the rig was attached by carabiners at both end caps to a braided rope forming a symmetric V-bridle, and was pulled by hand from the far end of the pool. The rope was 20\,m long, but the initial effective free length was 1.5\,m, as it was held at the surface $\approx$ 1\,m ahead of the rig to avoid scraping along the pool floor. Tow speed was estimated from each video by timing the rig between pool lane markings of known spacing. Run counts and departures from this procedure are stated in the individual experiments; the ocean comparison comprises one reported run per configuration. From Experiment Four onward, the firmware logged all eight ultrasonic ranges with validity flags, roll, pitch and yaw, current and target altitude, and both fin angles to CSV (Appendix~\ref{sec:AppCSV}). Video links are listed in the research compendium (Appendix~\ref{sec:AppCompendium}).
+
+Free rope length and tow speed changed between experiments as the test sites and objectives changed (Table~\ref{tab:tow_conditions}). Because both alter the rope angle at the rig and therefore its pitching moment (Section~\ref{tow_attach}), results from different experiments are compared qualitatively rather than as controlled pairs.
+
+\begin{table}[H]
+\centering
+\footnotesize
+\caption{Towing conditions by experiment. Speeds are estimates from video (pool) or the boat's reported speed (ocean).}
+\label{tab:tow_conditions}
+\begin{tabular}{@{}llll@{}}
+\toprule
+\textbf{Exp.} & \textbf{Site} & \textbf{Free rope length} & \textbf{Tow speed} \\
+\midrule
+1 & Residential pool & 10\, m & $\approx$0.2\,m/s (model scale) \\
+2--4 & University pool & 1.5\,m & $\approx$1\,m/s \\
+5 & University pool & 3\,m & $\approx$1\,m/s\\
+6 (pool) & Residential pool & 12\,m & 0.51-1.03\,m/s \\
+6 (ocean) & Wanns Bay & $\approx$8\,m active; $\approx$6\,m passive & 0.77\,m/s \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Experimental Programme}
 Table~\ref{tab:testplan} links each experiment to the research questions.
 
-\begin{table}[ht]
+\begin{table}[H]
+
 \centering
 \footnotesize
 \caption{Experimental programme and its link to the research questions.}
@@ -668,30 +688,32 @@ Table~\ref{tab:testplan} links each experiment to the research questions.
 3 & Select tow point with simple roll and altitude control & 1, 3 & Video, qualitative trim & Nose-down bias at all points; end caps redesigned \\
 4 & Verify sensing, logging and vertical response & 1, 2 & CSV log & Sensing and actuation confirmed \\
 5 & First closed-loop altitude control (single-loop PID) & 1 & CSV log & Sustained oscillation \\
-Sim. & Identify model and redesign controller & 1, 2, 3 & Simulated states & Cascaded PI--P selected \\
-6 & Cascaded control against fins-fixed baseline; set-point step; obstacle & 1, 2, 3 & CSV log, video, camera frames & \fillin{Outcome} \\
+Sim. & Investigate model response and redesign controller & 1, 2, 3 & Simulated states & Cascaded PI-P selected\\
+6 & Cascaded control against fins-fixed baseline; set-point step; planned obstacle trial & 1, 2, 3 & CSV log, video, camera frames & Preliminary altitude regulation; obstacle trial not run\\
 \bottomrule
 \end{tabular}
 \end{table}
-
+Video links for all experiments are available in Appendix~\ref{sec:AppCompendium}.
 \section{Experiment One: Scale Model}
+\url{https://youtu.be/EpCGyoLyqC0}
 \label{sec:Exp1}
 
-The first experiment used a 1/7th-scale model to validate the hydrofoil downforce concept before full-scale fabrication. A single physical model cannot match both the Reynolds number $Re = VL/\nu$ and the Froude number $Fr = V/\sqrt{gL}$ of the full-scale system. The aspect of interest here is the diving moment produced by tow tension acting about the CoM against buoyancy, which is governed by gravity and buoyancy rather than viscous shear, so the Froude number was matched. This requires the model speed to scale as $V_m = V_f\sqrt{L_m/L_f}$. At a length ratio of 1/7, $V_m \approx 0.378\,V_f$, so the 1\,m/s design speed corresponds to a model speed of 0.38\,m/s. The model was towed at approximately 0.2\,m/s over 3 runs.
+The first experiment used a 1/7th-scale model to assess whether the proposed foil and tow-point arrangement produced a passive diving response before full-scale fabrication. A single physical model cannot match both the Reynolds number $Re = VL/\nu$ and the Froude number $Fr = V/\sqrt{gL}$ of the full-scale system. The aspect of interest here is the diving moment produced by tow tension acting about the CoM against buoyancy, which is governed by gravity and buoyancy rather than viscous shear, so the Froude number was matched. This requires the model speed to scale as $V_m = V_f\sqrt{L_m/L_f}$. At a length ratio of 1/7, $V_m \approx 0.378\,V_f$, so the 1\,m/s design speed corresponds to a model speed of 0.38\,m/s. The model was towed at approximately 0.2\,m/s over 3 runs, which corresponds to $V_f = 0.2\sqrt{7} \approx 0.53$\,m/s at full scale, at the lower end of the intended 0.5--1.0\,m/s operating range.
 
-At the Froude-matched speed, the Reynolds number is mismatched: $Re_m/Re_f = (V_m/V_f)(L_m/L_f) \approx 0.378 \times (1/7) \approx 0.054$, so the model operates at about 5\% of the full-scale Reynolds number. This is an accepted limitation of small-scale towing tests. Viscous quantities such as drag coefficient and boundary-layer behaviour do not transfer, but passive diving and trim are far less sensitive to Reynolds number, which is why this experiment was limited to testing those.
+This speed correspondence alone does not establish full dynamic similarity. Reynolds number was not matched, and geometric scaling does not by itself ensure equivalent mass distribution, buoyancy or towing geometry. The experiment was therefore interpreted as a qualitative assessment of diving behaviour. The observed nose-down response and submerged towing supported proceeding to full-scale fabrication, while quantitative lift, drag, trim and stability performance required full-scale testing.
 
 The model carried a longitudinal tail fin on the centreline for passive yaw stability. A single tow point was placed on the upper surface above the estimated CoM, and no sensors or electronics were fitted. This isolates the hydrodynamic behaviour of the hull from the effect of electronics mass on trim, so a failure to dive could be attributed to the hull geometry rather than to a mass-distribution error. The video is listed in Appendix~\ref{sec:AppCompendium}.
  
-\begin{figure}[ht]
+\begin{figure}[H]
+
 \centering
 \includegraphics[width=0.32\textwidth]{Figures/P4p Prototpe Pool.png}
 \caption{1/7th-scale model under tow, diving from a single central attachment point.}
-\label{fig:model}
+\label{fig:Exp1}
 \end{figure}
  
 \subsection{Results}
-When tension was applied, the model pitched nose-down, as predicted for an attachment on the upper surface, settled at a stable negative incidence, and dived below the surface (Figure~\ref{fig:model}). No divergent pitch or yaw oscillation was observed in any of the 3 runs, and the tail fin held the heading aligned with the tow direction. These results confirmed the downforce mechanism and justified full-scale fabrication. Drag and stability margins depend on Reynolds number and were left to be checked at full scale.
+When tension was applied, the model pitched nose-down, as predicted for an attachment on the upper surface, settled at a stable negative incidence, and dived below the surface (Figure~\ref{fig:Exp1}). No divergent pitch or yaw oscillation was observed in any of the 3 runs, and the tail fin held the heading aligned with the tow direction. These results confirmed the downforce mechanism and justified full-scale fabrication. Drag and stability margins depend on Reynolds number and were left to be checked at full scale.
  
 \subsection{Implications for Full-Scale Design}
 The inverted cambered foil and the tow point above the CoM were carried forward unchanged, since the model showed the correct sign and stability of the diving response.
@@ -699,6 +721,7 @@ The inverted cambered foil and the tow point above the CoM were carried forward 
 The model showed that the hull is directionally stable when it carries vertical fin area; it did not test the hull without a fin. The full-scale design therefore keeps vertical fin area, but moves it from the centreline to plates on the two end caps. This keeps the centreline clear for the electronics and camera housings, adds roll damping at the span tips, and integrates the fins with the end caps that already carry the sensors, reducing part count and stowed size. Yaw behaviour of this arrangement is assessed in the full-scale trials.
  
 \section{Experiment Two: Full-Scale Passive Behaviour}
+\url{https://youtube.com/shorts/SiT4EdYxQNI}
 \label{sec:Exp2}
 
 The full-scale prototype replaced the model's single central attachment with two attachment points at the end caps, for two reasons. First, the end caps already carry the ultrasonic hardware and the structural interface to the leading-edge spar, so attaching the tow there avoids a separate central fitting and its mass and drag. Second, two attachments give load redundancy: if one fails, the rig remains connected. With two attachments, the rope forms a V-bridle, and for equal leg lengths the effective tow point lies midway between the end-cap attachments.
@@ -706,11 +729,12 @@ The full-scale prototype replaced the model's single central attachment with two
 \subsection{Setup}
 The procedure of Section~\ref{sec:procedure} was used, at an estimated 1\,m/s. No electronics were powered. The servos were locked at their trim position, and the servo leads ran into a temporary plastic container standing in for the electronics enclosure. The end cap and fixed wing provide four attachment holes (fore, mid-fore, mid-aft and aft), so the effective tow point can be moved chordwise without new hardware. A pre-trial CAD mass analysis placed the CoM near mid-chord, so the middle hole was used. Immediately before the trial, the aluminium spar was replaced with the stainless-steel rod (Section~\ref{construct}), which moved the CoM forward.
  
-\begin{figure}[ht]
+\begin{figure}[H]
+
 \centering
 \begin{minipage}{0.44\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Figures/P4p Prototype full size.png}
+\includegraphics[width=\textwidth]{Figures/P4p Prototype full size.jpg}
 \caption{Prototype with dual end-cap attachment points visible.}
 \label{fig:proto}
 \end{minipage}
@@ -729,14 +753,17 @@ The rig dived under tow but was unstable in roll (Figure~\ref{fig:protoTow}). Du
 These results cannot serve as the passive baseline for Research Question 1. The roll instability may come from the hull, from the buoyant, flooding container shifting the centres of mass and buoyancy, or from fins that were not locked exactly at trim, and this experiment cannot separate those causes. The fins-fixed baseline is therefore measured in Experiment Six with the final enclosure and full logging. The experiment did show that the enclosure must be rigid, sealed and secured, and that the tow point needed re-selecting after the spar change.
 
 \section{Experiment Three: Tow Point Selection}
+\url{https://youtube.com/shorts/aQix-yrkYhs}
 \label{sec:Exp3}
 
-Experiment Three repeated the setup of Experiment Two with the electronics in a sealed PVC pipe and simple roll and altitude control active, and compared the forward, middle and aft attachment holes.
+Experiment Three repeated the setup of Experiment Two with the electronics in a sealed PVC pipe and an early firmware version with simple roll and altitude correction active, and compared the forward, middle and aft attachment holes. Active roll correction was later removed; in the final design roll is handled passively (Section~\ref{sec:activeStab}).
+% AUTHOR CHECK: Section 8.1 lists four holes (fore, mid-fore, mid-aft, aft) but this section compares three (forward, middle, aft). State which three of the four holes were tested, and use the same names in both sections. Also confirm the roll-correction wording above matches the firmware used.
 
 \subsection{Results}
 Table~\ref{tab:attach} summarises the observed behaviour. The forward hole gave consistent pitch with little fin correction, while the middle and aft holes produced a persistent nose-down bias that increased drag. However, even at the forward hole the rig could not pitch up enough to climb.
 
-\begin{table}[ht]
+\begin{table}[H]
+
 \centering
 \caption{Pool trial outcome by attachment point.}
 \label{tab:attach}
@@ -751,27 +778,22 @@ Aft & Large nose-down bias \\
 \end{tabular}
 \end{table}
 
-Equation~\eqref{eq:moment} explains this pattern. After the spar change the CoM lay forward of all three holes, so the upward component of rope tension acted behind the CoM at every hole and produced a nose-down moment whose arm, and therefore size, grew from forward to aft. At the forward hole the moment was smallest, which gave the steadiest trim, but it remained nose-down, and the fins could not overcome it to pitch the rig up. To meet the vertical-movement specification the attachment had to move forward until it again sat above the CoM, which required new end caps.
+Equation~\eqref{eq:moment} explains this pattern. After the spar change the CoM lay forward of all three holes, so the upward component of rope tension acted behind the CoM at every hole and produced a nose-down moment whose arm, and therefore size, grew from forward to aft. At the forward hole the moment was smallest, which gave the steadiest trim, but it remained nose-down, and the fins could not overcome it to pitch the rig up. The attachment was therefore moved forward using new end caps to reduce the nose-down bias. Alignment above the CoM alone does not eliminate the rope moment, whose sign and magnitude also depend on attachment height and rope angle (Section~\ref{tow_attach}).
 
 \section{Experiment Four: Sensing and Vertical Response}
+\url{https://youtu.be/PpwM-hyTAT4}
 \label{sec:Exp4}
 
 The end caps were redesigned with the attachment moved forward to sit above the shifted CoM, and with large side plates that act as the passive yaw fins. To keep the rig transportable, the plates were limited to approximately $300 \times 60$\,mm. The ultrasonic wires feed through a small slot in each end cap, and each transducer is clamped into its own seat (Figure~\ref{fig:EndCap}). The wires are soldered directly to the electronics because waterproof connectors are expensive and difficult to disconnect and reconnect, which serves the cost and manufacturing constraints. The transducers were mounted at $-10^\circ$, $+10^\circ$, $+35^\circ$ and $90^\circ$ from vertical (Section~\ref{tow_sensors}), so that at least one beam points close to vertical over the full pitch range and the remaining beams look ahead for obstacles.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/End Cap Image P4p.png}
-    \caption{Redesigned end cap with the forward attachment, yaw plate and transducer seats.}
-    \label{fig:EndCap}
-\end{figure}
+\begin{figure}[H]
 
-\begin{figure}[ht]
 \centering
 \begin{minipage}{0.44\textwidth}
 \centering
-\includegraphics[width=\textwidth]{Figures/P4p Lab Full.jpg}
-\caption{Redesigned rig in the lab.}
-\label{fig:labFull}
+\includegraphics[width=\textwidth]{Figures/End Cap Image P4p.png}
+\caption{Redesigned end cap with the forward attachment, yaw plate and transducer seats.}
+\label{fig:EndCap}
 \end{minipage}
 \hfill
 \begin{minipage}{0.44\textwidth}
@@ -786,113 +808,74 @@ The end caps were redesigned with the attachment moved forward to sit above the 
 This experiment verified that the full sensor suite could be read and logged during a tow, and that the rig moves vertically in response to fin commands. The procedure of Section~\ref{sec:procedure} was used with the servos powered and all eight transducers and the IMU logging. The controller used uncorrected ranges, without compensation for mounting angle or pitch, so altitude holding was not expected in this experiment. Two runs were logged at an estimated 1\,m/s.
 
 \subsection{Results}
-Figure~\ref{fig:Test1Results} shows the ranges from the first run. The forward ($90^\circ$) beams, shown separately in the legend, measure the distance to the pool wall ahead rather than altitude.
+Figure~\ref{fig:Test1Results} shows the ranges from the first run. The forward ($90^\circ$) beams, sensors 4 and 8, measure the distance to the pool wall ahead rather than altitude.
 
-\begin{figure}[ht]
+\begin{figure}[H]
+
     \centering
     \includegraphics[width=0.8\linewidth]{Figures/Drive_By_Results.png}
     \caption{Experiment Four, run 1: range from each of the eight transducers against time. Forward ($90^\circ$) beams measure distance to the pool wall; the remaining beams measure distance to the floor.}
     \label{fig:Test1Results}
 \end{figure}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figures/Fin_Down_Results.png}
-    \caption{Experiment Four, run 2 (fins commanded down): range from each transducer over time.}
-    \label{fig:Test2Results}
-\end{figure}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figures/Fin_Down_Constrained.png}
-    \caption{Experiment Four, run 2: downward-beam ranges with the axis limited to the pool depth.}
-    \label{fig:Test2Axis}
-\end{figure}
 
-The IMU reads $-80^\circ$ when the rig is level, so Figure~\ref{fig:Test2Pitch} plots pitch relative to level (logged value $+80^\circ$). The rig floated at the surface until tension was applied at about 30\,s, pitched nose-down, reached its running altitude by about 40\,s, and levelled out.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\linewidth]{Figures/sensor_pitch.png}
-    \caption{Experiment Four, run 2: pitch relative to level against time, on the same time axis as Figure~\ref{fig:Test2Results}.}
-    \label{fig:Test2Pitch}
-\end{figure}
-
-Between 30 and 50\,s and between 75 and 90\,s, changes in downward range coincide with departures of pitch from level (Figures~\ref{fig:Test2Results} and~\ref{fig:Test2Pitch}). These records are consistent with changes in the rig's attitude and vertical trajectory, but uncorrected slant range cannot distinguish the two effects. Pitch changes the beam direction even when the rig's altitude remains constant, so correlation between raw range and pitch is not independent evidence of vertical displacement.
-
-The logs demonstrate acquisition of ultrasonic and IMU data during towing. Qualitative vertical movement showed rapid switching between trim and diving (\ref{tab:compendium}. Quantitative altitude-holding performance is evaluated in the later experiments using angle compensation and an explicitly stated measurement method. Experiment Four therefore established the sensing and logging capability needed for those tests rather than demonstrating accurate altitude control.
+The logs demonstrate ultrasonic and IMU behaviour during towing. Video analysis showed rapid switching between trim and diving (Appendix~\ref{sec:AppCompendium}). The first logged run (\texttt{Exp4.csv}, 379 samples over 37.8\,s at 10\,Hz) quantifies the dropout: the altitude estimate was valid in 84\% of samples, but individual ultrasonic sensors returned a valid echo in less than 55\% of samples, so most samples relied on one or two beams. This showed the need for further research in beam selection and stale-value handling, explored in Section~\ref{sec:kalman}. Quantitative altitude-holding performance is evaluated in the later experiments using angle-adjusted ranges and an explicitly stated measurement method. Experiment Four therefore established the sensing and logging capability needed for those tests rather than demonstrating accurate altitude control.
 
 \section{Experiment Five: Single-Loop PID Control}
+\url{https://youtu.be/T1Uqc7A2UBI}
 \label{sec:Exp5}
 
-Experiment Five was the first closed-loop altitude test. Ranges were corrected for mounting angle and measured pitch using Equation~\eqref{eq:beamheight}, and the single-loop PID of Section~\ref{sec:activeStab} set the fin angle from altitude error. When above the target, it commanded the fins to pitch the rig down, and below the target to pitch it up. The free rope was lengthened to 3\,m, compared with 1.5\,m in Experiment Four, to test whether the controller could hold altitude without a short, steep rope constraining the rig.
+Experiment Five was the first closed-loop altitude test. Ranges were corrected for mounting angle and measured pitch, and the single-loop PID of Section~\ref{sec:activeStab} set the fin angle from altitude error. When above the target, it commanded the fins to pitch the rig down, and below the target to pitch it up. The free rope was lengthened to 3\,m, compared with 1.5\,m in Experiment Four, to test whether the controller could hold altitude without a short, steep rope constraining the rig.
 
 Two implementation faults were found during testing. First, the firmware discarded the previous range before a new one was available, which made the fins jitter; it was changed to retain the most recent valid reading. Second, when the rig pitched steeply, the downward beams lost the floor because the reflected signal no longer returned to the transducer.
 
 \subsection{Results}
-The rig dived, detected the pool floor and pitched up in response, but it did not settle. As the rig reached the target the fins returned to trim while the body kept its pitch, so it passed through the target and the cycle repeated in the opposite direction. The result was a sustained oscillation of 300\,mm amplitude and 4\,s period about the target (Figure~\ref{fig:exp5}). When the beams lost the floor, the controller kept acting on the last valid reading, which increased the overshoot. Section~\ref{sec:cascade} examines the dynamics underlying the observed oscillation and explains the motivation for the cascaded redesign.
+The rig dived, detected the pool floor and pitched up in response, but it did not settle. As the rig reached the target the fins returned to trim while the body kept its pitch, so it passed through the target and the cycle repeated in the opposite direction. The logged run (\texttt{Exp5.csv}) used a 500\,mm target (Figure~\ref{fig:Exp5}). Over the 18\,s towed section, the altitude estimate reached minima of 435\,mm and 614\,mm at the ends of two descents 8.9\,s apart, and the fins sat at the nose-down limit for 1.0\,s and 2.6\,s during those descents. Only 22\% of valid altitude samples lay within $\pm250$\,mm of the target, and 12\% within $\pm100$\,mm. This indicates poor regulation within the stated test bands. The 60--80\% reported by \textcite{lembke_cbass} provides context, but their different altitude band and operating conditions preclude a direct performance comparison. In addition, 48 of the 160 valid samples exceeded the 2\,m pool depth, reaching 5.34\,m. These were echoes from beyond the floor that the firmware accepted because it applied no upper range limit. When the beams lost the floor, the controller kept acting on the last valid reading: the estimate held 435\,mm and 614\,mm for about 0.9\,s each, which increased the overshoot. Section~\ref{sec:cascade} examines the dynamics underlying the observed oscillation and explains the motivation for the cascaded redesign.
 
-\begin{figure}
-    \centering
+\begin{figure}[H]
+\centering
     \includegraphics[width=0.5\linewidth]{Figures/Exp5_height_vs_target.png}
-    \caption{Target vs Estimated Height}
-    \label{fig:placeholder}
+    \caption{Experiment Five: estimated altitude against the 500\,mm target. The vertical axis is clipped at 3000\,mm.}
+
+    \label{fig:Exp5}
 \end{figure}
 
-Steady altitude was not achieved, but the experiment showed that the rig now responds actively to its altitude above the pool floor rather than relying on a steep rope angle for stability. The logged pitch and fin data from this experiment (\texttt{sensor-\allowbreak log-\allowbreak goodRunPopedatAPoint.csv}) were used to identify the pitch model in Section~\ref{sec:sim_model}.
-
+Steady altitude was not achieved, but the experiment showed that the rig now responds actively to its altitude above the pool floor rather than relying on a steep rope angle for stability. The logged pitch and fin data from this experiment were used to illustrate the pitch-model identification workflow in Appendix~\ref{sec:app_sim_fit}.
 \section{Simulation and Controller Redesign}
 \label{sec:sim}
- 
-Experiment Five showed two faults: the altitude measurement held a stale value after the downward beams lost the floor, and the controller could not settle near the target. Pool access was limited, and a bench test cannot reproduce either fault because pitch changes altitude only when the rig moves forward. A software-in-the-loop simulation was therefore built in which the firmware estimator and controller are compiled unchanged, and only the sensors, servos and towed body are modelled. Droppers et al.\ tuned a cascaded towed-body controller in the same way and matched the simulated depth response at sea to within 0.6\,s \cite{droppers_towbody}.
- 
-\subsection{Model from Logged Data}
+
+Experiment Five showed that returning the fins towards trim did not remove the rig's pitch or vertical motion, while stale sonar readings prolonged incorrect commands. A software-in-the-loop simulation was developed to investigate these mechanisms and compare a cascaded controller before further pool testing. It compiles the firmware estimator and control step unchanged, replacing the hardware interfaces with simulated sonar, IMU and servo responses. Control runs at 50\,Hz and body motion is integrated at 1\,ms intervals.
+
+\subsection{Model Scope}
 \label{sec:sim_model}
-The sonar model comes from a 79\,s static log. One beam is read every 60\,ms, so each beam updates every 0.48\,s, and 2.6\% of readings are false 50 - 100\,mm echoes.
 
-The pitch dynamics were identified from the Experiment Five tow log (Section~\ref{sec:Exp5} and Appendix~\ref{sec:AppSim}). Pitch samples taken while the rig was towed upright were kept, and samples from the surface and from the end of the run were rejected. Pitch rate over each interval between accepted samples was taken as $q_i = \Delta\theta_i/\Delta t_i$, and paired with the mean fin angle $f_i$ over the same interval shifted 0.3\,s earlier, to allow for the servo and body response delay. A straight line was fitted by least squares, weighting each interval by its duration so that short intervals between closely spaced samples do not dominate:
-\begin{equation}
-\min_{k_\delta,\,c_\theta}\; J = \sum_i \Delta t_i\,\bigl(q_i - k_\delta f_i - c_\theta\bigr)^2 .
-\end{equation}
-Setting $\partial J/\partial k_\delta = \partial J/\partial c_\theta = 0$ gives the normal equations
-\begin{align*}
-k_\delta \textstyle\sum \Delta t\, f^2 + c_\theta \sum \Delta t\, f &= \textstyle\sum \Delta t\, f q, &
-2849.4\,k_\delta - 119.5\,c_\theta &= 292.7,\\
-k_\delta \textstyle\sum \Delta t\, f + c_\theta \sum \Delta t &= \textstyle\sum \Delta t\, q, &
--119.5\,k_\delta + 6.32\,c_\theta &= 2.7,
-\end{align*}
-whose solution is the pitch model used in the simulation:
-\begin{equation}
-\dot\theta(t) = k_\delta\,\delta(t-\tau_d) + c_\theta, \qquad k_\delta = 0.583\ \mathrm{(deg/s)/deg},\quad c_\theta = +11.45\ \mathrm{deg/s},\quad \tau_d = 0.3\ \mathrm{s}.
-\label{eq:tow_pitch}
-\end{equation}
-The gain $k_\delta$ is the pitch rate produced per degree of fin. The intercept $c_\theta$ is the pitch rate the rig develops with the fins at zero: a steady nose-up tendency from the rope tension and the hydrostatic moments at the logged tow geometry, which the fins must oppose.
+Two plants were used: a generic pitch-response model without explicit rope or foil forces, and a towed-foil model combining an empirical pitch relationship with a vertical force balance. The latter uses 0.30\,m chord and 0.80\,m span, prescribed tow speed and nominal rope geometry. Its fin-to-pitch-rate gain is the default $k_\delta=0.52\ \mathrm{(deg/s)/deg}$, not a new calibration of the final rig. The equations, assumed coefficients and log-fitting procedure are given in Appendix~\ref{sec:AppSim}. These simplified plants support initial controller development \parencite{skogestad2003}; agreement with their known states does not establish physical accuracy. The single-loop PID of Experiment Five was not run in the simulator, so the model has not been shown to reproduce the oscillation that motivated the redesign. That comparison is the most direct available check that the model captures the mechanism, and is listed as future work (Section~\ref{sec:conc_future}).
 
-The fit rests on 18 intervals totalling 6.3\,s, and the weighted RMS residual is 11.70\,deg/s, comparable to the 14.6\,deg/s that full fin deflection produces ($0.583 \times 25$). The model therefore captures the average response rather than individual intervals. About half of the intervals have the fins at the $-25^\circ$ limit and few have them above $0^\circ$, so the slope is poorly constrained: a bootstrap over the intervals gives an 80\% range for $k_\delta$ of 0.07-1.09 \cite{efron1993}. Heave follows Newton's second law, with downforce from the inverted NACA 5518 section (Section~\ref{force_balance}), drag, the rope's vertical pull and added mass \cite{newman1977}.For the towed-foil simulation at 1\,m/s from 2\,m to a 1\,m target, with 12\,mm standard-deviation sonar noise, 20\% failed reads, no injected spikes and random seed 1, raw and filtered altitude were compared with the simulated true altitude over the same 60\,s interval, giving RMS errors of 11.33\,mm and 7.90\,mm respectively.
- 
 \subsection{Altitude Estimation}
 \label{sec:kalman}
-On each side, the downward beam closest to vertical after pitch compensation is selected, its range is converted using Equation~\eqref{eq:beamheight}, and the lower of the two end-cap values is used as the measurement. Across the stated $\pm30^\circ$ pitch range, at least one of the mounting angles places a beam within $20^\circ$ of vertical in the pitch plane. This improves angular coverage but does not guarantee a valid floor return. Roll, seabed slope, beam width and acoustic reflection conditions also affect whether an echo is received, so measurement validity and dropout behaviour must be assessed from the logs.
- 
-A two-state Kalman filter \cite{kalman1960} estimates altitude and vertical velocity. Between echoes it predicts using the IMU's world-frame vertical acceleration, and each echo is used once. Echoes more than $4\sigma$ from the prediction are rejected \cite{barshalom2001}, and if no echo is accepted for 1\,s the altitude is declared invalid and the fins command a gentle climb. In simulation the filter reduced the altitude error from 18\,mm RMS for raw sonar to 12\,mm.
- 
-\subsection{Controller Redesign}
-\label{sec:cascade}
-The single-loop controller tested in Experiment Five commanded fin angle from altitude error and produced sustained oscillation. The identified pitch model helps explain this response: fin deflection changes pitch rate, while pitch changes vertical velocity, so the simplified plant contains two integrations between fin command and altitude. With altitude in millimetres, angles in degrees and tow speed $U$ in m/s, the small-angle approximation is $\dot h \approx 1000U(\pi/180)\theta$. Neglecting the fitted bias, delay and additional heave dynamics, proportional feedback $\delta = K_h(h_{\mathrm{sp}}-h)$ therefore gives
-\begin{equation}
-\ddot h \approx 1000\frac{\pi}{180}U k_\delta K_h
-(h_{\mathrm{sp}}-h).
-\end{equation}
-For positive feedback gains under the stated sign convention, this idealised closed-loop response has a restoring term but no damping term. It illustrates how the rig can reach the target with non-zero pitch and overshoot. It does not establish that every single-loop PID controller must fail. In the tested implementation, the slow sonar updates, stale measurements and actuator limits complicated the use of altitude feedback for damping. These observations motivated an inner pitch loop using the faster IMU measurement.
 
-The new controller is cascaded, the standard structure for underwater depth autopilots \cite{fossen2021} (Figure~\ref{fig:cascade}). An outer PI loop sets a target pitch from altitude error, and an inner P loop sets the fins from pitch error, using the IMU pitch, which updates far faster than the sonar:
+The simulated sonar polls one of eight beams every 60\,ms, giving a 0.48\,s full cycle. Baseline runs use 12\,mm standard-deviation range noise, 20\% failed transactions and no injected false echoes. The firmware selects a fresh downward beam on each end cap, compensates its range for pitch and roll, and uses the lower available clearance:
 \begin{equation}
-\theta_{\mathrm{ref}} = \operatorname{sat}_{\pm30^\circ}\!\left(K_p e + K_i\!\int e\,dt\right), \qquad
-\delta = \operatorname{sat}_{\pm25^\circ}\!\left(K_\theta(\theta_{\mathrm{ref}} - \theta)\right).
+h_i=r_i\cos(\beta_i+\theta)\cos\phi.
+\label{beamheight}
 \end{equation}
-Feeding back pitch damps the altitude loop: the fins now act to hold a pitch, so the rig levels out as it approaches the target. With Equation~\eqref{eq:tow_pitch}, the inner loop is first order with time constant $1/(k_\delta K_\theta) = 2.1$\,s plus the 0.3\,s delay. The integral is updated only when neither output is saturated and the rig is not already closing on the target, which prevents wind-up \cite{astrom_hagglund2006}.
- 
-\begin{figure}[ht]
+A two-state Kalman filter estimates clearance and upward velocity, predicting between echoes using valid vertical acceleration \parencite{kalman1960}. Each contributing echo is assimilated once. Sonar expires after 0.8\,s, and the filter resets after 1\,s without an assimilated measurement. Invalid altitude or attitude feedback requests a $+5^\circ$ fin fallback; its physical effect depends on control authority. The filter has no innovation gate, and avoidance acts independently on raw ranges, leaving both paths vulnerable to false returns.
+
+\subsection{Cascaded Controller}
+\label{sec:cascade}
+
+The redesign uses an outer altitude PI loop to request pitch and an inner pitch P loop to command both fins together \parencite{fossen2021}. With $e=h_{\mathrm{sp}}-\hat h$ and integral contribution $I$ in pitch degrees,
+\begin{align}
+\theta_{\mathrm{ref}}&=\operatorname{sat}_{\pm30^\circ}(K_p e_P+I),\\
+\delta_{\mathrm{cmd}}&=\operatorname{sat}_{\pm25^\circ}
+\left[K_\theta(\theta_{\mathrm{ref}}-\theta)+\delta_{\mathrm{reflex}}\right].
+\end{align}
+Here $e_P$ is zero inside a hysteretic altitude deadband. The integral is retained there to support trim, with conditional anti-windup to limit accumulation during rapid approach or saturation \parencite{astrom_hagglund2006}. Roll is used for range compensation rather than active control. Avoidance raises the altitude reference when a raw return penetrates an inclined clearance line; a separate short-range reflex adds a positive fin command. Deadband thresholds, integration conditions, avoidance geometry and actuator limits are specified in Appendix~\ref{sec:app_sim_control}.
+
+\begin{figure}[H]
+
 \centering
 \begin{tikzpicture}[
   >={Stealth[length=2mm]},
@@ -921,119 +904,251 @@ Feeding back pitch damps the altitude loop: the fins now act to hold a pitch, so
   \draw[->] (rig.south) |- ++(0,-15mm) -| (kf.south);
   \draw[->] (kf.west) -| node[pos=0.8, left, font=\scriptsize]{$-\hat h$} (s1.south);
 \end{tikzpicture}
-\caption{Cascaded altitude and pitch controller.}
+\caption{Cascaded altitude and pitch control. Avoidance modifies the altitude reference and adds a fin reflex; implementation limits are given in Appendix~\ref{sec:app_sim_control}.}
 \label{fig:cascade}
 \end{figure}
- 
-Gains were chosen by comparing candidate sets on the towed-foil model at 1\,m/s, and on a generic pitch model at 2\,m/s (Table~\ref{tab:gains}, Figure~\ref{fig:SimGains}). The generic model is Equation~\eqref{eq:tow_pitch} with $c_\theta = 0$, so it tests the controller on a body with no trim moment to hold, at twice the design speed. $K_p$ is in deg/mm, $K_i$ in deg/(mm\,s) and $K_\theta$ in deg/deg.
 
-Proportional control alone settles the towed rig above the target, and the fitted model gives the offset directly. In steady flight the rig is level ($\theta = 0$, so the climb rate is zero) and the fins sit at $\delta_{\mathrm{trim}} = -19.6^\circ$. The inner loop produces that fin angle only from a pitch error of $\delta_{\mathrm{trim}}/K_\theta = -24.5^\circ$, so the outer loop must command $\theta_{\mathrm{ref}} = -24.5^\circ$, and a P outer loop produces that only from an altitude error of
-\begin{equation}
-e = \frac{\delta_{\mathrm{trim}}}{K_\theta K_p} = -\frac{c_\theta}{k_\delta K_\theta K_p},
-\end{equation}
-which is about 490\,mm above target for $K_p = 0.05$ and about 120\,mm for $K_p = 0.20$. Raising $K_p$ to 0.20 reduces the offset but makes the rig oscillate on the generic model, coming within 9\,mm of the floor at 2\,m/s. Adding integral action with $K_i = 0.015$ removes the offset without that oscillation. $K_p = 0.05$, $K_i = 0.015$ and $K_\theta = 0.8$ were selected.
- 
-\begin{table}[ht]
-\centering
-\footnotesize
-\caption{Simulated altitude relative to the 1\,m target (mm, positive above) for each gain set, descending from 2\,m. Final is the mean over the last 5\,s; lowest is the minimum altitude reached after the descent. $K_p$ is in deg/mm and $K_i$ in deg/(mm\,s).}
-\label{tab:gains}
-\begin{tabular}{@{}lcccc@{}}
-\toprule
-& \multicolumn{2}{c}{\textbf{Towed foil, 1\,m/s}} & \multicolumn{2}{c}{\textbf{Generic, 0.5\,m/s}} \\
-\cmidrule(lr){2-3}\cmidrule(l){4-5}
-\textbf{Gain set} & Final & Lowest & Final & Lowest \\
-\midrule
-P, $K_p = 0.045$ & $+359$ & $+354$ & $+14$ & $+11$ \\
-P, $K_p = 0.07$  & $+262$ & $+254$ & $+10$ & $+10$ \\
-P, $K_p = 0.10$  & $+198$ & $+184$ & $-2$  & $-11$ \\
-\midrule
-PI, $K_p = 0.03$,  $K_i = 0.013$ & $+19$ & $-28$ & $-71$ & $-76$ \\
-PI, $K_p = 0.06$,  $K_i = 0.013$ & $+6$  & $+5$  & $-13$ & $-29$ \\
-\midrule
-PI, $K_p = 0.045$, $K_i = 0.007$ & $+13$ & $+12$ & $-29$ & $-32$ \\
-PI, $K_p = 0.045$, $K_i = 0.020$ & $+6$  & $-28$ & $-15$ & $-49$ \\
-\midrule
-\textbf{PI, $K_p = 0.045$, $K_i = 0.013$ (selected)} & $\mathbf{+13}$ & $\mathbf{-21}$ & $\mathbf{-30}$ & $\mathbf{-42}$ \\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/sim_gains_kp.png}
-    \caption{Simulated altitude response for increasing outer-loop gain $K_p$.}
-    \label{fig:SimGains}
-\end{figure}
- 
-\subsection{Simulated Performance}
+\subsection{Gain Comparison and Simulated Performance}
 \label{sec:sim_results}
-With $K_p = 0.045$, $K_i = 0.013$ and $K_\theta = 0.8$, the towed-foil model was simulated at 1\,m/s from an initial altitude of 2\,m to a 1\,m target for 60\,s. Settling time was defined as the first time after which altitude remained within $\pm50$\,mm of the target for the remainder of the run, and was 30.68\,s. Over the final 10\,s, the RMS altitude error was 11.11\,mm; over the final 5\,s, the mean signed error was +13.44\,mm, with positive values indicating altitude above target. The corresponding mean fin angle was -21.92$^\circ$, using 87.68\% of the one-sided $25^\circ$ deflection limit. These statistics were calculated from the same configuration and output used for the selected towed-foil case in Table~\ref{tab:gains}. Three further cases examine the limitations of this result:
-\begin{itemize}[itemsep=1pt]
-  \item \textbf{Fin authority.} Below $k_\delta = 0.46$ the fins cannot cancel $c_\theta$ (Equation~\eqref{eq:trim}). At $k_\delta = 0.07$, the low end of the bootstrap range, the fins saturate at $-25^\circ$ and the rig never reaches the target: over 120\,s it climbs to 2.15\,m, which in the 2\,m pool means it rises to the surface. Reaching the target therefore depends on the true fin authority.
-  \item \textbf{Look-ahead.} At 1\,m altitude the $+35^\circ$ beams meet the floor $1.0\tan35^\circ = 0.70$\,m ahead, while the rig travels 0.48\,m during one 0.48\,s sonar sweep. A 300\,mm rise over a 600\,mm run was placed 12\,m along the tow. On the generic plant, settled at 1\,m, the ramp reached the rig at 12.0\,s and the avoidance logic never triggered: the altitude loop alone followed the rise, and clearance fell to 675\,mm before recovering. On the towed foil the rig was still descending when the ramp arrived and clearance stayed above 999\,mm, so that case does not test avoidance.
-  \item \textbf{False echoes.} With false near-field echoes on 3\% of readings, the ungated Kalman filter and the raw-range avoidance logic both respond to them. On the generic plant, avoidance was active for 15\% of the run (reflex climbs for 7\%), the rig never settled, and it ended 133\,mm above the target with a tail RMS of 112\,mm, against 1\,mm and 18\,mm for the same run without false echoes. On the towed foil it ended 214\,mm high with a tail RMS of 205\,mm. An innovation gate in the filter, with avoidance acting only on gated measurements, is therefore required.
-\end{itemize}
-The model parameters other than $k_\delta$, $c_\theta$ and $\tau_d$ are estimates, and the fixed tow geometry, constant speed and ideal IMU acceleration are simplifications, so Experiment Six tests the design on the rig (Section~\ref{sec:Exp6}).
- 
-\begin{figure}[ht]
+
+The working gains are $K_p=0.045$\,deg/mm, $K_i=0.013$\,deg/(mm\,s) and $K_\theta=0.8$\,deg/deg. In a 60\,s towed-foil descent from 2\,m to a 1\,m target at 1\,m/s, P-only control with the same $K_p$ left a final-5\,s mean error of $+336$\,mm. Adding integral action reduced it to $+16.35$\,mm. This supports integral action to supply the persistent trim bias, but does not establish optimal gains: $K_p=0.06$ with the same $K_i$ gave a smaller final error in both tested plants. Figure~\ref{fig:SimGains} compares the working and previous settings; the full gain table and run definitions are in Appendix~\ref{sec:app_sim_gains}.
+% AUTHOR CHECK: state why K_p = 0.045 was kept rather than 0.06 (e.g. it was the gain set flashed for Experiment Six, or 0.06 increased fin activity).
+
+Measurement timing also constrains the outer loop. A full sonar cycle takes 0.48\,s, which is a large fraction of the 0.71\,s local inner-loop time constant (Appendix~\ref{sec:app_sim_control}). Altitude feedback therefore arrives with a delay comparable to the pitch response it is correcting. This is the same mechanism as the stale readings observed in Experiment Five, and it argues for keeping the outer altitude loop slow relative to the inner pitch loop. No formal gain or phase margin analysis was carried out.
+
+\begin{figure}[H]
+
 \centering
-\includegraphics[width=0.85\linewidth]{Figures/sim_tow.png}
-\caption{Simulated altitude, pitch and fin angle under the selected cascaded controller on the towed-foil model, with a 1\,m target.}
-\label{fig:sim_tow}
+\includegraphics[width=\linewidth]{Figures/sim_gains_retuned.png}
+\caption{Working and previous PI gains with their matched P-only controllers. Panels show a towed-foil descent, a generic set-point change and a generic descent at lower speed. Complete settings and interpretation are given in Appendix~\ref{sec:app_sim_gains}.}
+\label{fig:SimGains}
 \end{figure}
-\section{Experiment Six}
+
+With the working gains, the baseline towed-foil run entered and remained within $\pm50$\,mm of the target at body-state time 28.60\,s, until the run ended at approximately 60\,s. Minimum clearance was 981.09\,mm, and tracking RMS over the final 10\,s was 13.76\,mm. The final-5\,s mean error above uses a different window. Separately, estimation RMS on matched available samples was 11.33\,mm for raw sonar and 7.95\,mm for filtered clearance, after correcting the export's 20\,ms timing offset. These fixed-window tracking errors and state-estimation errors measure different quantities; their definitions are given in Appendix~\ref{sec:app_sim_metrics}.
+
+Mean pitch over the final 5\,s was $+4.97^\circ$ and mean fin deflection was $-20.88^\circ$. Trim therefore used approximately 84\% of the negative fin range, leaving only 4.12$^\circ$ of further nose-down correction. Steady clearance in this force-based model requires a non-zero pitch at which foil and rope forces balance. This identifies a limited nose-down margin under the simulated conditions; it does not establish the opposite margin or explain slow climbing at another tow speed by itself.
+
+The baseline and gain comparisons use assumed plant coefficients and a single noise seed. The model omits currents, cable catenary, surface contact, roll and yaw dynamics, persistent IMU bias and realistic acoustic reflection losses. Its 5\,m sonar range also exceeds the approximately 2\,m practical range subsequently observed in Experiment Six. Supplementary ramp and false-echo checks did not establish reliable avoidance (Appendix~\ref{sec:app_sim_checks}). The simulation therefore supports the controller redesign and identifies limitations to test; physical tracking and obstacle clearance require experimental evidence.
+
+\section{Experiment Six: Cascaded Control in the Pool and Open Water}
+\url{https://youtu.be/c0w6ccdR4Vs}
 \label{sec:Exp6}
 
-Research Q's - Passive vs Active. Camera quality when avoiding, quickly avoiding
+Experiment Six was the first test of the cascaded PI--P controller and Kalman altitude estimate (Sections~\ref{sec:kalman} and~\ref{sec:cascade}) on the rig. It had two parts. A pool trial examined the approach to a target altitude, response to a set-point step and dependence on tow speed. An ocean trial then ran the rig behind a boat over a natural seabed and compared active control with the fins locked at trim, the passive baseline that Experiment Two could not provide. The obstacle-clearance test listed in Table~\ref{tab:testplan} was not run, because neither site offered a suitable obstacle.
+
+\subsection{Pool Setup}
+The University of Auckland pool was unavailable, so the pool trial used a residential pool 1--2\,m deep and 10\,m long. The procedure otherwise followed Section~\ref{sec:procedure}, with a free rope length of 12\,m. The pool was too shallow for the 1\,m target with a safe margin to the floor and surface, so the target altitude was set to 400\,mm. The pool length limited each towed section to about 12\,s, which is too short for the time-in-band statistics of Section~\ref{lit_eval}, so the pool runs are assessed on the shape of the response rather than on summary statistics. Tow speeds from about 1 to 2\,knots (0.51--1.03\,m/s) were tested.
+
+\subsection{Pool Results}
+Tow speed had a strong effect on control authority. At 1.5\,knots (0.77\,m/s) the rig dived and approached the target altitude without the repeated full-range oscillation observed in Experiment Five. Above about 2\,knots (1.03\,m/s) it struggled to dive, and below about 1\,knot (0.51\,m/s) it struggled to pitch up. The remaining pool runs therefore used 1.5\,knots, except the set-point step described below.
 
 
-\newpage
- 
+
+Figures~\ref{fig:Exp6HoldHeight} to~\ref{fig:Exp6HoldFins} show the altitude-hold run at 1.5\,knots. The rig dived from the surface and levelled out about 200\,mm above the target 3.5\,s into the run. It then closed the remaining error slowly, without the full-range swings of Experiment Five, and first crossed the target at 9.3\,s. After this, the end of the pool was approaching so the run had to end.
+
+\begin{figure}[H]
+
+\centering
+\begin{minipage}{0.32\textwidth}
+\centering
+% AUTHOR CHECK (all Experiment Six plots): replot with time in seconds on the horizontal axis instead of telemetry packet index, readable tick labels, fin angle in fin degrees rather than servo degrees, and invalid readings omitted rather than drawn at 0 mm.
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pSolidHeight.png}
+\caption{Estimated altitude against the 400\,mm target.}
+\label{fig:Exp6HoldHeight}
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pSolidPitch.png}
+\caption{Pitch relative to level.}
+\label{fig:Exp6HoldPitch}
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pSolidFins.png}
+\caption{Fin angle commands.}
+\label{fig:Exp6HoldFins}
+\end{minipage}
+\end{figure}
+
+% AUTHOR CHECK: an overlay of this run and the simulated descent on common, normalised axes would turn the qualitative comparison below into a quantitative one.
+The response has the same shape as the simulated towed-foil descent with the default gains (Figure~\ref{fig:SimGains}). Both have a fast initial descent, then a slow final approach while the integral term builds the pitch-reference bias needed to hold trim (Section~\ref{sec:sim_results}). Over the towed section, 29.44\% of valid altitude samples lay within $\pm$100\,mm of the target, with an RMS error of 53.52\,mm when within 100\,mm. The RMS value is conditional on being within the band and does not describe the complete approach. Because the run ended shortly after the first target crossing, it establishes neither sustained holding nor a settling time; a longer run would be needed to assess both.
+
+
+The second run stepped the target from 400\,mm to 1000\,mm at 1\,knot (0.51\,m/s) (Figures~\ref{fig:Exp6StepHeight} to~\ref{fig:Exp6StepFins}). The fins saturated at their nose-up limit, but the rig pitched up slowly and took about 10\,s to reach the new target. At 0.51\,m/s, this corresponds to about 5\,m of travel. This slow altitude response raises concern about the obstacle-avoidance requirement (Section~\ref{design_specs}), but altitude transition time is distinct from the specified pitch response of $20^\circ$ within about 1\,s; measured pitch rate is needed to assess that criterion directly. The step was run at the low end of the speed range, where fin force at a given deflection is about 44\% of its value at 1.5\,knots because lift scales with $V^2$, so the run probes low-speed control authority rather than demonstrating the worst case across all towing conditions. Only 15\% of the reported samples lay within $\pm100$\,mm of the target; the conditional RMS error for samples in that band was 75.74\,mm. 
+
+\begin{figure}[H]
+
+\centering
+\begin{minipage}{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pChangeHeight.png}
+\caption{Estimated altitude for the 400 to 1000\,mm step.}
+\label{fig:Exp6StepHeight}
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pChangePitch.png}
+\caption{Pitch relative to level.}
+\label{fig:Exp6StepPitch}
+\end{minipage}
+\hfill
+\begin{minipage}{0.32\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pChangeFins.png}
+\caption{Fin angle commands, saturated nose-up.}
+\label{fig:Exp6StepFins}
+\end{minipage}
+\end{figure}
+
+\subsection{Ocean Setup}
+The ocean trial used a small boat launched at Sandspit, with testing in Wanns Bay. The boat was held at 1.5\,knots (0.77\,m/s), the best-performing pool speed, as other pool speeds were unable to hold the target altitude. Water depth along the transects was 1-4\,m, the free rope length was $\approx$8\,m, and the target altitude was 1000\,mm.
+
+The transducers returned valid echoes only within about 2\,m, much shorter than the 5\,m maximum range assumed in simulation (Section~\ref{sec:sim_model}). Possible causes include scattering from the rocky seabed and weaker returning echoes at longer range; these mechanisms were not separately measured. While the rig was more than 2\,m above the seabed, the altitude estimate went stale, and the tow camera either continued diving or surfaced, depending on previous commands, pitch, and ocean currents. It is likely that longer-range sensors will be needed in some capacity. 
+
+\subsection{Ocean Results}
+For the passive comparison the servos were locked at trim. At the original rope length the rig dived to the seabed and dragged along it. This contact mode is unsuitable for \textit{Caulerpa} survey (Section~\ref{tow_class}) because it disturbs the habitat and risks spreading fragments. The rope was then shortened by approximately 2\,m, bringing estimated altitude close to the target. The passive statistics below describe this adjusted configuration. Its changed towing geometry means that the comparison does not perfectly establish a direct equality, but it does allow a comparison between a free-moving active controller and a constrained passive controller. 
+
+Figure~\ref{fig:Exp6OceanActive} shows the active run approaching the target after an initial descent and overshoot, followed by an above-target bias. The reported active run lasted 169.0\,s and the adjusted passive run 399.6\,s. Table~\ref{tab:ocean_results} compares their estimated altitude errors and measurement availability.
+
+\begin{figure}[H]
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+     \includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pActiveHeight}
+     \caption{Experiment Six, ocean, estimated altitude against target, active control}
+     \label{fig:Exp6OceanActive}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+     \includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pActivePitch}
+     \caption{Experiment Six, ocean, estimated pitch against target, active control}
+     \label{fig:Exp6OceanActivePitch}
+\end{minipage}
+\end{figure}
+\begin{figure}[H]
+
+\begin{minipage}{0.48\linewidth}
+    \centering
+     \includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pPassiveHeight.png}
+     \caption{Experiment Six, ocean, estimated altitude against target, fins locked.}
+     \label{fig:Exp6OceanPassive}
+\end{minipage}
+\hfill
+\begin{minipage}{0.48\linewidth}
+    \centering
+     \includegraphics[width=\linewidth]{Figures/Exp6Figs/P4pPassivePitch.png}
+     \caption{Experiment Six, ocean, estimated pitch with no target, fins locked.}
+     \label{fig:Exp6OceanPassivePitch}
+\end{minipage}
+\end{figure}
+The view from this height is shown in the video link in the Appendix \ref{sec:AppCompendium}, or at the top of the section.
+\begin{table}[H]
+
+    \centering
+    \caption{Ocean results for one run per configuration. The band is $\pm500$\,mm about the 1000\,mm target. Error statistics use valid altitude estimates only. Validity and valid-in-band availability use all logged samples; all-sample percentages are reported to one decimal place.}
+    \label{tab:ocean_results}
+    \begin{tabular}{lcc}
+        \toprule
+        \textbf{Metric} & \textbf{Passive} & \textbf{Active} \\
+        \midrule
+        Run time (s)                  & 399.6 & 169.0 \\
+        Valid altitude samples (\% of all samples) & 62.4 & 85.7 \\
+        In 500-1500\,mm(\% of valid samples) & 80.7 & 92.9 \\
+        Valid and in band (\% of all samples, approx.) & 50.3 & 79.6 \\
+        RMS error in band (mm)        & 195.2 & 192.9 \\
+        RMS error across all valid samples (mm) & 363.2 & 288.9 \\
+        Pitch RMS ($^\circ$) & 6.74& 6.78\\
+        Roll RMS ($^\circ$) & 21.56& 18.13\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+In these conditions, active control placed 92.9\% of valid altitude samples within $\pm500$\,mm of the 1000\,mm target, compared with 80.7\% for the adjusted passive configuration (Table~\ref{tab:ocean_results}). The time-in-band statistics reported by \textcite{lembke_cbass} provide context, but differing altitude bands, operating conditions and treatment of invalid samples preclude a direct ranking of performance. In relative terms the $\pm500$\,mm band used here is $\pm50\%$ of the target altitude, whereas their 2--3.5\,m ideal band is about $\pm27\%$ of its midpoint, so the band used here is the looser of the two. The passive rope was shortened to suit the local depth, while the active run required no reported rope adjustment during towing; these are operationally different configurations.
+
+Within the band, RMS error was nearly identical (195.2\,mm passive and 192.9\,mm active). The passive mean in-band error was $+10.8$\,mm. Active control had an in-band standard deviation of approximately 124\,mm and mean error of $+147.7$\,mm, indicating lower scatter with an above-target bias in this selected subset. Limited nose-down authority is a possible explanation for the active offset, but the simulation result alone does not establish that cause in the ocean trial. Logged fin saturation, pitch error and integral state would be needed to test it.
+
+The central 95\% of in-band samples extended from 833 to 1457\,mm for active control and 581 to 1403\,mm for the passive configuration. Across all valid samples, RMS error was 288.9\,mm active and 363.2\,mm passive. Invalid readings, logged as 0\,mm when no echo was received, constituted 14.3\% and 37.6\% of all samples, respectively. Possible causes include operation beyond the approximately 2\,m practical sensor range and beam orientations that lost the seabed (Section~\ref{sec:Exp5}); the trial did not distinguish these mechanisms.
+
+Using all logged samples as the denominator, approximately 79.6\% of active samples and 50.3\% of passive samples were both valid and within the band. Invalid samples represent unknown clearance and do not demonstrate either seabed contact or an excursion outside the band. These availability measures therefore differ from verified physical time-in-band. All experimental error metrics use the rig's own altitude estimate; no independent altitude reference was recorded, so absolute clearance accuracy remains unverified.
+
+The active trace appears less variable over much of the plotted interval, but the cause of individual excursions and run termination cannot be established from these plots alone. One run per configuration, different rope lengths, unequal durations and uncontrolled environmental differences limit attribution of the observed differences to the controller. The comparison provides preliminary evidence favouring active regulation rather than a statistically established improvement.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Speed Dependence and Control Authority}
+\label{sec:disc_speed}
+The clearest physical finding of Experiment Six is the narrow speed band: the rig struggled to dive above about 2\,knots and to climb below about 1\,knot. If every vertical force scaled with $V^2$, as foil lift, drag and the drag-driven rope pull do to first order, a change in speed would scale them all equally and leave the trim point unchanged. The observed band therefore points to terms that do not scale with $V^2$.
+
+The most likely candidate is net submerged weight, $W-B$, which the simulation set to zero (Table~\ref{tab:sim_plant_parameters}). If the rig is negatively buoyant, weight dominates at low speed, so the rig sinks and the fins cannot generate enough lift to climb. At high speed the hydrodynamic terms dominate, and if their balance at full nose-down fin is upward, with rope uplift exceeding foil downforce, the rig rises and cannot dive. The usable band would then be the region between these two regimes. Rope geometry is a second candidate: cable drag and catenary change the rope angle at the rig with speed and rope length (Section~\ref{tow_force}), which changes the rope moment independently of $V^2$ scaling. Neither mechanism was measured. Weighing the rig in water and logging rope angle at the rig would distinguish them. The 84\% simulated trim margin was also computed with $W-B=0$, so it may not describe the physical rig.
+
+The literature anticipated this sensitivity. Section~\ref{depth_lit} identified plant gain varying with the square of flow velocity as the dominant nonlinearity for towed-body depth control, with gain scheduling on measured tow speed as the remedy. The controller tested here used fixed gains, so part of the narrow operating band may be recoverable in software once tow speed is measured on board or sent from the vessel. Gain scheduling cannot, however, recover authority that the fin deflection limit does not provide.
+
+\subsection{Comparison with Existing Systems}
+\label{sec:disc_lit}
+Closed-loop altitude holding on a towed body is established in commercial ROTVs and in winch-controlled camera sleds \parencite{eiva_scanfish,whoi_towcam}, but at higher speeds, greater depths and higher cost than this application allows. The rig tested here showed preliminary closed-loop altitude regulation at 0.77\,m/s and a 1\,m target using hobby-grade servos, ultrasonic ranging and a microcontroller, at a component cost of about NZ\$500 total. This is a partial answer to Gap 2: regulation in calm water at one speed is feasible at low cost, but the operating envelope is far narrower than that of commercial systems.
+
+Sensing is the largest shortfall against the literature. Table~\ref{tab:modalities} lists ultrasonic range as up to tens of metres, yet the transducers used here returned valid echoes only within about 2\,m in the ocean. That range sets an upper limit on usable survey altitude in deeper water and leaves little look-ahead for avoidance (Section~\ref{sec:conc_rq2}). A dedicated underwater echosounder would address the range limit at higher cost, which trades directly against the low-cost premise of Gap 2.
+
+\subsection{Implications for Survey Practice}
+\label{sec:disc_practice}
+For a dive operator such as the sponsor, the results indicate where the current rig could be used and where it could not. In calm water at about 1.5\,knots, with seabed within the roughly 2\,m sensing range of the target altitude, the rig held estimated altitude near the target without rope adjustment from the boat, which the fins-fixed configuration required. It is not yet suitable for unattended survey: tow speed must be held within a narrow band, there is no demonstrated obstacle avoidance, and the suitability of the camera footage for detection was not quantified. The design is a basis for further development rather than an operational survey tool.
+
 \section{Conclusion}
 \label{sec:conclusion}
 
-This project investigated whether a low-cost, predominantly 3D-printed tow camera could hold a stable, low altitude above the seabed using ultrasonic sensing and active fin control, as a platform for automated Caulerpa survey. The findings below are organised by research question. 
+This project investigated whether a low-cost, predominantly 3D-printed tow camera could hold a stable, low altitude above the seabed using ultrasonic sensing and active fin control, as a platform for automated \textit{Caulerpa} survey. The rig was developed over six experiments and a software-in-the-loop simulation. The scale model confirmed the diving mechanism, the full-scale trials fixed the tow point and sensing, and simulation supported replacement of the oscillatory single-loop PID controller with a cascaded PI--P controller that approached and crossed the target altitude during a short pool run.
 
-The simulation and Experiment Six \ref{sec:sim, sec:Exp6} showed that the current design can be optimised further through in-depth fluid analysis. At high speeds, it gets close to the maximum control fin limit, meaning it struggles to dive down, whereas at lower speeds it struggles to surface. 
+Control authority and sensing reliability limit the current design. In simulation, holding trim used approximately 84\% of the nose-down fin range (Section~\ref{sec:sim_results}); this identifies limited simulated descent margin, not a measured climbing margin. Experiment Six separately showed speed-dependent response: above about 2\,knots the rig struggled to dive, and below about 1\,knot it struggled to climb. The most promising regulation was observed near 1.5\,knots, but the complete operating envelope was not established. Widening that band requires a more detailed hydrodynamic analysis of the foil, fins and tow geometry than the simplified force model of Section~\ref{sec:sim_model}, including measured net buoyancy and rope angle (Section~\ref{sec:disc_speed}). The findings below are organised by research question.
 
-\subsection{Research Question 1: Active Depth Control Against a Passive Baseline}
+\subsection{Research Question 1: Active Altitude Control Against a Passive Baseline}
 \label{sec:conc_rq1}
+Experiment One qualitatively supported a stable diving response at 1/7th scale, with no divergent pitch or yaw observed. Experiment Six provided qualitative evidence that roll and yaw could be handled passively during the tested conditions, supporting the decision to control pitch actively (Section~\ref{sec:activeStab}). A quantitative comparison of roll stability, as predicted in Table~\ref{tab:research_questions}, was not reported.
 
-Experiment One confirmed at 1/7th scale that the inverted cambered foil,
-combined with a tow point above the centre of mass, produces a stable diving response with no divergent pitch or yaw. Experiment Six 
-
-For a floor imaging purpose, literature shows passive systems are either dragging across the floor \cite{pepe}, or held too high to have a good view \cite{seavu}.
+The prototype demonstrated ultrasonic-feedback altitude control in pool trials and one calm-water ocean session. In the pool, it approached and crossed a 400\,mm target without the repeated full-range oscillation seen in Experiment Five, although the run ended before sustained holding could be established. Active control was associated with a higher proportion of valid altitude measurements within the target band than the adjusted passive configuration. Different towing geometry, unequal run durations and the absence of an independent altitude reference limit attribution of that improvement to the controller. The altitude-regulation component of the hypothesis therefore has preliminary support; the full hypothesis has not been conclusively established. Reliable obstacle avoidance and operation across the intended speed range remain undemonstrated.
 
 \subsection{Research Question 2: Obstacle Detection While Holding Imaging Altitude}
 \label{sec:conc_rq2}
+This question remains unanswered experimentally. No physical obstacle-clearance trial was completed in either the pool or the ocean. A manually commanded altitude step tested vertical response but did not test obstacle perception or automatic avoidance. The approximately 2\,m practical slant range observed in the ocean further restricts warning distance. At level pitch and 1\,m altitude, a $35^\circ$ beam intersects the seabed only 0.70\,m ahead, substantially short of the 2.5\,m look-ahead requirement.
 
+The simulated ramp checks also failed to establish reliable avoidance: neither plant activated avoidance or reflex action, and the towed-foil case had not settled to the 1\,m target before reaching the ramp (Appendix~\ref{sec:app_sim_faults}). Clearance in those runs therefore does not demonstrate successful reactive avoidance from a settled survey condition.
 
-\subsection{Research Question 3: Vertical-Only Movement Within Rate Limits}
+There is also an imaging trade-off: pitching up to climb tilts the fixed camera away from the near-vertical view intended for mat-forming algae such as \textit{Caulerpa} \parencite{cresswell}. Camera footage is linked in Appendix~\ref{sec:AppCompendium}, but image suitability was not quantified. Validation requires controlled obstacle approaches from a settled survey altitude, adequate sensing coverage and an explicit image-quality criterion.
+
+\subsection{Research Question 3: Vertical Manoeuvres Within Rate Limits}
 \label{sec:conc_rq3}
+The specification requires a $20^\circ$ pitch-up response within about 1\,s (Section~\ref{design_specs}). Compliance has not been demonstrated. In Experiment Six, a 600\,mm altitude set-point step at 1\,knot took about 10\,s while the fins remained saturated nose-up. This establishes a slow altitude response at the tested speed, but does not directly measure the required pitch rate. The pitch trace must be analysed separately to determine time to the specified attitude and the achieved rate.
 
-
+Tow speed, rope length and rope angle are plausible contributors to the response. Their effect on the rope's pitching moment follows from the attachment geometry in Section~\ref{tow_attach} and the signed moment balance in Equation~\eqref{eq:moment}. The empirical pitch-rate relationship in Equation~\eqref{eq:tow_pitch} is a simplified model, not an explicit torque calculation. The simulated nose-down trim margin cannot by itself explain the physical nose-up limitation. Fin geometry, available deflection and tow-point placement require further evaluation before claiming the specified manoeuvring capability.
 
 \subsection{Limitations}
 \label{sec:conc_limitations}
-\begin{itemize}
-    \item Pool trials only - no current, waves, turbulence or natural terrain
-    \item Manual tow - approximate, unmeasured speed
+\begin{itemize}[itemsep=2pt]
+    \item \textbf{Test environments.} Most trials ran in pools no deeper than 2\,m, which limited the target altitude to below the 1\,m design value and the run length to a few seconds. The ocean trial was a single session in calm conditions.
+    \item \textbf{Tow speed.} Pool runs were towed by hand, with speed estimated from video, so speed varied within and between runs.
+    \item \textbf{Experimental comparison.} The ocean results comprise one run per configuration with different rope lengths and unequal durations; controller effects cannot be isolated from towing geometry and environmental differences.
+    \item \textbf{Altitude reference.} Errors were calculated from the rig's own estimate without an independent clearance measurement. Invalid samples represent unknown altitude, and short pool runs did not establish sustained holding.
+    \item \textbf{Obstacles.} No physical obstacle-clearance trial was completed, and the simulated checks did not establish reliable avoidance.
+    \item \textbf{Application requirements.} Image suitability and multi-unit performance were not quantitatively evaluated in this report.
+    \item \textbf{Simulation.} The plant gain $k_\delta$ was not fitted to the final rig, and the model omits the free surface, currents, cable catenary and roll and yaw dynamics (Section~\ref{sec:sim_results}).
 \end{itemize}
 
 \subsection{Future Work}
 \label{sec:conc_future}
+The priorities are:
+\begin{enumerate}[itemsep=2pt]
+\item Repeat active and fins-fixed trials with matched towing geometry and speed, an independent altitude reference, and sufficient duration to quantify holding and pitch response.
+\item Measure submerged weight, rope angle and fin authority across speeds; validate sonar range, reject false echoes, and test gain scheduling where authority remains available.
+\item Calibrate and validate the simulator against physical logs, including the failed single-loop PID response, before using it to select hardware or controller changes.
+\item Conduct known-obstacle trials from settled survey altitude with a vessel able to hold speed, and evaluate camera footage against a defined image-quality criterion.
+\end{enumerate}
 
-\begin{itemize}
-    \item Testing parallel modules - All design choices had this requirement in mind, however, it was never able to be tested, as we just could only finish the design before the deadline, missing out on scaling. 
-    \item More open water and debris avoidance - This is ultimately the goal for the project, but the requirements of the towing vessel were missing during the testing period. 
-    \item Custom PCB board - This will optimise the electronics box for both longevity and reliability. An issue during this project was how electronic components were unsecurely held together and were prone to breaking. 
-\end{itemize}
 \clearpage
 \phantomsection
-\addcontentsline{toc}{section}{\refname}
-\bibliographystyle{IEEEtran}
-\bibliography{RefDatabase}
+\printbibliography[heading=bibintoc]
 \newpage
 
 %% -
@@ -1041,7 +1156,6 @@ For a floor imaging purpose, literature shows passive systems are either draggin
 %% -
 \begin{appendices}
 \titleformat{\section} {\normalfont\fontsize{14}{14}\bfseries}{Appendix~\thesection}{1em}{}
-
 % Renaming the captions to include the appendix name
 \renewcommand{\theequation}{\thesection \arabic{equation}}
 \renewcommand{\thefigure}{\thesection \arabic{figure}}
@@ -1051,12 +1165,16 @@ For a floor imaging purpose, literature shows passive systems are either draggin
 \section{Research Compendium}
 \label{sec:AppCompendium}
 
+Table~\ref{tab:compendium} lists the available video links. Raw logs cited in the text include \texttt{Exp4.csv}, \texttt{Exp5.csv} and \texttt{sensor-\allowbreak log-\allowbreak goodRunPopedatAPoint.csv}. Download locations for these logs, the ocean runs, firmware, simulation source and analysis scripts are not supplied here; the listed materials therefore do not constitute a complete reproducibility package.
+% AUTHOR CHECK: Add verified dataset/code locations and version identifiers; do not invent links.
+
 \setcounter{equation}{0}
 \setcounter{figure}{0}
 \setcounter{table}{0}
 \setcounter{lstlisting}{0}
 
-\begin{table}[ht]
+\begin{table}[H]
+
 \centering
 \footnotesize
 \caption{Contents of the research compendium.}
@@ -1070,24 +1188,79 @@ Experiment Two video & \url{https://youtube.com/shorts/SiT4EdYxQNI} \\
 Experiment Three video & \url{https://youtube.com/shorts/aQix-yrkYhs} \\
 Experiment Four video & \url{https://youtu.be/PpwM-hyTAT4} \\
 Experiment Five video & \url{https://youtu.be/T1Uqc7A2UBI} \\
-Experiment Six video & \fillin{URL} \\
-Simulation source & \texttt{Simulation/closed\_loop\_sim.cpp}, SHA-256 \texttt{ef8fe34f\ldots}; \fillin{repository URL} \\
-Firmware used in simulation & \texttt{control.cpp} \texttt{55b08c52\ldots}, \texttt{config.h} \texttt{03db5220\ldots}, \texttt{depth\_kalman.h} \texttt{e7c27bd7\ldots}, \texttt{depth\_estimator.h} \texttt{957e3257\ldots}, \texttt{sonar\_geometry.h} \texttt{3b925678\ldots} \\
-CSV logs (Experiments 4--6) & \fillin{location} \\
-CAD files & \fillin{location} \\
+Experiment Six video & \url{https://youtu.be/c0w6ccdR4Vs}\\
 \bottomrule
 \end{tabular}
 \end{table}
 
+
 \clearpage{}
-
-\section{CVS Logging Appendix}
-
+\section{Power Architecture Appendix}
+\label{sec:AppPower}
 \setcounter{equation}{0}
 \setcounter{figure}{0}
 \setcounter{table}{0}
 \setcounter{lstlisting}{0}
 
+The figures below show the intended power and data architecture. Before the ocean component of Experiment Six, a buck converter failed and the battery arrangement was changed to two GTF TR 26650A batteries in series. The final rail connections, regulated voltages and charging path after this substitution are not documented here. These figures should therefore not be interpreted as the verified final ocean-trial wiring, nor as evidence that the proposed PoE charging arrangement was demonstrated.
+% AUTHOR CHECK: Confirm battery identification, final wiring and measured rail voltages. Specify the charger and conversion stage for the proposed 12 V input / 4S pack architecture.
+\begin{figure}[H]
+
+\centering
+\begin{minipage}{0.44\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/P4p_Power_Diagram.png}
+\caption{System power and data architecture.}
+\label{fig:PowerArchitecture}
+\end{minipage}
+\hfill
+\begin{minipage}{0.5\textwidth}
+\centering
+\includegraphics[width=\linewidth]{Figures/P4p_Elec_Schem.png}
+\caption{Wiring schematic.}
+\label{fig:ElectScheme}
+\end{minipage}
+\end{figure}
+ 
+
+\clearpage
+\subsection{Detailed Power Architecture}
+
+Active control requires an onboard power system that can be sealed against water, fits the size and cost constraints, and can supply the servo peaks needed for avoidance manoeuvres.
+
+The intended architecture shares power and data over a single PoE tether down the tow cable, consistent with the modular, low-drag cabling goal. The camera-side splitter provides a 12\,V supply and an Ethernet data path to the switch, camera and master ESP32 via an Ethernet-to-SPI module. Local buffering was designed around a 4S LiPo pack (14.8\,V nominal) with a battery management system (BMS). The charging and voltage-conversion stage between the stated 12\,V input and the pack is not specified here, so the diagram does not establish a complete charging implementation. This is deliberate: PoE alone cannot supply the system's peak load. Each servo is rated up to 9 A at 8.4 V (75.6 W) under stall, though sustained draw is under 20 W per servo; two servos can therefore demand well over 100 W momentarily against a continuous budget of roughly 50 W (Table~\ref{tab:power_budget}). Local battery buffering decouples this peak from the tether, which need only sustain the pack's average charge balance. 
+
+In the intended architecture, two buck converters step the 14.8 V bus down to a 5 V logic rail (90\% efficiency) and a 7.4 V/8.4 V servo rail (capacitor-smoothed). The master ESP32 bridges an Ethernet module by SPI, a UART/RS-485 expander to the sensor array and IMU, and PWM to both servos; since the array runs 5 V logic against the ESP32's 3.3 V GPIOs, compatibility of the 5\,V peripheral interface with the ESP32's 3.3\,V GPIOs requires verification. Before the ocean trial, a converter failure led to the battery substitution recorded in Appendix~\ref{sec:AppPower}; the nominal architecture and budget should therefore not be read as a verified description of that trial's final power configuration.
+ 
+\begin{table}[H]
+
+\centering
+\small
+\begin{tabular}{lll}
+\toprule
+\textbf{Component} & \textbf{Rail} & \textbf{Draw} \\
+\midrule
+Camera & 5 V (Ethernet-side) & $\leq$1.5 W \\
+ESP32 logic & 3.3 V (reg.\ from 5 V) & $\sim$1 W cont., 2.5 W peak \\
+Ultrasonic array ($\times$8) & 5 V & 0.8 W (0.16 A) \\
+Filtering capacitors & 5 V rail & $\leq$0.3 W quiescent \\
+Servo (each) & 7.4--8.4 V & $<$20 W cont.; 51.8--75.6 W stall \\
+\midrule
+System continuous total & --- & $\approx$50 W (incl.\ 90\% buck eff.) \\
+\bottomrule
+\end{tabular}
+\caption{Nominal power budget by component for the intended architecture, from the system power diagram; these are not measured ocean-trial loads.}\label{tab:power_budget}
+\end{table}
+
+
+\section{CSV Logging Appendix}
+\label{sec:AppCSV}
+
+\setcounter{equation}{0}
+\setcounter{figure}{0}
+\setcounter{table}{0}
+\setcounter{lstlisting}{0}
+From Experiment 4 \ref{sec:Exp4}.
 \begin{lstlisting}
 
     // Write CSV header
@@ -1131,31 +1304,189 @@ CAD files & \fillin{location} \\
         flap_left_deg, flap_right_deg
     );
 \end{lstlisting}
-
+A snippet of Experiment 6 ocean trial.
+packet_id, device_timestamp_ms, laptop_timestamp_iso, target_altitude_mm, height_mm, height_valid, flap_left_deg, flap_right_deg, depth_sensor, roll_deg, pitch_deg, target_pitch_deg, yaw_deg, gyro_x_rads, gyro_y_rads, gyro_z_rads, sensor_1_valid, sensor_1_mm, sensor_2_valid, sensor_2_mm, sensor_3_valid, sensor_3_mm, sensor_4_valid, sensor_4_mm, sensor_5_valid, sensor_5_mm, sensor_6_valid, sensor_6_mm, sensor_7_valid, sensor_7_mm, sensor_8_valid, sensor_8_mm
+31531, 484668, 2026-10-14T03:34:31.389Z, 1000, 995.4107666, TRUE, 175, 175, 2+6, , , , , -0.009765625, 0.025390625, 0.013671875, TRUE, 1245, TRUE, 1097, TRUE, 1177, FALSE, --, TRUE, 1330, TRUE, 1057, TRUE, 1228, FALSE, --
 \clearpage{}
 
-\section{Second Appendix}
+\section{Simulation Model, Implementation and Supporting Results}
 \label{sec:AppSim}
-
 \setcounter{equation}{0}
 \setcounter{figure}{0}
 \setcounter{table}{0}
 \setcounter{lstlisting}{0}
 
-\section{Simulation Appendix}
-\label{sec:AppSim}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/fit_calc_sensor-log-goodRunPopedatAPoint.png}
-    \caption{Logged data Relationship}
-    \label{fig:LogCalc}
+This appendix records the assumptions and supporting comparisons for Section~\ref{sec:sim}. The simulator calls the firmware control step every 20\,ms and advances the plant in 1\,ms steps. Two alternative plants are provided; they are not interchangeable calibrations of the physical rig.
+
+\subsection{Plant Equations and Parameters}
+\label{sec:app_sim_models}
+
+Let $z$ be vertical position, positive upward, $z_b(x)$ seabed elevation, $h=z-z_b(x)$ clearance, $U$ prescribed forward speed, $\theta$ nose-up pitch and $\delta$ fin deflection. The code stores angular states in degrees and distances in millimetres, converting to radians and SI units for trigonometry and force calculations. The equations below use consistent physical units.
+
+The generic plant represents pitch as a damped second-order response and makes flight-path angle $\gamma_f$ follow pitch:
+\begin{align}
+\ddot\theta&=\omega_n^2(k_f\delta-\theta)-2\zeta\omega_n\dot\theta,
+&\omega_n&=2\frac{U}{U_{\mathrm{ref}}}\ \mathrm{rad/s},\\
+\dot\gamma_f&=\frac{\theta-\gamma_f}{\tau_f},
+&\dot z&=U\sin\gamma_f.
+\end{align}
+Here $k_f=1$, $\zeta=0.7$, $U_{\mathrm{ref}}=1$\,m/s and $\tau_f=0.3$\,s. This plant contains neither rope forces nor foil dimensions. It provides a separate comparison, rather than the towed-foil plant with a constant trim bias removed.
+
+The towed-foil plant combines an empirical pitch-rate relationship with rope-angle restoration:
+\begin{equation}
+\dot\theta=k_\delta\delta-\frac{\theta-\theta_r}{\tau_r},
+\qquad
+\theta_r=\tan^{-1}\!\left(\frac{H_T-h}{X_T}\right).
+\label{eq:tow_pitch}
+\end{equation}
+The nominal tow point is $H_T$ above the local seabed and $X_T$ ahead. Pitching bias therefore changes with clearance and attitude. There is no explicit transport delay or constant fitted pitch-rate intercept in this equation. The generic plant's 0.3\,s flight-path lag and the fitting time shift in Section~\ref{sec:app_sim_fit} have separate roles.
+
+Vertical motion follows the force balance
+\begin{align}
+(m+m_a)\ddot z&=F_L\cos\gamma_f-D\sin\gamma_f+F_{T,z}-(W-B),
+\label{eq:sim_heave}\\
+F_{T,z}&=(D\cos\gamma_f+F_L\sin\gamma_f)\tan\theta_r,
+\end{align}
+where $\gamma_f=\tan^{-1}(\dot z/U)$ and $\alpha=\theta-\gamma_f$ is angle of attack. The signed lift $F_L$ is positive upward, distinct from the earlier downward-force convention $L$. With $V_r^2=U^2+\dot z^2$, planform area $S=c_f b$ and aspect ratio $AR=b/c_f$,
+\begin{align}
+F_L&=\tfrac12\rho V_r^2S C_L,\\
+D&=\tfrac12\rho V_r^2\left[S\left(C_{D0}+\frac{C_L^2}{\pi e_{\mathrm{ind}}AR}\right)+A_D\right],\\
+m_a&=\rho\pi c_f^2b/4.
+\end{align}
+Here $A_D$ is the additional body drag area, including its drag coefficient. Before stall, the finite-aspect-ratio lift slope is $2\pi AR/(AR+2)$ per radian. Inverting the 5\% camber gives a zero-lift angle of $+2(0.05)$\,rad. Lift is linear within 14$^\circ$ of zero lift; beyond this it falls by 4\% of the peak per additional degree, to a minimum of 60\% of the peak. This is an assumed stall model, not a measured polar.
+
+\begin{table}[H]
+
+\centering
+\small
+\caption{Parameters used in the reported towed-foil simulations.}
+\label{tab:sim_plant_parameters}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Parameter & Value \\
+\midrule
+Chord $c_f$, span $b$ and area $S$ & 0.30\,m, 0.80\,m and 0.24\,m$^2$ \\
+Camber and orientation & 5\%, inverted \\
+Water density $\rho$ & 1025\,kg/m$^3$ \\
+Body mass $m$; net submerged weight $W-B$ & 8\,kg; 0\,N \\
+Tow-point offsets $H_T$, $X_T$ & 3\,m, 7\,m \\
+Pitch gain $k_\delta$; restoring time $\tau_r$ & 0.52 (deg/s)/deg; 1\,s \\
+Section drag $C_{D0}$; induced-drag factor $e_{\mathrm{ind}}$ & 0.012; 0.8 \\
+Additional body drag area $A_D$ & 0.04\,m$^2$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The rope angle is calculated from local clearance, so the nominal tow point moves with seabed elevation when terrain changes. The force balance does not include a free surface, cable catenary, current, or roll and yaw dynamics. These simplifications limit transfer to the rig, particularly for terrain response and operating-envelope predictions.
+
+\subsection{Log-Based Pitch-Rate Fitting}
+\label{sec:app_sim_fit}
+
+The plotting script provides a fitting workflow using consecutive logged attitude samples. It estimates $q_i=(\theta_{i+1}-\theta_i)/\Delta t_i$ rather than relying on the sparsely sampled gyro. Both endpoints must satisfy $|\phi|<20^\circ$ and $|\theta|<45^\circ$; intervals longer than 1.2\,s or with $|q_i|>40^\circ$/s are discarded. These screens do not independently confirm steady towing.
+
+The logged servo command is converted to logical fin deflection by subtracting neutral and dividing by six. Its mean $f_i$ is taken over the attitude interval shifted 0.3\,s earlier. Duration-weighted least squares then solves
+\begin{equation}
+\min_{k_\delta,c_q}\sum_i\Delta t_i\left(q_i-k_\delta f_i-c_q\right)^2.
+\end{equation}
+The shift is an identification assumption. When requested, the script can pass the fitted slope to the tow scenario; it does not insert the fitted intercept or a 0.3\,s delay into Equation~\eqref{eq:tow_pitch}. Figures~\ref{fig:LogCalc} and~\ref{fig:LogCalc2} illustrate the workflow on the Experiment Five log. All numerical comparisons reported here retain $k_\delta=0.52$; these illustrations are not a new calibration of the final rig.
+
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.72\linewidth]{Figures/fit_calc_sensor-log-goodRunPopedatAPoint.png}
+\caption{Pitch-rate identification workflow: attitude intervals, shifted fin commands and duration-weighted fitting.}
+\label{fig:LogCalc}
 \end{figure}
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{Figures/fit_sensor-log-goodRunPopedatAPoint.png}
-    \caption{Logged data Calculations}
-    \label{fig:LogCalc2}
+
+\begin{figure}[H]
+
+\centering
+\includegraphics[width=0.72\linewidth]{Figures/fit_sensor-log-goodRunPopedatAPoint.png}
+\caption{Logged fin commands and pitch-rate intervals used to illustrate the fitting procedure. The plotted fit is not substituted into the reported baseline runs.}
+\label{fig:LogCalc2}
 \end{figure}
+
+\subsection{Sensor, Estimator and Controller Settings}
+\label{sec:app_sim_control}
+
+Sonar rays use each beam's mounting angle and true pitch to intersect the seabed. One beam is polled every 60\,ms. Range noise has 12\,mm standard deviation, failed transactions have probability 0.20 and maximum range is 5\,m. Near-field echoes of 50--100\,mm are injected only in the specified fault cases. IMU noise standard deviations are 0.2$^\circ$ in attitude and 0.05\,m/s$^2$ in vertical acceleration. Calibration errors, persistent bias, acoustic beam width and angle-dependent reflection losses are omitted.
+
+The firmware uses 8$^\circ$ hysteresis when switching the selected downward beam on an end cap. Its Kalman measurement standard deviation is 30\,mm, a tuning value distinct from the simulator's 12\,mm injected range noise. Sample freshness, single assimilation of each contributing echo and the fallback behaviour are described in Section~\ref{sec:kalman}.
+
+The altitude deadband is entered at $|e|\leq15$\,mm and exited above 25\,mm. Inside it, proportional error is zero but integral trim is retained. Integration uses error capped at $\pm100$\,mm and pauses when closing speed towards the target reaches 25\,mm/s, or when pitch or fin saturation would be driven further in the error direction. Avoidance and reflex action prevent additional nose-down integral accumulation. The integral contribution is limited to $\pm30^\circ$.
+
+Normal fin-command slew is 8$^\circ$/s, increasing to 24$^\circ$/s during reflex action. The actuator model separately limits physical servo motion to 350 servo-degrees/s, with six servo-degrees per degree of fin motion. Holding rope angle constant and neglecting slew and saturation, the local inner-loop time constant is
+\begin{equation}
+\tau_{\mathrm{inner}}=\frac{1}{k_\delta K_\theta+1/\tau_r}\approx0.71\ \mathrm{s}.
+\end{equation}
+This excludes changing rope geometry and heave coupling. The corresponding local steady-pitch relation is
+\begin{equation}
+\delta_{\mathrm{trim}}=\frac{\theta_{\mathrm{trim}}-\theta_r}{k_\delta\tau_r}.
+\end{equation}
+
+Avoidance projects fresh sonar returns into forward and downward coordinates $(x_i,d_i)$ relative to the rig. In millimetres, clearance-line penetration and the requested altitude are
+\begin{align}
+p&=\max_{i:x_i>0}\left\{0,\ 400\ \mathrm{mm}-x_i\tan30^\circ-d_i\right\},\\
+h_{\mathrm{request}}&=h_{\mathrm{cruise}}+\min(0.5p,1500\ \mathrm{mm}),
+\end{align}
+with $p=0$ when no eligible return exists. Penetration is held for 0.3\,s; the live setpoint rises at no more than 800\,mm/s and falls at no more than 100\,mm/s. Beams mounted at $35^\circ$ or $90^\circ$ separately trigger a reflex below 500\,mm range. The positive fin addition is proportional to range shortfall, capped at 10$^\circ$ and held for 0.2\,s. Neither path applies statistical innovation rejection.
+
+\subsection{Gain Comparisons and Run Definitions}
+\label{sec:app_sim_gains}
+
+Table~\ref{tab:gains} retains the complete outer-loop comparison, with $K_\theta=0.8$ throughout. Runs start 2\,m above a flat seabed with a 1\,m target, zero vertical velocity, random seed 1, 20\% failed sonar transactions and no injected false echoes. Generic pitch starts at zero; towed-foil pitch starts at the nominal rope angle. Towed-foil cases run for 60\,s at 1\,m/s and explicitly select inverted camber. Generic cases run for 30\,s at 0.5\,m/s and do not use the foil dimensions. All other settings are as specified above.
+
+\begin{table}[H]
+
+\centering
+\small
+\caption{Simulated true altitude relative to the 1\,m target (mm, positive above). Final is the mean over the final 5\,s; lowest is the minimum over the complete run. $K_p$ is in deg/mm and $K_i$ in deg/(mm\,s); $K_\theta=0.8$ throughout.}
+\label{tab:gains}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule
+& \multicolumn{2}{c}{\textbf{Towed foil, 1\,m/s}}
+& \multicolumn{2}{c}{\textbf{Generic, 0.5\,m/s}} \\
+\cmidrule(lr){2-3}\cmidrule(l){4-5}
+\textbf{Gain set} & Final & Lowest & Final & Lowest \\
+\midrule
+P, $K_p=0.045$ & $+336$ & $+331$ & $+14$ & $+11$ \\
+P, $K_p=0.07$ & $+245$ & $+237$ & $+10$ & $+10$ \\
+P, $K_p=0.10$ & $+184$ & $+171$ & $-2$ & $-11$ \\
+\midrule
+PI, $K_p=0.03$, $K_i=0.013$ & $+20$ & $-26$ & $-71$ & $-76$ \\
+PI, $K_p=0.06$, $K_i=0.013$ & $+8$ & $+7$ & $-13$ & $-29$ \\
+PI, $K_p=0.045$, $K_i=0.007$ & $+10$ & $+10$ & $-29$ & $-32$ \\
+PI, $K_p=0.045$, $K_i=0.020$ & $+5$ & $-30$ & $-15$ & $-49$ \\
+PI, $K_p=0.05$, $K_i=0.015$ (previous) & $+10$ & $-13$ & $-17$ & $-47$ \\
+\midrule
+\textbf{PI, $K_p=0.045$, $K_i=0.013$ (working)}
+& $\mathbf{+16}$ & $\mathbf{-19}$ & $\mathbf{-30}$ & $\mathbf{-42}$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Increasing P-only gain reduces the towed-foil offset but leaves it substantial. Integral action supplies a persistent pitch-reference bias. The working gains provide a test configuration, rather than a unique optimum; the $K_p=0.06$, $K_i=0.013$ case gives smaller final errors on both plants, while previous gains remain competitive.
+
+Figure~\ref{fig:SimGains} compares the working PI pair $(0.045,0.013)$, the previous pair $(0.05,0.015)$ and their matched P-only controllers. Its panels use the 60\,s towed-foil descent at 1\,m/s; a 40\,s generic run at 1\,m/s with target changed from 1 to 1.8\,m at 20\,s; and the 30\,s generic descent at 0.5\,m/s. The panel label ``fitted plant'' denotes the empirical model form, not a fresh fit of $k_\delta$ for these runs. The step panel is a separate scenario from the generic descent in Table~\ref{tab:gains}.
+
+\subsection{Error Metrics and Time Alignment}
+\label{sec:app_sim_metrics}
+
+Tracking error is $e_h=h_{\mathrm{true}}-h_{\mathrm{target}}$, positive above target. ``Final'' in Table~\ref{tab:gains} is the mean signed tracking error over the final 5\,s; ``lowest'' is the minimum tracking error over the complete run. Tracking RMS is $\sqrt{N^{-1}\sum_j e_{h,j}^2}$ over the final 10\,s. These windows include every recorded sample in the window, without selecting only samples near the target. They describe specified portions of a specified run; they are not independent of run duration or a substitute for repeated-run statistics.
+
+Settling is the first entry into the $\pm50$\,mm band after which all subsequent samples remain inside it until the run ends. It is therefore an end-of-run criterion, not proof that the system remains settled indefinitely. The baseline settling sample has recorded time 28.58\,s.
+
+The export stores controller estimates before advancing the body through the next 20\,ms period, and true state afterwards. The baseline settling sample therefore represents body-state time 28.60\,s. Estimation RMS is computed on matched samples where both raw and filtered clearance are available, using the preceding exported body state as the aligned reference; the first reference is the initial 2\,m clearance. This yields raw and filtered estimation RMS values of 11.33 and 7.95\,mm. Tracking metrics instead use the exported true clearance against the target and require no estimate-to-truth alignment. For the baseline, final-10\,s tracking RMS is 13.76\,mm, final-5\,s mean error is $+16.35$\,mm and minimum clearance is 981.09\,mm.
+
+\subsection{Supplementary Sensitivity and Fault Checks}
+\label{sec:app_sim_faults}
+\label{sec:app_sim_checks}
+
+Fin-authority checks used 120\,s towed-foil runs with the baseline initial clearance, target, speed and seed. At $k_\delta=0.05$, the fins saturated at $-25^\circ$ and final-5\,s mean altitude was 2.184\,m; at $k_\delta=1.0$, it was 0.995\,m. These are sensitivity choices, not confidence bounds from a verified fit. The simulator has no free surface, so values above a 2\,m pool depth indicate departure from the intended submerged operating condition.
+
+Ramp checks used 35\,s runs starting at 1.5\,m, with a 1\,m target, 1\,m/s speed and seed 1. The bed rose 300\,mm over 600\,mm of track, starting 12\,m along the tow. Neither plant activated avoidance or reflex action. Generic minimum clearance was 675\,mm; towed-foil minimum was 975\,mm, but clearance at ramp entry was still 1.285\,m. This did not establish avoidance from a settled 1\,m towed-foil approach. At level pitch and 1\,m altitude, a $35^\circ$ beam meets the floor only 0.70\,m ahead, giving 0.70\,s at 1\,m/s against a 0.48\,s full sonar cycle.
+
+False-echo checks used 40\,s runs starting at 1.8\,m, with a 1\,m target, 1\,m/s speed and seed 7. Injecting 50--100\,mm echoes with 3\% probability on otherwise successful, in-range transactions increased final-10\,s tracking RMS from 17.72 to 112.20\,mm on the generic plant and from 13.69 to 186.74\,mm on the towed foil. Final-5\,s mean errors changed from $+1.23$ to $+132.56$\,mm and from $-2.52$ to $+200.18$\,mm respectively. Avoidance and reflex action were active for approximately 15.2\% and 6.6\% of each fault run. Neither fault case remained within the $\pm50$\,mm band through the end. Echo validation is therefore needed in both the estimation and raw-range avoidance paths; its effectiveness was not tested here.
 \end{appendices}
 %  End of Appendices 
 
